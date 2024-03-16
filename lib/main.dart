@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
       home: const LoginScreen(),
       // home: const SplashScreen(),
       // home: const PageNavigator(),
-
       debugShowCheckedModeBanner: false,
     );
   }
