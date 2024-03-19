@@ -6,7 +6,7 @@ class ArticlesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Articles Screen'),
+      child: Text('Records Screen'),
     );
   }
 }

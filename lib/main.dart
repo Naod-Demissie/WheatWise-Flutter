@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.light(),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
       // home: const SplashScreen(),
-      // home: const PageNavigator(),
+      home: const PageNavigator(),
       debugShowCheckedModeBanner: false,
     );
   }

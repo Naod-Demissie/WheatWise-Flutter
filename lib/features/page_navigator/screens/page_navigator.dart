@@ -16,11 +16,11 @@ class PageNavigator extends StatefulWidget {
 class _PageNavigatorState extends State<PageNavigator> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    ArticlesScreen(),
-    RecordsScreen(),
-    SettingsScreen(),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const ArticlesScreen(),
+    RecordScreen(),
+    SettingScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -56,7 +56,9 @@ class _PageNavigatorState extends State<PageNavigator> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.bookOpen, ),
+              icon: Icon(
+                FontAwesomeIcons.bookOpen,
+              ),
 
               // icon: Icon(Iconsax.book1),
               label: 'Articles',
