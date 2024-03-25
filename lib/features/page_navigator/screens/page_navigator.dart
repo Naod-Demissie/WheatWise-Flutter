@@ -4,7 +4,7 @@ import 'package:wheatwise/features/article/screens/article_screen.dart';
 import 'package:wheatwise/features/home/screens/home_screen.dart';
 import 'package:wheatwise/features/records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({super.key});
@@ -14,13 +14,13 @@ class PageNavigator extends StatefulWidget {
 }
 
 class _PageNavigatorState extends State<PageNavigator> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   final List<Widget> _screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const ArticlesScreen(),
-    RecordScreen(),
-    SettingScreen(),
+    const RecordScreen(),
+    const SettingScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -56,14 +56,20 @@ class _PageNavigatorState extends State<PageNavigator> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.bookOpen,
-              ),
+              icon: Icon(Iconsax.book),
+
+              // icon: Icon(
+              //   FontAwesomeIcons.bookOpen,
+              // ),
 
               // icon: Icon(Iconsax.book1),
               label: 'Articles',
             ),
             BottomNavigationBarItem(
+              // icon: FaIcon(
+              //   FontAwesomeIcons.upload,
+              //   size: 24, // Adjust the size as needed
+              // ),
               icon: Icon(Iconsax.book),
               label: 'Records',
             ),
