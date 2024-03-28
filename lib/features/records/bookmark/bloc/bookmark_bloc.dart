@@ -29,9 +29,12 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
       emit(AddBookmarkLoadingState());
       try {
         final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('diagnosis');
-        event.bookmark.isBookmarked = !event.bookmark.isBookmarked;
-        diagnosisBox.putAt(int.parse(event.bookmark.serverId), event.bookmark);
-        emit(AddBookmarkSuccessState(bookmarked: event.bookmark.isBookmarked));
+        event.bookmark.isBookmarked = !event.bookmark.isBookmarked!;
+        diagnosisBox.putAt(int.parse(event.bookmark.serverId),
+            event.bookmark); // !changed to not nullable
+        emit(AddBookmarkSuccessState(
+            bookmarked:
+                event.bookmark.isBookmarked!)); // !changed to not nullable
       } catch (error) {
         emit(BookmarkFailureState());
       }

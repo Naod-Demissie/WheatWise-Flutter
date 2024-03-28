@@ -21,20 +21,13 @@ class ChangePasswordDataProvider {
         throw Exception("Not logged in");
       }
 
-      dio.options.headers['content-Type'] = 'application/json';
-      dio.options.headers['Authorization'] = 'Bearer $token';
-
-      FormData formData = FormData.fromMap({
+      Response response =
+          await dio.post('$_baseUrl/users/update-password', data: {
         "email": email,
         "current_password": currentPassword,
         "new_password": newPassword,
-        "new_password2": newPassword2
+        "new_password2": newPassword2,
       });
-
-      Response response =
-          await dio.post('$_baseUrl/users/update-password', data: formData);
-      print(response);
-      print(response.statusCode);
 
       if (response.statusCode != 200) {
         throw (Exception('Failed to change password'));

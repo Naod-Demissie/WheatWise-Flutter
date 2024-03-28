@@ -8,6 +8,7 @@ import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
+import 'package:wheatwise/features/file_upload/bloc/upload_bloc.dart';
 import 'package:wheatwise/features/page_navigator/screens/page_navigator.dart';
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 import 'features/auth/login/bloc/login_bloc.dart';
@@ -24,10 +25,23 @@ void main() async {
   String? token = prefs.getString('token');
   bool isLoggedIn = token != null;
 
+  print('Hwllo');
+  printAllRecords();
+
   runApp(MyApp(
     isLoggedIn: isLoggedIn,
     prefs: prefs,
   ));
+}
+
+void printAllRecords() {
+  var box = Hive.box<Diagnosis>("Diagnosis");
+  print(box.length);
+  for (var i = 0; i < box.length; i++) {
+    var record = box.getAt(i);
+    print(record);
+    print('$i $record');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -48,9 +62,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LogoutBloc()),
         BlocProvider<CheckAuthBloc>(
             create: (context) => CheckAuthBloc(prefs: prefs)),
-        BlocProvider(
-          create: (context) => ChangePasswordBloc(),
-        ),
+        BlocProvider(create: (context) => ChangePasswordBloc()),
+        BlocProvider(create: (context) => UploadBloc()),
       ],
       child: MaterialApp(
         title: 'WheatWise',

@@ -39,18 +39,18 @@ class _SettingScreenState extends State<SettingScreen> {
             height: double.infinity,
           ),
 
-          Positioned(
-            // bottom: 100,
-            top: 160, //! change this to be in media query height
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                // menu card
-                settingMenus()
-              ],
-            ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: settingMenus(),
           ),
+          // Positioned(
+
+          //   // bottom: 100,
+          //   top: 160, //! change this to be in media query height
+          //   left: 0,
+          //   right: 0,
+          //   child: settingMenus(),
+          // ),
           const Positioned(
             // bottom: 100,
             top: 80, //! change this to be in media query height
@@ -75,13 +75,15 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget settingMenus() {
     return Center(
       child: Container(
+        height: 700,
+        margin: EdgeInsets.only(top: 160),
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16))),
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          // physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 20),

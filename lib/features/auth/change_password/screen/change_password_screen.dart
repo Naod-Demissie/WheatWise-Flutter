@@ -1,6 +1,7 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wheatwise/features/auth/change_password/bloc/change_password_bloc.dart';
 import 'package:wheatwise/features/auth/change_password/bloc/change_password_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
@@ -24,6 +25,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -68,25 +70,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           // title text
                           Text(
                             'Change Password',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Clash Display',
                               fontWeight: FontWeight.w600,
                               fontSize: 26,
                               color: Colors.black,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           // title text
                           Text(
                             'Secure your account with a new password.',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Clash Display',
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
                               color: Colors.black,
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
 
                           ResetPasswordForm()
                         ],
@@ -213,35 +215,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 //   }
 // }
 
-// class MobileLoginScreen extends StatelessWidget {
-//   const MobileLoginScreen({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: <Widget>[
-//         const ResetPasswordScreenTopImage(),
-//         // Row(
-//         //   children: const [
-//         // Spacer(),
-//         // Expanded(
-//         // flex: 8,
-//         // child:
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//           child: ResetPasswordForm(),
-//         ),
-//         // ),
-//         // Spacer(),
-//         // ],
-//         // ),
-//       ],
-//     );
-//   }
-// }
 
 class ResetPasswordForm extends StatefulWidget {
   const ResetPasswordForm({
@@ -284,7 +257,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
 
     return null;
   }
-  
+
   String? _oldPasswordValidator(String? password) {
     if (password == null || password.isEmpty) {
       return 'Please enter your password';
@@ -308,7 +281,8 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 obscureText: _obscureCurrentPsd,
                 cursorColor: kPrimaryColor,
                 validator: (psd) {
-                  return _oldPasswordValidator(psd) == null  //! make this logic inside old password validator
+                  return _oldPasswordValidator(psd) ==
+                          null //! make this logic inside old password validator
                       ? BCrypt.checkpw(psd!, state.password)
                           ? null
                           : "wrong old password, \nplease contact support team to reset."

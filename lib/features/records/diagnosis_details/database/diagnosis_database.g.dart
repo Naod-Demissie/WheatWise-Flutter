@@ -17,15 +17,15 @@ class DiagnosisAdapter extends TypeAdapter<Diagnosis> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Diagnosis(
-      mobileId: fields[0] as int,
+      mobileId: fields[0] as String,
       serverId: fields[1] as String,
       fileName: fields[2] as String,
       filePath: fields[3] as String,
       uploadTime: fields[4] as int,
       modelDiagnosis: fields[5] as String,
-      manualDiagnosis: fields[6] as String,
-      isBookmarked: fields[7] as bool,
-      isServerDiagnosed: fields[8] as bool,
+      manualDiagnosis: fields[6] as String?,
+      isBookmarked: fields[7] as bool?,
+      isServerDiagnosed: fields[8] as bool?,
       confidenceScore: (fields[9] as List).cast<double>(),
     );
   }

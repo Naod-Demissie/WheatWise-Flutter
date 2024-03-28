@@ -1,4 +1,4 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 part 'diagnosis_database.g.dart';
 
@@ -8,10 +8,10 @@ part 'diagnosis_database.g.dart';
 @HiveType(typeId: 0)
 class Diagnosis extends HiveObject {
   @HiveField(0)
-  late int mobileId;
+  late String mobileId;
 
   @HiveField(1)
-  late String serverId = "";
+  late String serverId;
 
   @HiveField(2)
   late String fileName;
@@ -26,33 +26,33 @@ class Diagnosis extends HiveObject {
   late String modelDiagnosis;
 
   @HiveField(6)
-  late String manualDiagnosis = '';
+  late String? manualDiagnosis;
 
   @HiveField(7)
-  late bool isBookmarked;
+  late bool? isBookmarked;
 
   @HiveField(8)
-  late bool isServerDiagnosed;
+  late bool? isServerDiagnosed;
 
   @HiveField(9)
   late List<double> confidenceScore;
 
   Diagnosis({
     required this.mobileId,
-    required this.serverId,
+    this.serverId = "",
     required this.fileName,
     required this.filePath,
     required this.uploadTime,
     required this.modelDiagnosis,
-    required this.manualDiagnosis,
-    required this.isBookmarked,
-    required this.isServerDiagnosed,
+    this.manualDiagnosis,
+    this.isBookmarked,
+    this.isServerDiagnosed,
     required this.confidenceScore,
   });
 
   factory Diagnosis.fromJson(Map<String, dynamic> json) {
     return Diagnosis(
-      mobileId: json['mobileId'] ?? 0,
+      mobileId: json['mobileId'] ?? '',
       serverId: json['serverId'] ?? '',
       fileName: json['fileName'] ?? '',
       filePath: json['filePath'] ?? '',
