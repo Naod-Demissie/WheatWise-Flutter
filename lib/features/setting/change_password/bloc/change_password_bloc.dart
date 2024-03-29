@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wheatwise/features/auth/change_password/bloc/change_password_event.dart';
-import 'package:wheatwise/features/auth/change_password/bloc/change_password_state.dart';
-import 'package:wheatwise/features/auth/change_password/repository/change_password_repository.dart';
+import 'package:wheatwise/features/setting/change_password/bloc/change_password_event.dart';
+import 'package:wheatwise/features/setting/change_password/bloc/change_password_state.dart';
+import 'package:wheatwise/features/setting/change_password/repository/change_password_repository.dart';
 
 class ChangePasswordBloc
     extends Bloc<ChangePasswordEvents, ChangePasswordStates> {

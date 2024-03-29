@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wheatwise/features/article/screens/article_screen.dart';
 import 'package:wheatwise/features/home/screens/home_screen.dart';
-import 'package:wheatwise/features/records/screens/record_screen.dart';
+import 'package:wheatwise/features/records/recent_records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

@@ -1,48 +1,25 @@
-import 'package:equatable/equatable.dart';
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 
-abstract class BookmarkState extends Equatable {
-  const BookmarkState();
-}
+abstract class BookmarkState {}
 
-class InitialBookmarkState extends BookmarkState {
-  @override
-  List<Object?> get props => [];
-}
+class InitialBookmarkState extends BookmarkState {}
 
-class BookmarkLoadingState extends BookmarkState {
-  @override
-  List<Object?> get props => [];
-}
+class BookmarkLoadingState extends BookmarkState {}
 
-class AddBookmarkLoadingState extends BookmarkState {
-  @override
-  List<Object?> get props => [];
-}
+class AddBookmarkLoadingState extends BookmarkState {}
 
 class AddBookmarkSuccessState extends BookmarkState {
-  final bool bookmarked;
+  final bool isBookmarked;
 
-  const AddBookmarkSuccessState({required this.bookmarked});
-  @override
-  List<Object?> get props => [bookmarked];
+  AddBookmarkSuccessState({required this.isBookmarked});
 }
 
 class BookmarkSuccessState extends BookmarkState {
   final List<Diagnosis> bookmarks;
 
-  const BookmarkSuccessState(this.bookmarks);
-
-  @override
-  List<Object?> get props => [bookmarks];
+  BookmarkSuccessState(this.bookmarks);
 }
 
-class BookmarkFailureState extends BookmarkState {
-  @override
-  List<Object?> get props => [];
-}
+class BookmarkFailureState extends BookmarkState {}
 
-class AddBookmarkFailureState extends BookmarkState {
-  @override
-  List<Object?> get props => [];
-}
+class AddBookmarkFailureState extends BookmarkState {}

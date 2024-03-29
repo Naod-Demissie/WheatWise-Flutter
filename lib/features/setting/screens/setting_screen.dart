@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:wheatwise/features/auth/change_password/screen/change_password_screen.dart';
+import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
 import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
@@ -76,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Center(
       child: Container(
         height: 700,
-        margin: EdgeInsets.only(top: 160),
+        margin: const EdgeInsets.only(top: 160),
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -164,17 +163,19 @@ class _SettingScreenState extends State<SettingScreen> {
                   showTermsAndConditionsDialog(context);
                 },
               ),
-              settingMenu(context, "Share the app",
-                  'assets/icons/share-icon2.svg', () {}
-                  // () async {
-                  //   ShareResult result = await Share.shareWithResult(
-                  //     'Check out this awesome app! Download it now: https://your-app-url.com',
-                  //   );
-                  //   // if (result.raw.isNotEmpty) {
-                  //   //   showThankYouDialog(context);
-                  //   // }
-                  // },
-                  ),
+              settingMenu(
+                context,
+                "Share the app",
+                'assets/icons/share-icon2.svg',
+                () async {
+                  // ShareResult result = await Share.shareWithResult(
+                  //   'Check out this awesome app! Download it now: https://your-app-url.com',
+                  // );
+                  // if (result.raw.isNotEmpty) {
+                  //   showThankYouDialog(context);
+                  // }
+                },
+              ),
               settingMenu(
                 context,
                 "Rate App",

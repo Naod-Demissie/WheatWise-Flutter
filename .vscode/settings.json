@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "ARGB",
         "checkpw",
         "cupertino",
         "dotenv",
@@ -9,8 +10,10 @@
         "gensalt",
         "hashpw",
         "Iconsax",
+        "LTRB",
         "prefs",
         "RGBO",
+        "spinkit",
         "wheatwise"
     ]
 }

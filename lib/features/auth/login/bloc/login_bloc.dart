@@ -16,8 +16,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
   void onLogin(LoginButtonPressed event, Emitter<LoginStates> emit) async {
     emit(LoginLoadingState());
     try {
-      String accessToken =
-          await loginRepository.login(event.username, event.password);
+      await loginRepository.login(event.username, event.password);
       emit(LoginSuccessState());
     } catch (e) {
       emit(LoginFailureState(error: e.toString()));

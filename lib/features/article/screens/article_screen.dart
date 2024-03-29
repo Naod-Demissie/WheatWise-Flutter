@@ -133,7 +133,7 @@ class ImageCard extends StatelessWidget {
 //   final String imageName;
 //   final DateTime dateCreated;
 
-//   ImageCard({
+//   const ImageCard({
 //     required this.imageUrl,
 //     required this.imageName,
 //     required this.dateCreated,
@@ -141,40 +141,63 @@ class ImageCard extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Card(
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Image.network(
-//             imageUrl,
-//             width: double.infinity,
-//             height: 200,
-//             fit: BoxFit.cover,
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   imageName,
-//                   style: TextStyle(
-//                     fontSize: 16,
-//                     fontWeight: FontWeight.bold,
-//                   ),
+//     return SizedBox(
+//       height: 90,
+//       child: Card(
+//         elevation: 4,
+//         surfaceTintColor: const Color.fromARGB(255, 211, 206, 206),
+//         child: Row(
+//           children: [
+//             Expanded(
+//               flex: 2,
+//               child: ClipRRect(
+//                 borderRadius: const BorderRadius.only(
+//                   topLeft: Radius.circular(12),
+//                   topRight: Radius.zero,
+//                   bottomLeft: Radius.circular(12),
+//                   bottomRight: Radius.zero,
 //                 ),
-//                 SizedBox(height: 4),
-//                 Text(
-//                   'Created: ${dateCreated.toString()}',
-//                   style: TextStyle(
-//                     fontSize: 12,
-//                     color: Colors.grey,
-//                   ),
+//                 child: Image.network(
+//                   imageUrl,
+//                   width: double.infinity,
+//                   height: double.infinity,
+//                   fit: BoxFit.cover,
 //                 ),
-//               ],
+//               ),
 //             ),
-//           ),
-//         ],
+//             Expanded(
+//                 flex: 5,
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(16.0),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       // image name
+//                       Text(
+//                         imageName,
+//                         style: const TextStyle(
+//                           fontFamily: 'Clash Display',
+//                           fontSize: 15,
+//                           fontWeight: FontWeight.w400,
+//                         ),
+//                       ),
+//                       Text(
+//                         DateFormat('yyyy-MM-dd HH:mm').format(dateCreated),
+//                         // style: const TextStyle(
+//                         //   fontFamily: 'SF-Pro-Text',
+//                         //   fontSize: 10,
+//                         //   fontWeight: FontWeight.w100,
+//                         // ),
+//                         style: GoogleFonts.manrope(
+//                           fontWeight: FontWeight.w300,
+//                           fontSize: 10,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ))
+//           ],
+//         ),
 //       ),
 //     );
 //   }

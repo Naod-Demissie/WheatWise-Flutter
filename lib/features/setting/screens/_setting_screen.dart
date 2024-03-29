@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wheatwise/features/auth/change_password/screen/change_password_screen.dart';
+import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
 import 'package:wheatwise/features/auth/login/screens/login_screen.dart';

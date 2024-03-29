@@ -1,4 +1,4 @@
-import 'package:wheatwise/features/file_upload/data_provider/upload_data_provider.dart';
+import 'package:wheatwise/features/records/file_upload/data_provider/upload_data_provider.dart';
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 
 class UploadRepository {

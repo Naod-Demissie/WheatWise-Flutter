@@ -1,9 +1,8 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wheatwise/features/auth/change_password/bloc/change_password_bloc.dart';
-import 'package:wheatwise/features/auth/change_password/bloc/change_password_event.dart';
+import 'package:wheatwise/features/setting/change_password/bloc/change_password_bloc.dart';
+import 'package:wheatwise/features/setting/change_password/bloc/change_password_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 
@@ -508,10 +507,9 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             ],
           ),
         );
-      } else
-        return Container(
-            child:
-                const Text("Unknown Error, If it persists please contact us."));
+      } else {
+        return const Text("Unknown Error, If it persists please contact us.");
+      }
     });
   }
 }

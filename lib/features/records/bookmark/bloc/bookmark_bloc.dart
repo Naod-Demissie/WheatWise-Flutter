@@ -12,15 +12,15 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
     on<LoadBookmarkEvent>((event, emit) async {
       emit(BookmarkLoadingState());
       try {
-        final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('diagnosis');
+        final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('Diagnosis');
         final bookmarks = diagnosisBox.values
             .where((element) => element.isBookmarked == true)
             .toList()
             .reversed
             .toList();
         emit(BookmarkSuccessState(bookmarks));
-        // diagnosisBox.close();
-      } catch (error) {
+        diagnosisBox.close();
+      } catch (e) {
         emit(BookmarkFailureState());
       }
     });
@@ -28,12 +28,14 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
     on<AddBookmarkEvent>((event, emit) async {
       emit(AddBookmarkLoadingState());
       try {
-        final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('diagnosis');
-        event.bookmark.isBookmarked = !event.bookmark.isBookmarked!;
-        diagnosisBox.putAt(int.parse(event.bookmark.serverId),
-            event.bookmark); // !changed to not nullable
+        final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('Diagnosis');
+        event.bookmark.isBookmarked = !(event.bookmark.isBookmarked ?? false);
+        // event.bookmark.isBookmarked = !event.bookmark.isBookmarked!;
+        // diagnosisBox.putAt(int.parse(event.bookmark.serverId),
+        //     event.bookmark); // !changed to not nullable
+        diagnosisBox.put(event.bookmark.mobileId, event.bookmark);
         emit(AddBookmarkSuccessState(
-            bookmarked:
+            isBookmarked:
                 event.bookmark.isBookmarked!)); // !changed to not nullable
       } catch (error) {
         emit(BookmarkFailureState());

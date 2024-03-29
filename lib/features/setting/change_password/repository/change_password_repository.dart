@@ -1,4 +1,4 @@
-import 'package:wheatwise/features/auth/change_password/data_provider/change_password_data_provider.dart';
+import 'package:wheatwise/features/setting/change_password/data_provider/change_password_data_provider.dart';
 
 class ChangePasswordRepository {
   ChangePasswordDataProvider changePasswordDataProvider =
