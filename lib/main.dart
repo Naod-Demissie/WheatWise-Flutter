@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
 import 'package:wheatwise/features/setting/change_password/bloc/change_password_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => UploadBloc()),
         BlocProvider(create: (context) => DiagnosisDetailBloc()),
         BlocProvider(create: (context) => RecentRecordsBloc()),
+        BlocProvider(create: (context) => DeleteRecordBloc()),
       ],
       child: MaterialApp(
         title: 'WheatWise',
