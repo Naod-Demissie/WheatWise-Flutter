@@ -16,12 +16,12 @@ class UploadLoadingState extends UploadState {
 }
 
 class UploadSuccessState extends UploadState {
-  final List<Diagnosis> detectedLeaf;
+  final List<Diagnosis> diagnosis;
 
-  const UploadSuccessState(this.detectedLeaf);
+  const UploadSuccessState(this.diagnosis);
 
   @override
-  List<Object?> get props => [detectedLeaf];
+  List<Object?> get props => [diagnosis];
 }
 
 class UploadImageNotLeafState extends UploadState {

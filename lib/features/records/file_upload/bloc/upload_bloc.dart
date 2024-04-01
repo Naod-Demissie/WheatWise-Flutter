@@ -15,22 +15,24 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
       emit(UploadLoadingState());
       try {
         final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>("Diagnosis");
-        final detectedLeaf = await uploadRepo.uploadLeaf(
+        final diagnosis = await uploadRepo.uploadLeaf(
           event.fileName,
           event.uploadTime,
           event.filePath,
           event.isServerDiagnosed,
         );
-        int key = await diagnosisBox.add(detectedLeaf);
-        detectedLeaf.serverId = key.toString();
-        diagnosisBox.put(key, detectedLeaf);
-        List<Diagnosis> detectedLeafs = diagnosisBox.values.toList();
-        emit(UploadSuccessState(detectedLeafs));
+        int key = await diagnosisBox.add(diagnosis);
+        diagnosisBox.put(key, diagnosis);
+        List<Diagnosis> diagnoses = diagnosisBox.values.toList();
+        emit(UploadSuccessState(diagnoses));
+        // await diagnosisBox.close();
       } on ImageNotLeaf {
         emit(UploadImageNotLeafState());
       } on NoInternet {
         emit(NoInternetUploadState());
       } catch (error) {
+        print('upload');
+        print(error.toString());
         emit(UploadFailureState());
       }
     });

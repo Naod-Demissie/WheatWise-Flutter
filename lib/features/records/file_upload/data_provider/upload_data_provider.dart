@@ -33,7 +33,7 @@ class UploadDataProvider {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
       if (token == null) {
-        throw Exception("Not Logged In");
+        throw Exception("Not logged in");
       }
 
       FormData formData = FormData.fromMap({
@@ -47,26 +47,24 @@ class UploadDataProvider {
         data: formData,
         onSendProgress: (count, total) {},
       );
-      dynamic jsonResponse = response.data;
 
       String originalLeafImage =
           await copyImageToAppData(filePath, fileName, '');
 
       Diagnosis responseLeaf = Diagnosis(
         mobileId: const Uuid().v4(),
-        serverId: jsonResponse['diagnosis_id'],
+        serverId: response.data['diagnosis_id'],
         fileName: fileName,
         filePath: originalLeafImage,
         uploadTime: uploadTime,
-        modelDiagnosis: jsonResponse['server_diagnosis'],
+        modelDiagnosis: response.data['server_diagnosis'],
         manualDiagnosis: '',
         isBookmarked: false,
         isServerDiagnosed: isServerDiagnosed,
-        confidenceScore: (jsonResponse['confidence_score'] as List<dynamic>)
+        confidenceScore: (response.data['confidence_score'] as List<dynamic>)
             .map<double>((e) => e.toDouble())
             .toList(),
       );
-
       return responseLeaf;
     } on DioException catch (e) {
       if (e.response != null && e.response!.statusCode == 400) {

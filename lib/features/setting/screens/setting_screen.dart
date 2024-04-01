@@ -1,7 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:share_plus/share_plus.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
@@ -92,7 +94,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text('Account Setting',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: 'Clash Display',
                         fontWeight: FontWeight.w500,
                       )),
@@ -128,7 +130,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text('Preferences',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: 'Clash Display',
                         fontWeight: FontWeight.w500,
                       )),
@@ -148,7 +150,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text('General',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: 'Clash Display',
                         fontWeight: FontWeight.w500,
                       )),
@@ -214,7 +216,7 @@ class _SettingScreenState extends State<SettingScreen> {
         title: Text(
           title,
           style: const TextStyle(
-            fontSize: 13,
+            fontSize: 15,
             fontFamily: 'Clash Display',
             fontWeight: FontWeight.w400,
             // color: BlocProvider.of<ThemeBloc>(context).state.blackColor ==

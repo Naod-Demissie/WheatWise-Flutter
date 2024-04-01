@@ -1,4 +1,4 @@
-import 'package:wheatwise/features/records/diagnosis_details/model/leaf_detail.dart';
+import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 
 abstract class DiagnosisDetailState {}
 
@@ -7,9 +7,9 @@ class InitialDiagnosisDetailState extends DiagnosisDetailState {}
 class DiagnosisDetailLoadingState extends DiagnosisDetailState {}
 
 class DiagnosisDetailSuccessState extends DiagnosisDetailState {
-  final LeafDetail leafDetail;
+  final Diagnosis diagnosis;
 
-  DiagnosisDetailSuccessState(this.leafDetail);
+  DiagnosisDetailSuccessState(this.diagnosis);
 }
 
 class DiagnosisDetailFailureState extends DiagnosisDetailState {

@@ -14,11 +14,14 @@ class DeleteRecordBloc extends Bloc<DeleteRecordEvent, DeleteRecordState> {
         await diagnosisBox
             .delete(event.diagnosis.mobileId); //! this might cause error
         diagnoses = diagnosisBox.values.toList().reversed.toList();
+        // await diagnosisBox.close();
 
         emit(DeleteRecordSuccessState(diagnoses));
       } catch (error) {
+        print(error.toString());
         emit(DeleteRecordFailureState(error: error.toString()));
       }
     });
   }
 }
+

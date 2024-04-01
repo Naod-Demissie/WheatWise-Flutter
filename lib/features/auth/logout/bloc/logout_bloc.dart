@@ -16,6 +16,7 @@ class LogoutBloc extends Bloc<LogoutEvent, LogoutStates> {
       if (!cleared) throw Exception();
       emit(LogoutSuccessState());
     } catch (e) {
+      print(e);
       emit(LogoutFailureState(error: e.toString()));
     }
   }

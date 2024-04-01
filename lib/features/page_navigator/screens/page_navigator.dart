@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wheatwise/features/article/screens/article_screen.dart';
 import 'package:wheatwise/features/home/screens/home_screen.dart';
+import 'package:wheatwise/features/records/recent_records/bloc/recent_records_bloc.dart';
+import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
 import 'package:wheatwise/features/records/recent_records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
+import 'package:wheatwise/features/test_screen/test_screen.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PageNavigator extends StatefulWidget {
@@ -21,9 +26,13 @@ class _PageNavigatorState extends State<PageNavigator> {
     const ArticlesScreen(),
     const RecordScreen(),
     const SettingScreen(),
+    TestScreen(),
   ];
 
   void _onTabTapped(int index) {
+    if (index == 2) {
+      BlocProvider.of<RecentRecordsBloc>(context).add(LoadRecentRecordsEvent());
+    }
     setState(() {
       _currentIndex = index;
     });
@@ -76,6 +85,16 @@ class _PageNavigatorState extends State<PageNavigator> {
             BottomNavigationBarItem(
               icon: Icon(Iconsax.setting),
               label: 'Settings',
+            ),
+            BottomNavigationBarItem(
+              // icon: Icon(Iconsax.book),
+
+              icon: Icon(
+                FontAwesomeIcons.bookOpen,
+              ),
+
+              // icon: Icon(Iconsax.book1),
+              label: 'Test',
             ),
           ],
         ),

@@ -8,7 +8,7 @@ class LoadBookmarkEvent extends BookmarkEvent {
 }
 
 class AddBookmarkEvent extends BookmarkEvent {
-  final Diagnosis bookmark;
+  final Diagnosis diagnosis;
 
-  AddBookmarkEvent({required this.bookmark});
+  AddBookmarkEvent({required this.diagnosis});
 }

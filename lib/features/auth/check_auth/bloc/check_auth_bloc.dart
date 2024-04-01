@@ -26,6 +26,7 @@ class CheckAuthBloc extends Bloc<CheckAuthEvents, CheckAuthStates> {
         throw Exception("");
       }
     } on Exception {
+      
       emit(CheckAuthFailedState());
     }
   }
