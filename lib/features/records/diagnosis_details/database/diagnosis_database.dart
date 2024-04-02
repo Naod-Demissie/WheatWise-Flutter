@@ -82,7 +82,7 @@ class Diagnosis extends HiveObject {
 
   @override
   String toString() {
-    return "fileName $fileName, modelDiagnosis ${modelDiagnosis} isBookmarked: $isBookmarked, isServerDiagnosed: $isServerDiagnosed, mobileId: $mobileId, serverId: $serverId";
+    return "fileName $fileName, manualDiagnosis ${manualDiagnosis}, modelDiagnosis $modelDiagnosis,  isBookmarked: $isBookmarked, isServerDiagnosed: $isServerDiagnosed, mobileId: $mobileId, serverId: $serverId";
   }
 }
 // import 'package:hive/hive.dart';

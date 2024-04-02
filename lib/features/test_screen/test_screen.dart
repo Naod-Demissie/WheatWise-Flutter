@@ -17,20 +17,23 @@ import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_
 import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
 
-class RecordScreen extends StatefulWidget {
-  const RecordScreen({super.key});
+class TestScreen extends StatefulWidget {
+  const TestScreen({super.key});
 
   @override
-  State<RecordScreen> createState() => _RecordScreenState();
+  State<TestScreen> createState() => _TestScreenState();
 }
 
-class _RecordScreenState extends State<RecordScreen> {
-  List<String> selectedFilterCategory = ['All'];
+class _TestScreenState extends State<TestScreen> {
+  String selectedFilterCategory = 'All';
   bool showFilterCategories = false;
 
   Widget recordFilterHeader() {
-    return SizedBox(
-      height: 40,
+    return Container(
+      height: 38,
+      margin: const EdgeInsets.only(bottom: 10),
+
+      // height: 40,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -41,6 +44,10 @@ class _RecordScreenState extends State<RecordScreen> {
           buildFilterCategoryButton('Uploads'),
           const SizedBox(width: 5),
           buildFilterCategoryButton('Local'),
+          const SizedBox(width: 5),
+          buildFilterCategoryButton('Reviewed'),
+          const SizedBox(width: 5),
+          buildFilterCategoryButton('Unreviewed'),
         ],
       ),
     );
@@ -50,81 +57,90 @@ class _RecordScreenState extends State<RecordScreen> {
     return InkWell(
       splashColor: Colors.grey[100],
       onTap: () {
-        if (category == "All") {
-          selectedFilterCategory.clear();
-          selectedFilterCategory.add("All");
-        } else {
-          if (selectedFilterCategory.length > 1 &&
-              selectedFilterCategory.contains("All")) {
-            selectedFilterCategory.clear();
-            selectedFilterCategory.add(category);
-          } else {
-            if (selectedFilterCategory.contains("All")) {
-              selectedFilterCategory.remove("All");
-            }
-            selectedFilterCategory.contains(category)
-                ? selectedFilterCategory.remove(category)
-                : selectedFilterCategory.add(category);
-
-            if (selectedFilterCategory.length == 3) {
-              selectedFilterCategory.clear();
-              selectedFilterCategory.add("All");
-            }
-            if (selectedFilterCategory.isEmpty) {
-              selectedFilterCategory.add("All");
-            }
-          }
-        }
-        setState(() {});
+        setState(() {
+          selectedFilterCategory =
+              category == selectedFilterCategory ? 'All' : category;
+        });
       },
       child: Container(
-        height: 40,
+        // height: 50,
         width: 110,
         decoration: BoxDecoration(
-          color: selectedFilterCategory.contains(category)
+          color: selectedFilterCategory == category
               ? Colors.grey[900]
               : Colors.grey[500],
           borderRadius: const BorderRadius.all(Radius.circular(12.0)),
         ),
         child: Center(
-          child: Text(category,
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'SF-Pro-Text',
-                fontSize: 15.0,
-                fontWeight: FontWeight.w600,
-              )),
+          child: Text(
+            category,
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'SF-Pro-Text',
+              fontSize: 15.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );
   }
 
+  List<Diagnosis> filterRecords(List<Diagnosis> records) {
+    switch (selectedFilterCategory) {
+      case 'Bookmarks':
+        return records
+            .where((element) => element.isBookmarked == true)
+            .toList();
+      case 'Uploads':
+        return records
+            .where((element) => element.isServerDiagnosed == true)
+            .toList();
+      case 'Local':
+        return records
+            .where((element) => element.isServerDiagnosed == false)
+            .toList();
+      case 'Reviewed':
+        return records
+            .where((element) => element.manualDiagnosis != '')
+            .toList();
+      case 'Unreviewed':
+        return records
+            .where((element) => element.manualDiagnosis == '')
+            .toList();
+      default:
+        return records.toList();
+    }
+  }
+
   Widget noRecordFound() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 180,
-          child: Image.asset('assets/images/no-file-found.png'),
-        ),
-        const Text(
-          'No records found',
-          style: TextStyle(
-            fontFamily: 'Clash Display',
-            fontSize: 16,
-            fontWeight: FontWeight.w300,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 180,
+            child: Image.asset('assets/images/no-file-found.png'),
           ),
-        )
-      ],
+          const Text(
+            'No records found',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+            ),
+          )
+        ],
+      ),
     );
   }
 
-//  RefreshIndicator(
+  // RefreshIndicator(
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 243, 243, 243),
+        backgroundColor: const Color.fromARGB(255, 243, 243, 243),
         appBar: AppBar(
           elevation: 0,
           title: const Text(
@@ -136,20 +152,19 @@ class _RecordScreenState extends State<RecordScreen> {
             ),
           ),
           actions: [
-            InkWell(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 setState(() {
                   showFilterCategories = !showFilterCategories;
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: SvgPicture.asset(
-                  'assets/icons/filter-by-icon.svg',
-                  color: Colors.grey,
-                  width: 20,
-                  height: 20,
-                ),
+              icon: SvgPicture.asset(
+                'assets/icons/filter-by-icon.svg',
+                color: showFilterCategories
+                    ? const Color.fromRGBO(248, 147, 29, 1)
+                    : Colors.grey,
+                width: 20,
+                height: 20,
               ),
             )
           ],
@@ -173,7 +188,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: () {
                         BlocProvider.of<RecentRecordsBloc>(context)
@@ -213,39 +228,85 @@ class _RecordScreenState extends State<RecordScreen> {
                     .add(LoadRecentRecordsEvent());
               },
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    top: 10, right: 16, left: 16, bottom: 10),
+                // padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (showFilterCategories) recordFilterHeader(),
-                        recentRecordsState.diagnoses.isNotEmpty
-                            ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
-                                listener: (context, deleteState) {
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (showFilterCategories) recordFilterHeader(),
+                      recentRecordsState.diagnoses.isNotEmpty
+                          ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
+                              listener: (context, deleteState) {
                                 if (deleteState is DeleteRecordSuccessState) {
                                   BlocProvider.of<RecentRecordsBloc>(context)
                                       .add(LoadRecentRecordsEvent());
                                 }
-                              }, builder: (context, _) {
+                              },
+                              builder: (context, _) {
+                                List<Diagnosis> recentRecords =
+                                    filterRecords(recentRecordsState.diagnoses);
+
                                 return Expanded(
-                                  child: ListView.builder(
-                                    itemCount:
-                                        recentRecordsState.diagnoses.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return DiagnosisCard(
-                                        recentRecordsState.diagnoses[index],
-                                        key: Key(recentRecordsState
-                                            .diagnoses[index].mobileId
-                                            .toString()),
-                                      );
-                                    },
-                                  ),
+                                  child: recentRecords.isNotEmpty
+                                      ? ListView.builder(
+                                          itemCount: recentRecords.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return DiagnosisCard(
+                                              recentRecords[index],
+                                              key: Key(recentRecords[index]
+                                                  .mobileId
+                                                  .toString()),
+                                            );
+                                          },
+                                        )
+                                      : noRecordFound(),
                                 );
-                              })
-                            : noRecordFound()
-                      ]),
+                              },
+                            )
+                          : noRecordFound(),
+                    ],
+                  ),
+
+                  // child: Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     if (showFilterCategories) recordFilterHeader(),
+                  //     recentRecordsState.diagnoses.isNotEmpty
+                  //         ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
+                  //             listener: (context, deleteState) {
+                  //               if (deleteState is DeleteRecordSuccessState) {
+                  //                 BlocProvider.of<RecentRecordsBloc>(context)
+                  //                     .add(LoadRecentRecordsEvent());
+                  //               }
+                  //             },
+                  //             builder: (context, _) {
+                  //               List<Diagnosis> recentRecords =
+                  //                   filterRecords(recentRecordsState.diagnoses);
+
+                  //               return Expanded(
+                  //                 child: ListView.builder(
+                  //                   itemCount: recentRecords.length,
+                  //                   itemBuilder:
+                  //                       (BuildContext context, int index) {
+                  //                     return DiagnosisCard(
+                  //                       recentRecords[index],
+                  //                       key: Key(recentRecords[index]
+                  //                           .mobileId
+                  //                           .toString()),
+                  //                     );
+                  //                   },
+                  //                 ),
+                  //               );
+                  //             },
+                  //           )
+                  //         : noRecordFound(),
+                  //   ],
+                  // ),
                 ),
               ),
             );
@@ -292,7 +353,8 @@ class DiagnosisCard extends StatelessWidget {
           },
           child: Row(
             children: [
-              // card image
+              //card image
+
               Expanded(
                 flex: 2,
                 child: ClipRRect(
@@ -312,6 +374,7 @@ class DiagnosisCard extends StatelessWidget {
                   ),
                 ),
               ),
+
               Expanded(
                   flex: 5,
                   child: Padding(
@@ -375,7 +438,8 @@ class DiagnosisCard extends StatelessWidget {
                                           ? Icons.bookmark_outline_outlined
                                           : Icons.bookmark_outline_outlined,
                                       color: diagnosis.isBookmarked!
-                                          ? Color.fromRGBO(248, 147, 29, 1)
+                                          ? const Color.fromRGBO(
+                                              248, 147, 29, 1)
                                           : Colors.grey,
                                     ),
                                   ),
@@ -405,70 +469,3 @@ class DiagnosisCard extends StatelessWidget {
     );
   }
 }
-
-
-
-// import 'package:bcrypt/bcrypt.dart';
-// import 'package:dio/dio.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// class LoginDataProvider {
-//   final String _baseUrl = dotenv.env["API_URL"]!;
-//   final Dio dio = Dio();
-
-//   LoginDataProvider();
-
-//   Future<String> login(String username, String password) async {
-//     try {
-//       dio.options.headers['content-Type'] = 'application/json';
-//       FormData formData = FormData.fromMap({
-//         'username': username,
-//         'password': password,
-//         'grant_type': '',
-//         'scope': '',
-//         'client_id': '',
-//         'client_secret': '',
-//       });
-
-//       final response = await dio.post('$_baseUrl/auth/login', data: formData);
-
-//       if (response.statusCode != 200) {
-//         throw Exception('Failed to login');
-//       }
-
-//       final token = response.data['access_token'];
-//       dio.options.headers['Authorization'] = 'Bearer $token';
-
-//       final getUser = await dio.get('$_baseUrl/users/get-user');
-
-//       if (getUser.statusCode != 200) {
-//         throw Exception('Failed to fetch user data');
-//       }
-
-//       SharedPreferences prefs = await SharedPreferences.getInstance();
-//       await prefs.setString('token', token);
-//       await prefs.setString('username', getUser.data['username']);
-//       await prefs.setString('prefix', getUser.data['prefix']);
-//       await prefs.setString('firstname', getUser.data['firstname']);
-//       await prefs.setString('lastname', getUser.data['lastname']);
-//       await prefs.setString('email', getUser.data['email']);
-//       await prefs.setString('sex', getUser.data['sex']);
-//       await prefs.setString('role', getUser.data['role']);
-//       await prefs.setString('region', getUser.data['region']);
-//       await prefs.setString('zone', getUser.data['zone']);
-//       await prefs.setString('woreda', getUser.data['woreda']);
-//       await prefs.setString('organization', getUser.data['organization']);
-//       await prefs.setString(
-//           'first_time_login', getUser.data['first_time_login']);
-//       await prefs.setString('created_at', getUser.data['created_at']);
-//       await prefs.setString(
-//           'password', BCrypt.hashpw(password, BCrypt.gensalt()));
-
-//       return token;
-//     } catch (e) {
-//       print({"error": e});
-//       rethrow;
-//     }
-//   }
-// }

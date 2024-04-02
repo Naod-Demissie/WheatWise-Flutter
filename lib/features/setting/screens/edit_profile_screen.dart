@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
@@ -29,30 +31,61 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          // title: const Text(
-          //   'Edit Profile',
-          //   style: TextStyle(
-          //     fontFamily: 'Clash Display',
-          //     fontWeight: FontWeight.w600,
-          //     fontSize: 26,
-          //     color: Colors.black,
-          //   ),
-          // ),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: Card(
+              elevation: 0,
+              shape: const CircleBorder(),
+              color: Colors.black.withOpacity(0.6),
+              margin: const EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child: Icon(
+                  // Icons.chevron_left_rounded,
+                  Icons.close,
+                  size: 20,
+                  color: Colors.grey.shade200,
+                ),
+              ),
+            ),
+          ),
+          centerTitle: true,
+          title: const Text(
+            'Edit Profile',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontWeight: FontWeight.w600,
+              fontSize: 26,
+              color: Colors.black,
+            ),
+          ),
         ),
         body: Stack(
           children: [
             // Background image
-            Image.asset(
-              'assets/images/wheat-field-bg2.png',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                'assets/images/wheat-field-bg2.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
             ),
+            // Image.asset(
+            //   'assets/images/wheat-field-bg2.png',
+            //   fit: BoxFit.cover,
+            //   width: double.infinity,
+            //   height: double.infinity,
+            // ),
 
             // White filter
             Container(
@@ -61,32 +94,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               height: double.infinity,
             ),
 
-            Center(
-              child: Column(
-                children: [
-                  // const SizedBox(height: 40),
-                  // Profile Pciture
-                  Stack(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                        radius: 65,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: IconButton(
-                          icon: const Icon(Icons.add_a_photo),
-                          onPressed: () {},
+            SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 60),
+                    // Profile Pciture
+                    Stack(
+                      children: [
+                        const CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                          radius: 65,
                         ),
-                      ),
-                    ],
-                  ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: const Icon(Icons.add_a_photo),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
 
-                  // Profile Edit Card
-                  EditProfileForm(_prefs)
-                ],
+                    // Profile Edit Card
+                    EditProfileForm(_prefs)
+                  ],
+                ),
               ),
             ),
           ],
@@ -120,6 +156,23 @@ class _EditProfileFormState extends State<EditProfileForm> {
   late final TextEditingController _zoneController;
   late final TextEditingController _woredaController;
 
+  List<String> regionItems = [
+    "Addis Ababa",
+    "Afar",
+    "Amhara",
+    "Benishangul-Gumuz",
+    "Dire Dawa",
+    "Gambela",
+    "Harari",
+    "Oromia",
+    "Sidama",
+    "Somali",
+    "SWEP's, Region",
+    "SNNP's Region",
+    "Tigray"
+  ];
+  List<String> sexItems = ['Male', 'Female'];
+
   @override
   void initState() {
     super.initState();
@@ -129,9 +182,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
     _prefixController =
         TextEditingController(text: widget.prefs.getString('prefix') ?? '');
     _firstNameController =
-        TextEditingController(text: widget.prefs.getString('firstname') ?? '');
+        TextEditingController(text: widget.prefs.getString('firstName') ?? '');
     _lastNameController =
-        TextEditingController(text: widget.prefs.getString('lastname') ?? '');
+        TextEditingController(text: widget.prefs.getString('lastName') ?? '');
     _emailController =
         TextEditingController(text: widget.prefs.getString('email') ?? '');
     _sexController =
@@ -172,17 +225,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       SizedBox(height: screenHeight * 0.02),
                       // title text
 
-                      // email form field
-                      customTextField(
-                        null,
-                        _userNameController,
-                        hintText: 'Username',
-                        labelText: 'Username',
-                      ),
-                      const SizedBox(height: 20),
                       Row(
                         children: [
                           Expanded(
+                            flex: 2,
+                            child: customTextField(
+                              null,
+                              _prefixController,
+                              hintText: 'Prefix',
+                              labelText: 'Prefix',
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            flex: 4,
                             child: customTextField(
                               null,
                               _firstNameController,
@@ -190,7 +246,12 @@ class _EditProfileFormState extends State<EditProfileForm> {
                               labelText: 'First Name',
                             ),
                           ),
-                          const SizedBox(width: 20),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      Row(
+                        children: [
                           Expanded(
                             child: customTextField(
                               null,
@@ -199,16 +260,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
                               labelText: 'Last Name',
                             ),
                           ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: customTextField(
+                              null,
+                              _userNameController,
+                              hintText: 'Username',
+                              labelText: 'Username',
+                            ),
+                          ),
                         ],
                       ),
 
-                      const SizedBox(height: 20),
-                      customTextField(
-                        null,
-                        _emailController,
-                        hintText: 'Email',
-                        labelText: 'Email',
-                      ),
                       const SizedBox(height: 20),
                       Row(
                         children: [
@@ -274,6 +337,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   MaterialStateProperty.all<Color>(
                                       const Color.fromRGBO(248, 147, 29, 1)),
                                   'Cancel')),
+                          // customDropdownMenu(
+                          //   regionItems,
+                          //   'Region',
+                          //   _regionController.text,
+                          // )
                         ],
                       ),
                     ],
@@ -307,7 +375,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         style: const TextStyle(
           color: Colors.white,
           fontFamily: 'SF-Pro-Text',
-          fontSize: 15.0,
+          fontSize: 17.0,
           fontWeight: FontWeight.w800,
         ),
       ),
@@ -325,10 +393,10 @@ class _EditProfileFormState extends State<EditProfileForm> {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: const TextStyle(
-          color: Color.fromRGBO(113, 113, 113, 1),
-          fontFamily: 'SF-Pro-Text',
-          fontSize: 17.0,
+          fontFamily: 'Clash Display',
           fontWeight: FontWeight.w400,
+          fontSize: 21,
+          color: Colors.black,
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: false,
@@ -356,6 +424,55 @@ class _EditProfileFormState extends State<EditProfileForm> {
       ),
       validator: validator,
       controller: controller,
+    );
+  }
+
+  DropdownButtonFormField customDropdownMenu(
+    List<String> items,
+    String? labelText,
+    String? selectedItem,
+  ) {
+    return DropdownButtonFormField(
+      value: selectedItem,
+      items: items
+          .map((item) =>
+              DropdownMenuItem<String>(value: item, child: Text(item)))
+          .toList(),
+      onChanged: (item) => setState(() {
+        selectedItem = item;
+      }),
+      icon: const Icon(Icons.arrow_drop_down),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w400,
+          fontSize: 21,
+          color: Colors.black,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
+        hintStyle: const TextStyle(
+          color: Color.fromRGBO(113, 113, 113, 1),
+          fontFamily: 'SF-Pro-Text',
+          fontSize: 14.0,
+          fontWeight: FontWeight.w100,
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(176, 176, 176, 1),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        errorBorder:
+            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        focusedBorder: const OutlineInputBorder(
+          borderSide:
+              BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
+        ),
+      ),
     );
   }
 }
