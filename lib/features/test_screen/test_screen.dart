@@ -17,124 +17,14 @@ import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_
 import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
 
-// class TestScreen extends StatefulWidget {
-//   @override
-//   TestScreenState createState() => TestScreenState();
-// }
-
-// class TestScreenState extends State<TestScreen> {
-//   List<String> selectedFilterCategory = ['All'];
-//   bool showFilterCategories = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Test'),
-//           actions: [
-//             IconButton(
-//               icon: Icon(Icons.category),
-//               onPressed: () {
-//                 setState(() {
-//                   showFilterCategories = !showFilterCategories;
-//                 });
-//               },
-//             ),
-//           ],
-//         ),
-//         body: Container(
-//           padding: const EdgeInsets.all(20.0),
-//           child: Column(
-//             children: [
-//               if (showFilterCategories) recordFilterHeader(),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget recordFilterHeader() {
-//     return SizedBox(
-//       height: 40,
-//       child: ListView(
-//         scrollDirection: Axis.horizontal,
-//         children: <Widget>[
-//           buildFilterCategoryButton('All'),
-//           const SizedBox(width: 5),
-//           buildFilterCategoryButton('Bookmarks'),
-//           const SizedBox(width: 5),
-//           buildFilterCategoryButton('Uploads'),
-//           const SizedBox(width: 5),
-//           buildFilterCategoryButton('Local'),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget buildFilterCategoryButton(String category) {
-//     return InkWell(
-//       splashColor: Colors.blue[100],
-//       onTap: () {
-//         if (category == "All") {
-//           selectedFilterCategory.clear();
-//           selectedFilterCategory.add("All");
-//         } else {
-//           if (selectedFilterCategory.length > 1 &&
-//               selectedFilterCategory.contains("All")) {
-//             selectedFilterCategory.clear();
-//             selectedFilterCategory.add(category);
-//           } else {
-//             if (selectedFilterCategory.contains("All")) {
-//               selectedFilterCategory.remove("All");
-//             }
-//             selectedFilterCategory.contains(category)
-//                 ? selectedFilterCategory.remove(category)
-//                 : selectedFilterCategory.add(category);
-
-//             if (selectedFilterCategory.length == 3) {
-//               selectedFilterCategory.clear();
-//               selectedFilterCategory.add("All");
-//             }
-//             if (selectedFilterCategory.isEmpty) {
-//               selectedFilterCategory.add("All");
-//             }
-//           }
-//         }
-//         setState(() {});
-//       },
-//       child: Container(
-//         height: 40,
-//         width: 110,
-//         decoration: BoxDecoration(
-//           color: selectedFilterCategory.contains(category)
-//               ? Colors.grey[900]
-//               : Colors.grey[400],
-//           borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-//         ),
-//         child: Center(
-//           child: Text(category,
-//               style: const TextStyle(
-//                 color: Colors.white,
-//                 fontFamily: 'SF-Pro-Text',
-//                 fontSize: 15.0,
-//                 fontWeight: FontWeight.w600,
-//               )),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class TestScreen extends StatefulWidget {
-  const TestScreen({super.key});
+class RecordScreen extends StatefulWidget {
+  const RecordScreen({super.key});
 
   @override
-  State<TestScreen> createState() => TestScreenState();
+  State<RecordScreen> createState() => _RecordScreenState();
 }
 
-class TestScreenState extends State<TestScreen> {
+class _RecordScreenState extends State<RecordScreen> {
   List<String> selectedFilterCategory = ['All'];
   bool showFilterCategories = false;
 
@@ -515,3 +405,70 @@ class DiagnosisCard extends StatelessWidget {
     );
   }
 }
+
+
+
+// import 'package:bcrypt/bcrypt.dart';
+// import 'package:dio/dio.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+// class LoginDataProvider {
+//   final String _baseUrl = dotenv.env["API_URL"]!;
+//   final Dio dio = Dio();
+
+//   LoginDataProvider();
+
+//   Future<String> login(String username, String password) async {
+//     try {
+//       dio.options.headers['content-Type'] = 'application/json';
+//       FormData formData = FormData.fromMap({
+//         'username': username,
+//         'password': password,
+//         'grant_type': '',
+//         'scope': '',
+//         'client_id': '',
+//         'client_secret': '',
+//       });
+
+//       final response = await dio.post('$_baseUrl/auth/login', data: formData);
+
+//       if (response.statusCode != 200) {
+//         throw Exception('Failed to login');
+//       }
+
+//       final token = response.data['access_token'];
+//       dio.options.headers['Authorization'] = 'Bearer $token';
+
+//       final getUser = await dio.get('$_baseUrl/users/get-user');
+
+//       if (getUser.statusCode != 200) {
+//         throw Exception('Failed to fetch user data');
+//       }
+
+//       SharedPreferences prefs = await SharedPreferences.getInstance();
+//       await prefs.setString('token', token);
+//       await prefs.setString('username', getUser.data['username']);
+//       await prefs.setString('prefix', getUser.data['prefix']);
+//       await prefs.setString('firstname', getUser.data['firstname']);
+//       await prefs.setString('lastname', getUser.data['lastname']);
+//       await prefs.setString('email', getUser.data['email']);
+//       await prefs.setString('sex', getUser.data['sex']);
+//       await prefs.setString('role', getUser.data['role']);
+//       await prefs.setString('region', getUser.data['region']);
+//       await prefs.setString('zone', getUser.data['zone']);
+//       await prefs.setString('woreda', getUser.data['woreda']);
+//       await prefs.setString('organization', getUser.data['organization']);
+//       await prefs.setString(
+//           'first_time_login', getUser.data['first_time_login']);
+//       await prefs.setString('created_at', getUser.data['created_at']);
+//       await prefs.setString(
+//           'password', BCrypt.hashpw(password, BCrypt.gensalt()));
+
+//       return token;
+//     } catch (e) {
+//       print({"error": e});
+//       rethrow;
+//     }
+//   }
+// }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
-import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 import 'package:wheatwise/features/records/file_upload/bloc/upload_bloc.dart';
 import 'package:wheatwise/features/records/file_upload/bloc/upload_event.dart';
 import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
@@ -66,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocListener<UploadBloc, UploadState>(
       listener: (context, uploadState) async {
         if (uploadState is UploadSuccessState) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
 
           BlocProvider.of<DiagnosisDetailBloc>(context).add(
               LoadDiagnosisDetailEvent(diagnosis: uploadState.diagnosis.last));
@@ -118,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
 
                 // Wheatwise card
-                wheatwiseCard(assetPaths[0]),
+                wheatwiseCard(assetPaths[2]),
 
                 const SizedBox(height: 20),
                 // Detect Now Button
@@ -162,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
           customElevatedButton(
             onPressed: () async {
               await getImage(context, useCamera: false);
+              Navigator.of(context).pop();
             },
             text: "Choose from Gallery",
             iconPath: 'assets/icons/scan-icon.svg',
@@ -183,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
           customElevatedButton(
             onPressed: () async {
               await getImage(context, useCamera: true);
+              Navigator.of(context).pop();
             },
             text: "Capture from Camera",
             iconPath: 'assets/icons/scan-icon.svg',

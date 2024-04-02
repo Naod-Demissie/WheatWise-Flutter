@@ -4,14 +4,14 @@ import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 
 
-class CheckAuthBloc extends Bloc<CheckAuthEvents, CheckAuthStates> {
-  SharedPreferences prefs;
+class CheckAuthBloc extends Bloc<CheckAuthEvent, CheckAuthState> {
+  final SharedPreferences prefs;
 
   CheckAuthBloc({required this.prefs}) : super(CheckAuthInitialState()) {
     on<CheckAuthEvent>(onCheckAuth);
   }
 
-  onCheckAuth(CheckAuthEvents event, Emitter emit) async {
+  void onCheckAuth(CheckAuthEvent event, Emitter<CheckAuthState> emit) async {
     emit(LoadingCheckAuthState());
     try {
       String? token = prefs.getString("token");
@@ -21,13 +21,47 @@ class CheckAuthBloc extends Bloc<CheckAuthEvents, CheckAuthStates> {
 
       if (token != null && firstName != null && email != null && password != null) {
         emit(CheckAuthSuccessState(
-            token: token, firstName: firstName, email: email, password: password));
+          token: token,
+          firstName: firstName,
+          email: email,
+          password: password,
+        ));
       } else {
-        throw Exception("");
+        throw Exception("Missing credentials in SharedPreferences");
       }
-    } on Exception {
-      
+    } catch (e) {
+      print(e.toString());
       emit(CheckAuthFailedState());
     }
   }
 }
+
+
+// class CheckAuthBloc extends Bloc<CheckAuthEvents, CheckAuthStates> {
+//   SharedPreferences prefs;
+
+//   CheckAuthBloc({required this.prefs}) : super(CheckAuthInitialState()) {
+//     on<CheckAuthEvent>(onCheckAuth);
+//   }
+
+//   onCheckAuth(CheckAuthEvents event, Emitter emit) async {
+//     emit(LoadingCheckAuthState());
+//     try {
+//       String? token = prefs.getString("token");
+//       String? firstName = prefs.getString("firstName");
+//       String? email = prefs.getString("email");
+//       String? password = prefs.getString("password");
+
+//       if (token != null && firstName != null && email != null && password != null) {
+//         emit(CheckAuthSuccessState(
+//             token: token, firstName: firstName, email: email, password: password));
+//       } else {
+//         throw Exception("");
+//       }
+//     } on Exception {
+      
+      
+//       emit(CheckAuthFailedState());
+//     }
+//   }
+// }

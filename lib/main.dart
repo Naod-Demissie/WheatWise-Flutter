@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
         //   colorScheme: const ColorScheme.light(),
         //   useMaterial3: true,
         // ),
-        home: BlocBuilder<CheckAuthBloc, CheckAuthStates>(
+        home: BlocBuilder<CheckAuthBloc, CheckAuthState>(
           builder: (context, checkAuthState) {
             return checkAuthState is CheckAuthSuccessState || isLoggedIn
                 ? const PageNavigator()

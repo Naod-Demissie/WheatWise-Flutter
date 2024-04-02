@@ -1,10 +1,10 @@
-abstract class CheckAuthStates {}
+abstract class CheckAuthState {}
 
-class CheckAuthInitialState extends CheckAuthStates {}
+class CheckAuthInitialState extends CheckAuthState {}
 
-class LoadingCheckAuthState extends CheckAuthStates {}
+class LoadingCheckAuthState extends CheckAuthState {}
 
-class CheckAuthSuccessState extends CheckAuthStates {
+class CheckAuthSuccessState extends CheckAuthState {
   String token;
   String firstName;
   String email;
@@ -18,4 +18,4 @@ class CheckAuthSuccessState extends CheckAuthStates {
   });
 }
 
-class CheckAuthFailedState extends CheckAuthStates {}
+class CheckAuthFailedState extends CheckAuthState {}

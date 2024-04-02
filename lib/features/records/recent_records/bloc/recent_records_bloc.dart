@@ -13,29 +13,10 @@ class RecentRecordsBloc extends Bloc<RecentRecordsEvent, RecentRecordsState> {
         List<Diagnosis> diagnoses =
             diagnosisBox.values.toList().reversed.toList();
         emit(RecentRecordsSuccessState(diagnoses));
-        // await diagnosisBox.close();
       } catch (error) {
-        print('recent records');
         print(error.toString());
         emit(RecentRecordsFailureState(error: error.toString()));
       }
     });
   }
 }
-// class RecentRecordsBloc extends Bloc<RecentRecordsEvent, RecentRecordsState> {
-//   RecentRecordsBloc() : super(InitialRecentRecordsState()) {
-//     on<LoadRecentRecordsEvent>((event, emit) async {
-//       emit(RecentRecordsLoadingState());
-//       try {
-//         final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>("Diagnosis");
-//         List<Diagnosis> diagnoses = diagnosisBox.values.toList();
-//         // .reversed
-//         // // .where((element) => element.isServerDiagnosed == true)   //! change this to dynamically filter uploaded, locally
-//         // .toList();
-//         emit(RecentRecordsSuccessState(diagnoses));
-//       } catch (error) {
-//         emit(RecentRecordsFailureState(error: error.toString()));
-//       }
-//     });
-//   }
-// }

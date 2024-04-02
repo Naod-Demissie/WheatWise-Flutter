@@ -266,7 +266,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckAuthBloc, CheckAuthStates>(
+    return BlocBuilder<CheckAuthBloc, CheckAuthState>(
         builder: (context, state) {
       if (state is CheckAuthSuccessState) {
         return Form(

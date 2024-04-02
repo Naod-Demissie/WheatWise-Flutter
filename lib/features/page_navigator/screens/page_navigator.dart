@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wheatwise/features/article/screens/article_screen.dart';
 import 'package:wheatwise/features/home/screens/home_screen.dart';
@@ -8,7 +8,6 @@ import 'package:wheatwise/features/records/recent_records/bloc/recent_records_bl
 import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
 import 'package:wheatwise/features/records/recent_records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
-import 'package:wheatwise/features/test_screen/test_screen.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PageNavigator extends StatefulWidget {
@@ -22,11 +21,10 @@ class _PageNavigatorState extends State<PageNavigator> {
   int _currentIndex = 1;
 
   final List<Widget> _screens = [
-    HomeScreen(),
+    const HomeScreen(),
     const ArticlesScreen(),
     const RecordScreen(),
     const SettingScreen(),
-    TestScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -42,7 +40,6 @@ class _PageNavigatorState extends State<PageNavigator> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
-
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           border: Border(
@@ -86,44 +83,9 @@ class _PageNavigatorState extends State<PageNavigator> {
               icon: Icon(Iconsax.setting),
               label: 'Settings',
             ),
-            BottomNavigationBarItem(
-              // icon: Icon(Iconsax.book),
-
-              icon: Icon(
-                FontAwesomeIcons.bookOpen,
-              ),
-
-              // icon: Icon(Iconsax.book1),
-              label: 'Test',
-            ),
           ],
         ),
       ),
-
-      // bottomNavigationBar: BottomNavigationBar(
-      //   elevation: 0,
-      //   currentIndex: _currentIndex,
-      //   selectedItemColor: Colors.black,
-      //   onTap: _onTabTapped,
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.article),
-      //       label: 'Articles',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.library_books),
-      //       label: 'Records',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.settings),
-      //       label: 'Settings',
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

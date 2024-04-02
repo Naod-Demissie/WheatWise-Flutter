@@ -25,13 +25,11 @@ class UploadBloc extends Bloc<UploadEvent, UploadState> {
         diagnosisBox.put(key, diagnosis);
         List<Diagnosis> diagnoses = diagnosisBox.values.toList();
         emit(UploadSuccessState(diagnoses));
-        // await diagnosisBox.close();
       } on ImageNotLeaf {
         emit(UploadImageNotLeafState());
       } on NoInternet {
         emit(NoInternetUploadState());
       } catch (error) {
-        print('upload');
         print(error.toString());
         emit(UploadFailureState());
       }
