@@ -25,12 +25,15 @@ class RecordScreen extends StatefulWidget {
 }
 
 class _RecordScreenState extends State<RecordScreen> {
-  List<String> selectedFilterCategory = ['All'];
+  String selectedFilterCategory = 'All';
   bool showFilterCategories = false;
 
   Widget recordFilterHeader() {
-    return SizedBox(
-      height: 40,
+    return Container(
+      height: 38,
+      margin: const EdgeInsets.only(bottom: 10),
+
+      // height: 40,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
@@ -41,6 +44,10 @@ class _RecordScreenState extends State<RecordScreen> {
           buildFilterCategoryButton('Uploads'),
           const SizedBox(width: 5),
           buildFilterCategoryButton('Local'),
+          const SizedBox(width: 5),
+          buildFilterCategoryButton('Reviewed'),
+          const SizedBox(width: 5),
+          buildFilterCategoryButton('Unreviewed'),
         ],
       ),
     );
@@ -50,76 +57,85 @@ class _RecordScreenState extends State<RecordScreen> {
     return InkWell(
       splashColor: Colors.grey[100],
       onTap: () {
-        if (category == "All") {
-          selectedFilterCategory.clear();
-          selectedFilterCategory.add("All");
-        } else {
-          if (selectedFilterCategory.length > 1 &&
-              selectedFilterCategory.contains("All")) {
-            selectedFilterCategory.clear();
-            selectedFilterCategory.add(category);
-          } else {
-            if (selectedFilterCategory.contains("All")) {
-              selectedFilterCategory.remove("All");
-            }
-            selectedFilterCategory.contains(category)
-                ? selectedFilterCategory.remove(category)
-                : selectedFilterCategory.add(category);
-
-            if (selectedFilterCategory.length == 3) {
-              selectedFilterCategory.clear();
-              selectedFilterCategory.add("All");
-            }
-            if (selectedFilterCategory.isEmpty) {
-              selectedFilterCategory.add("All");
-            }
-          }
-        }
-        setState(() {});
+        setState(() {
+          selectedFilterCategory =
+              category == selectedFilterCategory ? 'All' : category;
+        });
       },
       child: Container(
-        height: 40,
+        // height: 50,
         width: 110,
         decoration: BoxDecoration(
-          color: selectedFilterCategory.contains(category)
+          color: selectedFilterCategory == category
               ? Colors.grey[900]
               : Colors.grey[500],
           borderRadius: const BorderRadius.all(Radius.circular(12.0)),
         ),
         child: Center(
-          child: Text(category,
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'SF-Pro-Text',
-                fontSize: 15.0,
-                fontWeight: FontWeight.w600,
-              )),
+          child: Text(
+            category,
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'SF-Pro-Text',
+              fontSize: 15.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     );
   }
 
+  List<Diagnosis> filterRecords(List<Diagnosis> records) {
+    switch (selectedFilterCategory) {
+      case 'Bookmarks':
+        return records
+            .where((element) => element.isBookmarked == true)
+            .toList();
+      case 'Uploads':
+        return records
+            .where((element) => element.isServerDiagnosed == true)
+            .toList();
+      case 'Local':
+        return records
+            .where((element) => element.isServerDiagnosed == false)
+            .toList();
+      case 'Reviewed':
+        return records
+            .where((element) => element.manualDiagnosis != '')
+            .toList();
+      case 'Unreviewed':
+        return records
+            .where((element) => element.manualDiagnosis == '')
+            .toList();
+      default:
+        return records.toList();
+    }
+  }
+
   Widget noRecordFound() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 180,
-          child: Image.asset('assets/images/no-file-found.png'),
-        ),
-        const Text(
-          'No records found',
-          style: TextStyle(
-            fontFamily: 'Clash Display',
-            fontSize: 16,
-            fontWeight: FontWeight.w300,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 180,
+            child: Image.asset('assets/images/no-file-found.png'),
           ),
-        )
-      ],
+          const Text(
+            'No records found',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+            ),
+          )
+        ],
+      ),
     );
   }
 
-//  RefreshIndicator(
+  // RefreshIndicator(
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -136,22 +152,19 @@ class _RecordScreenState extends State<RecordScreen> {
             ),
           ),
           actions: [
-            InkWell(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 setState(() {
                   showFilterCategories = !showFilterCategories;
                 });
               },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: SvgPicture.asset(
-                  'assets/icons/filter-by-icon.svg',
-                  color: showFilterCategories
-                      ? const Color.fromRGBO(248, 147, 29, 1)
-                      : Colors.grey,
-                  width: 20,
-                  height: 20,
-                ),
+              icon: SvgPicture.asset(
+                'assets/icons/filter-by-icon.svg',
+                color: showFilterCategories
+                    ? const Color.fromRGBO(248, 147, 29, 1)
+                    : Colors.grey,
+                width: 20,
+                height: 20,
               ),
             )
           ],
@@ -215,168 +228,48 @@ class _RecordScreenState extends State<RecordScreen> {
                     .add(LoadRecentRecordsEvent());
               },
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                    top: 10, right: 16, left: 16, bottom: 10),
+                // padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (showFilterCategories) recordFilterHeader(),
-                        recentRecordsState.diagnoses.isNotEmpty
-                            ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
-                                listener: (context, deleteState) {
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (showFilterCategories) recordFilterHeader(),
+                      recentRecordsState.diagnoses.isNotEmpty
+                          ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
+                              listener: (context, deleteState) {
                                 if (deleteState is DeleteRecordSuccessState) {
                                   BlocProvider.of<RecentRecordsBloc>(context)
                                       .add(LoadRecentRecordsEvent());
                                 }
-                              }, builder: (context, _) {
-                                // List<Diagnosis> recentRecords = [];
-
-                                // if (selectedFilterCategory
-                                //     .contains('Uploads')) {
-                                //   if (selectedFilterCategory
-                                //       .contains('Bookmarks')) {
-                                //     recentRecords.addAll(recentRecordsState
-                                //         .diagnoses
-                                //         .where((element) =>
-                                //             element.isServerDiagnosed == true &&
-                                //             element.isBookmarked == true)
-                                //         .toList());
-                                //   } else {
-                                //     recentRecords.addAll(recentRecordsState
-                                //         .diagnoses
-                                //         .where((element) =>
-                                //             element.isServerDiagnosed == true &&
-                                //             element.isBookmarked == false)
-                                //         .toList());
-                                //   }
-                                // } else if (selectedFilterCategory
-                                //     .contains('Local')) {
-                                //   if (selectedFilterCategory
-                                //       .contains('Bookmarks')) {
-                                //     recentRecords.addAll(recentRecordsState
-                                //         .diagnoses
-                                //         .where((element) =>
-                                //             element.isServerDiagnosed ==
-                                //                 false &&
-                                //             element.isBookmarked == true)
-                                //         .toList());
-                                //   } else {
-                                //     recentRecords.addAll(recentRecordsState
-                                //         .diagnoses
-                                //         .where((element) =>
-                                //             element.isServerDiagnosed ==
-                                //                 false &&
-                                //             element.isBookmarked == false)
-                                //         .toList());
-                                //   }
-                                // } else {
-                                //   recentRecords
-                                //       .addAll(recentRecordsState.diagnoses);
-                                // }
-
-                                // recentRecords = recentRecords.toSet().toList();
-                                List<Diagnosis> recentRecords = [];
-                                if (selectedFilterCategory
-                                    .contains('Bookmarks')) {
-                                  recentRecords.addAll(recentRecordsState
-                                      .diagnoses
-                                      .where((element) =>
-                                          element.isBookmarked == true)
-                                      .toList());
-                                } else if (selectedFilterCategory
-                                    .contains('Uploads')) {
-                                  recentRecords.addAll(recentRecordsState
-                                      .diagnoses
-                                      .where((element) =>
-                                          element.isServerDiagnosed == true)
-                                      .toList());
-                                } else if (selectedFilterCategory
-                                    .contains('Local')) {
-                                  recentRecords.addAll(recentRecordsState
-                                      .diagnoses
-                                      .where((element) =>
-                                          element.isServerDiagnosed == false)
-                                      .toList());
-                                } else {
-                                  recentRecords
-                                      .addAll(recentRecordsState.diagnoses);
-                                }
-
-                                // recentRecords = recentRecords
-                                //     .fold(<Diagnosis>{},
-                                //         (Set<Diagnosis> seen, Diagnosis value) {
-                                //   if (recentRecords.indexOf(value) !=
-                                //       recentRecords.lastIndexOf(value)) {
-                                //     seen.add(value);
-                                //   }
-                                //   return seen;
-                                // }).toList();
-
-                                recentRecords = recentRecords.toSet().toList();
-
-                                // List<Diagnosis> recentRecords = [];
-                                // if (selectedFilterCategory
-                                //     .contains('Bookmarks')) {
-                                //   recentRecords.addAll(recentRecordsState
-                                //       .diagnoses
-                                //       .where((element) =>
-                                //           element.isBookmarked == true &&
-                                //           !selectedFilterCategory
-                                //               .contains('Local')));
-                                // } else if (selectedFilterCategory
-                                //     .contains('Uploads')) {
-                                //   recentRecords.addAll(recentRecordsState
-                                //       .diagnoses
-                                //       .where((element) =>
-                                //           element.isServerDiagnosed == true &&
-                                //           !selectedFilterCategory
-                                //               .contains('Local')));
-                                // } else if (selectedFilterCategory
-                                //     .contains('Local')) {
-                                //   recentRecords.addAll(recentRecordsState
-                                //       .diagnoses
-                                //       .where((element) =>
-                                //           element.isServerDiagnosed == false));
-                                // } else {
-                                //   recentRecords
-                                //       .addAll(recentRecordsState.diagnoses);
-                                // }
-
-                                // recentRecords = recentRecords.toSet().toList();
+                              },
+                              builder: (context, _) {
+                                List<Diagnosis> recentRecords =
+                                    filterRecords(recentRecordsState.diagnoses);
 
                                 return Expanded(
-                                  child: ListView.builder(
-                                    itemCount: recentRecords.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return DiagnosisCard(
-                                        recentRecords[index],
-                                        key: Key(recentRecords[index]
-                                            .mobileId
-                                            .toString()),
-                                      );
-                                    },
-                                  ),
+                                  child: recentRecords.isNotEmpty
+                                      ? ListView.builder(
+                                          itemCount: recentRecords.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return DiagnosisCard(
+                                              recentRecords[index],
+                                              key: Key(recentRecords[index]
+                                                  .mobileId
+                                                  .toString()),
+                                            );
+                                          },
+                                        )
+                                      : noRecordFound(),
                                 );
-                                // return Expanded(
-                                //   child: ListView.builder(
-                                //     itemCount:
-                                //         recentRecordsState.diagnoses.length,
-                                //     itemBuilder:
-                                //         (BuildContext context, int index) {
-                                //       return DiagnosisCard(
-                                //         recentRecordsState.diagnoses[index],
-                                //         key: Key(recentRecordsState
-                                //             .diagnoses[index].mobileId
-                                //             .toString()),
-                                //       );
-                                //     },
-                                //   ),
-                                // );
-                              })
-                            : noRecordFound()
-                      ]),
+                              },
+                            )
+                          : noRecordFound(),
+                    ],
+                  ),
                 ),
               ),
             );

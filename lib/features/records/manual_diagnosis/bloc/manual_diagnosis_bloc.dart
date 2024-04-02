@@ -51,9 +51,6 @@ class ManualDiagnosisBloc
         diagnosis.manualDiagnosis = event.manualDiagnosis;
         diagnosisBox.putAt(key, diagnosis);
 
-        print(diagnosis);
-        print(diagnosis.manualDiagnosis);
-        print('wwwww');
         emit(ManualDiagnosisSaved());
       } else {
         emit(ManualDiagnosisFailed(errMsg: 'Diagnosis not found'));
@@ -62,29 +59,4 @@ class ManualDiagnosisBloc
       emit(ManualDiagnosisFailed(errMsg: e.toString()));
     }
   }
-
-  // Future<void> onManualDiagnosisSave(
-  //     ManualDiagnosisSave event, Emitter<ManualDiagnosisState> emit) async {
-  //   try {
-  //     emit(ManualDiagnosisLoading());
-  //     await manualDiagnosisRepo.updateManualDiagnosis(
-  //         event.serverId, event.manualDiagnosis);
-
-  //     final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('Diagnosis');
-
-  //     int key = diagnosisBox.keys.firstWhere((key) {
-  //       var value = diagnosisBox.get(key);
-  //       return value != null && value.serverId == event.serverId;
-  //     }, orElse: () => null);
-
-  //     Diagnosis? diagnosis = diagnosisBox.get(key);
-  //     diagnosis!.manualDiagnosis = event.manualDiagnosis;
-
-  //     diagnosisBox.putAt(key, diagnosis);
-
-  //     emit(ManualDiagnosisSaved());
-  //   } catch (e) {
-  //     emit(ManualDiagnosisFailed(errMsg: e.toString()));
-  //   }
-  // }
 }

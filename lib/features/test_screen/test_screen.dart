@@ -1,21 +1,117 @@
+// import 'package:flutter/material.dart';
+
+// class TestScreen extends StatefulWidget {
+//   const TestScreen({super.key});
+
+//   @override
+//   State<TestScreen> createState() => _TestScreenState();
+// }
+
+// class _TestScreenState extends State<TestScreen> {
+//   List<String> regionItems = [
+//     "Addis Ababa",
+//     "Afar",
+//     "Amhara",
+//     "Benishangul-Gumuz",
+//     "Dire Dawa",
+//     "Gambela",
+//     "Harari",
+//     "Oromia",
+//     "Sidama",
+//     "Somali",
+//     "SWEP's, Region",
+//     "SNNP's Region",
+//     "Tigray"
+//   ];
+//   List<String> sexItems = ['Male', 'Female'];
+//   String selectedRegion = "Addis Ababa";
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.all(16.0),
+//       child: Card(
+//         surfaceTintColor: Colors.white,
+//         elevation: 5,
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(16.0),
+//         ),
+//         child: SingleChildScrollView(
+//           child: Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               children: [
+//                 customDropdownMenu(
+//                   regionItems,
+//                   'Region',
+//                   selectedRegion,
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   DropdownButtonFormField customDropdownMenu(
+//     List<String> items,
+//     String? labelText,
+//     String? selectedItem,
+//   ) {
+//     return DropdownButtonFormField(
+//       value: selectedItem,
+//       items: items
+//           .map((item) =>
+//               DropdownMenuItem<String>(value: item, child: Text(item)))
+//           .toList(),
+//       onChanged: (item) => setState(() {
+//         selectedItem = item;
+//       }),
+//       icon: const Icon(Icons.arrow_drop_down),
+//       decoration: InputDecoration(
+//         labelText: labelText,
+//         labelStyle: const TextStyle(
+//           fontFamily: 'Clash Display',
+//           fontWeight: FontWeight.w400,
+//           fontSize: 21,
+//           color: Colors.black,
+//         ),
+//         floatingLabelBehavior: FloatingLabelBehavior.always,
+//         filled: false,
+//         hintStyle: const TextStyle(
+//           color: Color.fromRGBO(113, 113, 113, 1),
+//           fontFamily: 'SF-Pro-Text',
+//           fontSize: 14.0,
+//           fontWeight: FontWeight.w100,
+//         ),
+//         enabledBorder: const OutlineInputBorder(
+//           borderSide: BorderSide(
+//             color: Color.fromRGBO(176, 176, 176, 1),
+//           ),
+//         ),
+//         focusedErrorBorder: const OutlineInputBorder(
+//           borderSide: BorderSide(color: Colors.red),
+//         ),
+//         errorBorder:
+//             const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+//         focusedBorder: const OutlineInputBorder(
+//           borderSide:
+//               BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
-import 'package:wheatwise/features/records/bookmark/bloc/bookmark_event.dart';
-import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
-import 'package:wheatwise/features/records/delete_record/bloc/delete_record_state.dart';
-import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
-import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
-
-import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
-import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
-import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
+import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -25,445 +121,592 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  String selectedFilterCategory = 'All';
-  bool showFilterCategories = false;
+  late SharedPreferences _prefs;
 
-  Widget recordFilterHeader() {
-    return Container(
-      height: 38,
-      margin: const EdgeInsets.only(bottom: 10),
-
-      // height: 40,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          buildFilterCategoryButton('All'),
-          const SizedBox(width: 5),
-          buildFilterCategoryButton('Bookmarks'),
-          const SizedBox(width: 5),
-          buildFilterCategoryButton('Uploads'),
-          const SizedBox(width: 5),
-          buildFilterCategoryButton('Local'),
-          const SizedBox(width: 5),
-          buildFilterCategoryButton('Reviewed'),
-          const SizedBox(width: 5),
-          buildFilterCategoryButton('Unreviewed'),
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _loadSharedPreferences();
   }
 
-  Widget buildFilterCategoryButton(String category) {
-    return InkWell(
-      splashColor: Colors.grey[100],
-      onTap: () {
-        setState(() {
-          selectedFilterCategory =
-              category == selectedFilterCategory ? 'All' : category;
-        });
-      },
-      child: Container(
-        // height: 50,
-        width: 110,
-        decoration: BoxDecoration(
-          color: selectedFilterCategory == category
-              ? Colors.grey[900]
-              : Colors.grey[500],
-          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-        ),
-        child: Center(
-          child: Text(
-            category,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'SF-Pro-Text',
-              fontSize: 15.0,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ),
-    );
+  void _loadSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {}); // Update the UI after loading SharedPreferences
   }
 
-  List<Diagnosis> filterRecords(List<Diagnosis> records) {
-    switch (selectedFilterCategory) {
-      case 'Bookmarks':
-        return records
-            .where((element) => element.isBookmarked == true)
-            .toList();
-      case 'Uploads':
-        return records
-            .where((element) => element.isServerDiagnosed == true)
-            .toList();
-      case 'Local':
-        return records
-            .where((element) => element.isServerDiagnosed == false)
-            .toList();
-      case 'Reviewed':
-        return records
-            .where((element) => element.manualDiagnosis != '')
-            .toList();
-      case 'Unreviewed':
-        return records
-            .where((element) => element.manualDiagnosis == '')
-            .toList();
-      default:
-        return records.toList();
-    }
-  }
-
-  Widget noRecordFound() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 180,
-            child: Image.asset('assets/images/no-file-found.png'),
-          ),
-          const Text(
-            'No records found',
-            style: TextStyle(
-              fontFamily: 'Clash Display',
-              fontSize: 17,
-              fontWeight: FontWeight.w400,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  // RefreshIndicator(
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+        // resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          title: const Text(
-            'Records',
-            style: TextStyle(
-              fontFamily: 'Clash Display',
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 2.0),
+            child: Card(
+              elevation: 0,
+              shape: const CircleBorder(),
+              color: Colors.black.withOpacity(0.6),
+              margin: const EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child: Icon(
+                  // Icons.chevron_left_rounded,
+                  Icons.close,
+                  size: 20,
+                  color: Colors.grey.shade200,
+                ),
+              ),
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  showFilterCategories = !showFilterCategories;
-                });
-              },
-              icon: SvgPicture.asset(
-                'assets/icons/filter-by-icon.svg',
-                color: showFilterCategories
-                    ? const Color.fromRGBO(248, 147, 29, 1)
-                    : Colors.grey,
-                width: 20,
-                height: 20,
-              ),
-            )
-          ],
+          centerTitle: true,
+          title: const Text(
+            'Edit Profile',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontWeight: FontWeight.w600,
+              fontSize: 26,
+              color: Colors.black,
+            ),
+          ),
         ),
-        body: BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
-            builder: (context, recentRecordsState) {
-          if (recentRecordsState is RecentRecordsLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (recentRecordsState is RecentRecordsFailureState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
+        body: Stack(
+          children: [
+            // Background image
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Image.asset(
+                'assets/images/wheat-field-bg2.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
+            // Image.asset(
+            //   'assets/images/wheat-field-bg2.png',
+            //   fit: BoxFit.cover,
+            //   width: double.infinity,
+            //   height: double.infinity,
+            // ),
+
+            // White filter
+            Container(
+              color: Colors.white.withOpacity(0.8),
+              width: double.infinity,
+              height: double.infinity,
+            ),
+
+            SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Failed to get recent images',
-                      style: TextStyle(
-                        fontFamily: 'Clash Display',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<RecentRecordsBloc>(context)
-                            .add(LoadRecentRecordsEvent());
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(248, 147, 29, 1)),
-                        minimumSize: MaterialStateProperty.all(
-                          const Size(double.infinity, 52),
+                    const SizedBox(height: 60),
+                    // Profile Pciture
+                    Stack(
+                      children: [
+                        const CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                          radius: 65,
                         ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: IconButton(
+                            icon: const Icon(Icons.add_a_photo),
+                            onPressed: () {},
                           ),
                         ),
-                      ),
-                      child: const Text(
-                        "Retry",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'SF-Pro-Text',
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
+                      ],
                     ),
+
+                    // Profile Edit Card
+                    EditProfileForm(_prefs)
                   ],
                 ),
               ),
-            );
-          } else if (recentRecordsState is RecentRecordsSuccessState) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                BlocProvider.of<RecentRecordsBloc>(context)
-                    .add(LoadRecentRecordsEvent());
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 10, right: 16, left: 16, bottom: 10),
-                // padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (showFilterCategories) recordFilterHeader(),
-                      recentRecordsState.diagnoses.isNotEmpty
-                          ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
-                              listener: (context, deleteState) {
-                                if (deleteState is DeleteRecordSuccessState) {
-                                  BlocProvider.of<RecentRecordsBloc>(context)
-                                      .add(LoadRecentRecordsEvent());
-                                }
-                              },
-                              builder: (context, _) {
-                                List<Diagnosis> recentRecords =
-                                    filterRecords(recentRecordsState.diagnoses);
-
-                                return Expanded(
-                                  child: recentRecords.isNotEmpty
-                                      ? ListView.builder(
-                                          itemCount: recentRecords.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return DiagnosisCard(
-                                              recentRecords[index],
-                                              key: Key(recentRecords[index]
-                                                  .mobileId
-                                                  .toString()),
-                                            );
-                                          },
-                                        )
-                                      : noRecordFound(),
-                                );
-                              },
-                            )
-                          : noRecordFound(),
-                    ],
-                  ),
-
-                  // child: Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     if (showFilterCategories) recordFilterHeader(),
-                  //     recentRecordsState.diagnoses.isNotEmpty
-                  //         ? BlocConsumer<DeleteRecordBloc, DeleteRecordState>(
-                  //             listener: (context, deleteState) {
-                  //               if (deleteState is DeleteRecordSuccessState) {
-                  //                 BlocProvider.of<RecentRecordsBloc>(context)
-                  //                     .add(LoadRecentRecordsEvent());
-                  //               }
-                  //             },
-                  //             builder: (context, _) {
-                  //               List<Diagnosis> recentRecords =
-                  //                   filterRecords(recentRecordsState.diagnoses);
-
-                  //               return Expanded(
-                  //                 child: ListView.builder(
-                  //                   itemCount: recentRecords.length,
-                  //                   itemBuilder:
-                  //                       (BuildContext context, int index) {
-                  //                     return DiagnosisCard(
-                  //                       recentRecords[index],
-                  //                       key: Key(recentRecords[index]
-                  //                           .mobileId
-                  //                           .toString()),
-                  //                     );
-                  //                   },
-                  //                 ),
-                  //               );
-                  //             },
-                  //           )
-                  //         : noRecordFound(),
-                  //   ],
-                  // ),
-                ),
-              ),
-            );
-          } else {
-            BlocProvider.of<RecentRecordsBloc>(context)
-                .add(LoadRecentRecordsEvent());
-            return const Center(
-              child: SpinKitCubeGrid(
-                color: Color.fromRGBO(248, 147, 29, 1),
-                size: 70.0,
-              ),
-            );
-          }
-        }),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class DiagnosisCard extends StatelessWidget {
-  final Diagnosis diagnosis;
-  const DiagnosisCard(this.diagnosis, {super.key});
+class EditProfileForm extends StatefulWidget {
+  final SharedPreferences prefs;
+
+  const EditProfileForm(
+    this.prefs, {
+    super.key,
+  });
+
+  @override
+  State<EditProfileForm> createState() => _EditProfileFormState();
+}
+
+class _EditProfileFormState extends State<EditProfileForm> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _userNameController;
+  late final TextEditingController _prefixController;
+  late final TextEditingController _firstNameController;
+  late final TextEditingController _lastNameController;
+  // late final TextEditingController _sexController;
+  late String _regionController;
+  late final TextEditingController _zoneController;
+  late final TextEditingController _woredaController;
+
+  List<String> regionItems = [
+    "Addis Ababa",
+    "Afar",
+    "Amhara",
+    "Benishangul-Gumuz",
+    "Dire Dawa",
+    "Gambela",
+    "Harari",
+    "Oromia",
+    "Sidama",
+    "Somali",
+    "SWEP's, Region",
+    "SNNP's Region",
+    "Tigray"
+  ];
+  List<String> sexItems = ['Male', 'Female'];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userNameController =
+        TextEditingController(text: widget.prefs.getString('username') ?? '');
+    _prefixController =
+        TextEditingController(text: widget.prefs.getString('prefix') ?? '');
+    _firstNameController =
+        TextEditingController(text: widget.prefs.getString('firstName') ?? '');
+    _lastNameController =
+        TextEditingController(text: widget.prefs.getString('lastName') ?? '');
+    // _sexController =
+    //     TextEditingController(text: widget.prefs.getString('sex') ?? '');
+    _regionController = widget.prefs.getString('region') ?? '';
+    _zoneController =
+        TextEditingController(text: widget.prefs.getString('zone') ?? '');
+    _woredaController =
+        TextEditingController(text: widget.prefs.getString('woreda') ?? '');
+  }
+
+  String? _passwordValidator(String? password) {
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 105,
-      child: Container(
-        margin: const EdgeInsets.only(top: 5),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            border: Border.all(
-              width: 0.7,
-              color: Colors.grey.shade400,
-            )),
-        child: InkWell(
-          onTap: () {
-            BlocProvider.of<DiagnosisDetailBloc>(context)
-                .add(LoadDiagnosisDetailEvent(diagnosis: diagnosis));
-
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: ((context) => const DiagnosisDetailScreen())));
-          },
-          child: Row(
-            children: [
-              //card image
-
-              Expanded(
-                flex: 2,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.zero,
-                    bottomLeft: Radius.circular(12),
-                    bottomRight: Radius.zero,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: FileImage(File(diagnosis.filePath)),
-                        fit: BoxFit.cover,
+    final double screenHeight = MediaQuery.of(context).size.height;
+    return BlocBuilder<CheckAuthBloc, CheckAuthState>(
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              surfaceTintColor: Colors.white,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: customTextField(
+                              null,
+                              _prefixController,
+                              hintText: 'Prefix',
+                              labelText: 'Prefix',
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            flex: 4,
+                            child: customTextField(
+                              null,
+                              _firstNameController,
+                              hintText: 'First Name',
+                              labelText: 'First Name',
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                      const SizedBox(height: 20),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: customTextField(
+                              null,
+                              _lastNameController,
+                              hintText: 'Last Name',
+                              labelText: 'Last Name',
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: customTextField(
+                              null,
+                              _userNameController,
+                              hintText: 'Username',
+                              labelText: 'Username',
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: customDropdownMenu(
+                          regionItems,
+                          'Region',
+                          _regionController,
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: customTextField(
+                              null,
+                              _zoneController,
+                              hintText: 'Zone',
+                              labelText: 'Zone',
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: customTextField(
+                              null,
+                              _woredaController,
+                              hintText: 'Woreda',
+                              labelText: 'Woreda',
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Buttons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: customElevatedButton(
+                                () {},
+                                MaterialStateProperty.all<Color>(Colors.black),
+                                'Save'),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: customElevatedButton(() {
+                              Navigator.of(context).pop();
+                            },
+                                MaterialStateProperty.all<Color>(
+                                    const Color.fromRGBO(248, 147, 29, 1)),
+                                'Cancel'),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-
-              Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // image name and upload date
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              // image name
-                              '${diagnosis.fileName.substring(0, 16)}...',
-
-                              style: const TextStyle(
-                                fontFamily: 'Clash Display',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              DateFormat('yyyy-MM-dd HH:mm').format(
-                                DateTime.fromMicrosecondsSinceEpoch(
-                                    diagnosis.uploadTime),
-                              ),
-                              style: GoogleFonts.manrope(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              diagnosis.modelDiagnosis,
-                              style: const TextStyle(
-                                fontFamily: 'Clash Display',
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    BlocProvider.of<BookmarkBloc>(context).add(
-                                        AddBookmarkEvent(diagnosis: diagnosis));
-                                    BlocProvider.of<RecentRecordsBloc>(context)
-                                        .add(LoadRecentRecordsEvent());
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: Icon(
-                                      diagnosis.isBookmarked!
-                                          ? Icons.bookmark_outline_outlined
-                                          : Icons.bookmark_outline_outlined,
-                                      color: diagnosis.isBookmarked!
-                                          ? const Color.fromRGBO(
-                                              248, 147, 29, 1)
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Icon(
-                                    diagnosis.isServerDiagnosed!
-                                        ? Icons.upload_rounded
-                                        : Icons.upload_rounded,
-                                    color: diagnosis.isServerDiagnosed!
-                                        ? Colors.green
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ))
-            ],
+            ),
           ),
+        );
+      },
+    );
+  }
+  //       return Form(
+  //         key: _formKey,
+  //         child: Container(
+  //           padding: const EdgeInsets.all(16.0),
+  //           child: Card(
+  //             surfaceTintColor: Colors.white,
+  //             elevation: 5,
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(16.0),
+  //             ),
+  //             child: SingleChildScrollView(
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(16.0),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.center,
+  //                   children: [
+  //                     SizedBox(height: screenHeight * 0.02),
+  //                     // title text
+
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                           flex: 2,
+  //                           child: customTextField(
+  //                             null,
+  //                             _prefixController,
+  //                             hintText: 'Prefix',
+  //                             labelText: 'Prefix',
+  //                           ),
+  //                         ),
+  //                         const SizedBox(width: 20),
+  //                         Expanded(
+  //                           flex: 4,
+  //                           child: customTextField(
+  //                             null,
+  //                             _firstNameController,
+  //                             hintText: 'First Name',
+  //                             labelText: 'First Name',
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     const SizedBox(height: 20),
+
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                           child: customTextField(
+  //                             null,
+  //                             _lastNameController,
+  //                             hintText: 'Last Name',
+  //                             labelText: 'Last Name',
+  //                           ),
+  //                         ),
+  //                         const SizedBox(width: 20),
+  //                         Expanded(
+  //                           child: customTextField(
+  //                             null,
+  //                             _userNameController,
+  //                             hintText: 'Username',
+  //                             labelText: 'Username',
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+
+  //                     const SizedBox(height: 20),
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                           flex: 2,
+  //                           child: customDropdownMenu(
+  //                             regionItems,
+  //                             'Region',
+  //                             selectedRegion,
+  //                           ),
+  //                           // child: customTextField(
+  //                           //   null,
+  //                           //   _sexController,
+  //                           //   hintText: 'Sex',
+  //                           //   labelText: 'Sex',
+  //                           // ),
+  //                         ),
+  //                         const SizedBox(width: 20),
+  //                         Expanded(
+  //                           flex: 4,
+  //                           child: customTextField(
+  //                             null,
+  //                             _regionController,
+  //                             hintText: 'Region',
+  //                             labelText: 'Region',
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     const SizedBox(height: 20),
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                           child: customTextField(
+  //                             null,
+  //                             _zoneController,
+  //                             hintText: 'Zone',
+  //                             labelText: 'Zone',
+  //                           ),
+  //                         ),
+  //                         const SizedBox(width: 20),
+  //                         Expanded(
+  //                           child: customTextField(
+  //                             null,
+  //                             _woredaController,
+  //                             hintText: 'Woreda',
+  //                             labelText: 'Woreda',
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     const SizedBox(height: 20),
+
+  //                     // Buttons
+  //                     Row(
+  //                       children: [
+  //                         Expanded(
+  //                             child: customElevatedButton(
+  //                                 () {},
+  //                                 MaterialStateProperty.all<Color>(
+  //                                     Colors.black),
+  //                                 'Save')),
+  //                         const SizedBox(width: 20),
+  //                         Expanded(
+  //                             child: customElevatedButton(() {
+  //                           Navigator.of(context).pop();
+  //                         },
+  //                                 MaterialStateProperty.all<Color>(
+  //                                     const Color.fromRGBO(248, 147, 29, 1)),
+  //                                 'Cancel')),
+  //                         customDropdownMenu(
+  //                           regionItems,
+  //                           'Region',
+  //                           selectedRegion,
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Widget customElevatedButton(void Function()? onPressed,
+      MaterialStateProperty<Color?>? buttonColor, String buttonText) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: buttonColor,
+        minimumSize: MaterialStateProperty.all(
+          const Size(double.infinity, 52),
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+      child: Text(
+        buttonText,
+        style: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'SF-Pro-Text',
+          fontSize: 17.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+
+  TextFormField customTextField(
+    String? Function(String?)? validator,
+    TextEditingController controller, {
+    String? hintText,
+    String? helperText,
+    String? labelText,
+  }) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w400,
+          fontSize: 21,
+          color: Colors.black,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Color.fromRGBO(113, 113, 113, 1),
+          fontFamily: 'SF-Pro-Text',
+          fontSize: 14.0,
+          fontWeight: FontWeight.w100,
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(176, 176, 176, 1),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        errorBorder:
+            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        focusedBorder: const OutlineInputBorder(
+          borderSide:
+              BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
+        ),
+      ),
+      validator: validator,
+      controller: controller,
+    );
+  }
+
+  Widget customDropdownMenu(
+    List<String> items,
+    String? labelText,
+    String? selectedItem,
+  ) {
+    return DropdownButtonFormField(
+      value: selectedItem,
+      items: items
+          .map((item) =>
+              DropdownMenuItem<String>(value: item, child: Text(item)))
+          .toList(),
+      onChanged: (item) => setState(() {
+        selectedItem = item;
+      }),
+      icon: const Icon(Icons.arrow_drop_down),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w400,
+          fontSize: 21,
+          color: Colors.black,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
+        hintStyle: const TextStyle(
+          color: Color.fromRGBO(113, 113, 113, 1),
+          fontFamily: 'SF-Pro-Text',
+          fontSize: 14.0,
+          fontWeight: FontWeight.w100,
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromRGBO(176, 176, 176, 1),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        errorBorder:
+            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        focusedBorder: const OutlineInputBorder(
+          borderSide:
+              BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
         ),
       ),
     );
