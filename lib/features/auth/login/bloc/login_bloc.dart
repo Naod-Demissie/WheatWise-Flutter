@@ -3,7 +3,7 @@ import 'package:wheatwise/features/auth/login/bloc/login_state.dart';
 import 'package:wheatwise/features/auth/login/bloc/login_event.dart';
 import 'package:wheatwise/features/auth/login/repository/login_repository.dart';
 
-class LoginBloc extends Bloc<LoginEvents, LoginStates> {
+class LoginBloc extends Bloc<LoginEvents, LoginState> {
   final LoginRepository loginRepository = LoginRepository();
 
   LoginBloc() : super(LoginInitialState()) {
@@ -13,7 +13,7 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     });
   }
 
-  void onLogin(LoginButtonPressed event, Emitter<LoginStates> emit) async {
+  void onLogin(LoginButtonPressed event, Emitter<LoginState> emit) async {
     emit(LoginLoadingState());
     try {
       await loginRepository.login(event.username, event.password);

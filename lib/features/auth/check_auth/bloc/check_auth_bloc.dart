@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 
-
 class CheckAuthBloc extends Bloc<CheckAuthEvent, CheckAuthState> {
   final SharedPreferences prefs;
 
@@ -19,7 +18,10 @@ class CheckAuthBloc extends Bloc<CheckAuthEvent, CheckAuthState> {
       String? email = prefs.getString("email");
       String? password = prefs.getString("password");
 
-      if (token != null && firstName != null && email != null && password != null) {
+      if (token != null &&
+          firstName != null &&
+          email != null &&
+          password != null) {
         emit(CheckAuthSuccessState(
           token: token,
           firstName: firstName,

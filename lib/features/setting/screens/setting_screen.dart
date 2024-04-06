@@ -9,7 +9,7 @@ import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
 import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
 import 'package:wheatwise/features/resources/constants.dart';
-import 'package:wheatwise/features/setting/screens/edit_profile_screen.dart';
+import 'package:wheatwise/features/setting/edit_profile/screen/edit_profile_screen.dart';
 import 'term_and_conditions_dialog.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -216,7 +216,7 @@ class _SettingScreenState extends State<SettingScreen> {
         title: Text(
           title,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 16,
             fontFamily: 'Clash Display',
             fontWeight: FontWeight.w400,
             // color: BlocProvider.of<ThemeBloc>(context).state.blackColor ==

@@ -29,6 +29,24 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 2.0),
+              child: Card(
+                elevation: 0,
+                shape: const CircleBorder(),
+                color: Colors.black.withOpacity(0.6),
+                margin: const EdgeInsets.all(10),
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Icon(
+                    // Icons.chevron_left_rounded,
+                    Icons.close,
+                    size: 20,
+                    color: Colors.grey.shade200,
+                  ),
+                ),
+              ),
+            ),
           ),
           body: Stack(
             children: [
@@ -64,7 +82,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       padding: EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // title text
                           Text(
@@ -77,18 +94,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             ),
                           ),
                           SizedBox(height: 20),
-                          // title text
-                          Text(
-                            'Secure your account with a new password.',
-                            style: TextStyle(
-                              fontFamily: 'Clash Display',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: 20),
 
+                          //Reset Password Form
                           ResetPasswordForm()
                         ],
                       ),
@@ -214,7 +221,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 //   }
 // }
 
-
 class ResetPasswordForm extends StatefulWidget {
   const ResetPasswordForm({
     super.key,
@@ -273,6 +279,18 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
           key: _formKey,
           child: Column(
             children: [
+              // sub-title text
+              const Text(
+                'Secure your account with a new password.',
+                style: TextStyle(
+                  fontFamily: 'Clash Display',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 20),
+
               // Old Password Textfield
               TextFormField(
                 controller: _currentPsdController,
@@ -289,11 +307,12 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 },
                 decoration: InputDecoration(
                   filled: true,
+                  fillColor: Colors.white,
                   hintText: "Old Password",
                   hintStyle: const TextStyle(
                     color: Color.fromRGBO(113, 113, 113, 1),
                     fontFamily: 'SF-Pro-Text',
-                    fontSize: 13.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w100,
                   ),
                   suffixIcon: IconButton(
@@ -343,11 +362,12 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 },
                 decoration: InputDecoration(
                   filled: true,
+                  fillColor: Colors.white,
                   hintText: "New password",
                   hintStyle: const TextStyle(
                     color: Color.fromRGBO(113, 113, 113, 1),
                     fontFamily: 'SF-Pro-Text',
-                    fontSize: 13.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w100,
                   ),
                   suffixIcon: IconButton(
@@ -401,11 +421,12 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                 obscureText: _obscureConfirmPsd,
                 decoration: InputDecoration(
                   filled: true,
+                  fillColor: Colors.white,
                   hintText: "Confirm password",
                   hintStyle: const TextStyle(
                     color: Color.fromRGBO(113, 113, 113, 1),
                     fontFamily: 'SF-Pro-Text',
-                    fontSize: 13.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w100,
                   ),
                   suffixIcon: IconButton(
@@ -471,7 +492,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'SF-Pro-Text',
-                    fontSize: 14.0,
+                    fontSize: 17.0,
                     fontWeight: FontWeight.w800,
                   ),
                 ),

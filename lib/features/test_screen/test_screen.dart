@@ -1,4 +1,148 @@
+// import 'dart:io';
+
 // import 'package:flutter/material.dart';
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_picker/image_picker.dart';
+
+// class TestScreen extends StatefulWidget {
+//   const TestScreen({Key? key}) : super(key: key);
+
+//   @override
+//   State<TestScreen> createState() => _TestScreenState();
+// }
+
+// final ImagePicker imagePicker = ImagePicker();
+// final ImageCropper imageCropper = ImageCropper();
+
+// File? _image;
+
+// class _TestScreenState extends State<TestScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () async {
+//             final file =
+//                 await imagePicker.pickImage(source: ImageSource.gallery);
+//             if (file != null) {
+//               final croppedFile = await cropImage(file.path);
+//               if (croppedFile != null) {
+//                 setState(() {
+//                   _image = File(croppedFile.path);
+//                 });
+//               }
+//             }
+//           },
+//           child: const Text("Choose from Gallery"),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future<CroppedFile?> cropImage(String filePath) async {
+//     return await imageCropper.cropImage(
+//       sourcePath: filePath,
+//       aspectRatioPresets: [
+//         CropAspectRatioPreset.square,
+//         CropAspectRatioPreset.ratio3x2,
+//         CropAspectRatioPreset.original,
+//         CropAspectRatioPreset.ratio4x3,
+//         CropAspectRatioPreset.ratio16x9
+//       ],
+//       uiSettings: [
+//         AndroidUiSettings(
+//             toolbarTitle: 'Edit Photo',
+//             toolbarColor: Colors.deepOrange,
+//             toolbarWidgetColor: Colors.white,
+//             initAspectRatio: CropAspectRatioPreset.original,
+//             lockAspectRatio: false),
+//         IOSUiSettings(
+//           title: 'Edit Photo',
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class TestScreen extends StatefulWidget {
+//   const TestScreen({Key? key}) : super(key: key);
+
+//   @override
+//   State<TestScreen> createState() => _TestScreenState();
+// }
+
+// final ImagePicker imagePicker = ImagePicker();
+// final ImageCropper imageCropper = ImageCropper();
+
+// File? _image;
+
+// class _TestScreenState extends State<TestScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             _image == null
+//                 ? const Text('No image selected.')
+//                 : Image.file(_image!),
+//             ElevatedButton(
+//               onPressed: () async {
+//                 final file =
+//                     await imagePicker.pickImage(source: ImageSource.gallery);
+//                 if (file != null) {
+//                   final croppedFile = await cropImage(file.path);
+//                   if (croppedFile != null) {
+//                     setState(() {
+//                       _image = File(croppedFile.path);
+//                     });
+//                   }
+//                 }
+//               },
+//               child: const Text("Choose from Gallery"),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future<CroppedFile?> cropImage(String filePath) async {
+//     return await imageCropper.cropImage(
+//       sourcePath: filePath,
+//       aspectRatioPresets: [
+//         CropAspectRatioPreset.ratio3x2,
+//         CropAspectRatioPreset.square,
+//         CropAspectRatioPreset.original,
+//         CropAspectRatioPreset.ratio4x3,
+//         CropAspectRatioPreset.ratio16x9
+//       ],
+//       uiSettings: [
+//         AndroidUiSettings(
+//             toolbarTitle: 'Edit Photo',
+//             toolbarColor: Colors.black,
+//             toolbarWidgetColor: Colors.white,
+//             statusBarColor: Colors.black,
+//             backgroundColor: Colors.black,
+//             activeControlsWidgetColor: const Color.fromRGBO(248, 147, 29, 1),
+//             cropFrameColor: Colors.black,
+//             initAspectRatio: CropAspectRatioPreset.original,
+//             lockAspectRatio: false),
+//         IOSUiSettings(
+//           title: 'Edit Photo',
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// import 'dart:io';
+
+// import 'package:flutter/material.dart';
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_picker/image_picker.dart';
 
 // class TestScreen extends StatefulWidget {
 //   const TestScreen({super.key});
@@ -7,111 +151,76 @@
 //   State<TestScreen> createState() => _TestScreenState();
 // }
 
-// class _TestScreenState extends State<TestScreen> {
-//   List<String> regionItems = [
-//     "Addis Ababa",
-//     "Afar",
-//     "Amhara",
-//     "Benishangul-Gumuz",
-//     "Dire Dawa",
-//     "Gambela",
-//     "Harari",
-//     "Oromia",
-//     "Sidama",
-//     "Somali",
-//     "SWEP's, Region",
-//     "SNNP's Region",
-//     "Tigray"
-//   ];
-//   List<String> sexItems = ['Male', 'Female'];
-//   String selectedRegion = "Addis Ababa";
+// final imagePicker = ImagePicker();
+// final imageCropper = ImageCropper();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(16.0),
-//       child: Card(
-//         surfaceTintColor: Colors.white,
-//         elevation: 5,
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(16.0),
-//         ),
-//         child: SingleChildScrollView(
-//           child: Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: [
-//                 customDropdownMenu(
-//                   regionItems,
-//                   'Region',
-//                   selectedRegion,
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
+// File? _image;
+
+// Future<List<XFile>> pickImage({
+//   ImageSource source = ImageSource.gallery,
+//   bool multiple = false,
+// }) async {
+//   if (multiple) {
+//     return await imagePicker.pickMultiImage();
 //   }
 
-//   DropdownButtonFormField customDropdownMenu(
-//     List<String> items,
-//     String? labelText,
-//     String? selectedItem,
-//   ) {
-//     return DropdownButtonFormField(
-//       value: selectedItem,
-//       items: items
-//           .map((item) =>
-//               DropdownMenuItem<String>(value: item, child: Text(item)))
-//           .toList(),
-//       onChanged: (item) => setState(() {
-//         selectedItem = item;
-//       }),
-//       icon: const Icon(Icons.arrow_drop_down),
-//       decoration: InputDecoration(
-//         labelText: labelText,
-//         labelStyle: const TextStyle(
-//           fontFamily: 'Clash Display',
-//           fontWeight: FontWeight.w400,
-//           fontSize: 21,
-//           color: Colors.black,
-//         ),
-//         floatingLabelBehavior: FloatingLabelBehavior.always,
-//         filled: false,
-//         hintStyle: const TextStyle(
-//           color: Color.fromRGBO(113, 113, 113, 1),
-//           fontFamily: 'SF-Pro-Text',
-//           fontSize: 14.0,
-//           fontWeight: FontWeight.w100,
-//         ),
-//         enabledBorder: const OutlineInputBorder(
-//           borderSide: BorderSide(
-//             color: Color.fromRGBO(176, 176, 176, 1),
-//           ),
-//         ),
-//         focusedErrorBorder: const OutlineInputBorder(
-//           borderSide: BorderSide(color: Colors.red),
-//         ),
-//         errorBorder:
-//             const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-//         focusedBorder: const OutlineInputBorder(
-//           borderSide:
-//               BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
+//   final file = await imagePicker.pickImage(source: source);
+//   if (file != null) return [file];
+//   return [];
+// }
+
+// Future<CroppedFile?> cropImage({
+//   required XFile file,
+//   CropStyle cropStyle = CropStyle.rectangle,
+// }) async {
+//   return await imageCropper.cropImage(
+//     cropStyle: cropStyle,
+//     sourcePath: file.path,
+//   );
+// }
+
+// class _TestScreenState extends State<TestScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () async {
+//             // await getImage(context, useCamera: false);
+
+//             final files = await pickImage(source: ImageSource.gallery);
+
+//             if (files.isNotEmpty) {
+//               final croppedFile = await cropImage(
+//                   file: files.first, cropStyle: CropStyle.rectangle);
+//               if (croppedFile != null) {
+//                 setState(() => _image = File(croppedFile.path));
+//               }
+//             }
+
+//             // Navigator.of(context).pop();
+//           },
+//           child: const Text("Choose from Gallery"),
 //         ),
 //       ),
 //     );
 //   }
 // }
-
-import 'package:flutter/cupertino.dart';
+// import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
-import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
+import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
+import 'package:wheatwise/features/records/file_upload/bloc/upload_bloc.dart';
+import 'package:wheatwise/features/records/file_upload/bloc/upload_event.dart';
+import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
+import 'package:wheatwise/features/records/file_upload/bloc/upload_state.dart';
+import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
+import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -121,482 +230,243 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  late SharedPreferences _prefs;
+  // int _currentPage = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSharedPreferences();
+  List<String> assetPaths = [
+    'assets/images/wheat-banner.jpg',
+    'assets/images/wheat-banner2.jpg',
+    'assets/images/wheat-banner3.jpg',
+    'assets/images/wheat-banner4.jpg',
+  ];
+  final imagePicker = ImagePicker();
+  final imageCropper = ImageCropper();
+
+  // File? _image;
+
+  // Future<void> getImage(BuildContext context, {required bool useCamera}) async {
+  //   final source = useCamera ? ImageSource.camera : ImageSource.gallery;
+  //   final pickedFile = await imagePicker.pickImage(source: source);
+  //   if (pickedFile != null) {
+  //     BlocProvider.of<UploadBloc>(context).add(
+  //       StartUploadEvent(
+  //         fileName: pickedFile.name,
+  //         uploadTime: DateTime.now().microsecondsSinceEpoch,
+  //         filePath: pickedFile.path,
+  //         isServerDiagnosed: true,
+  //       ),
+  //     );
+  //   }
+  // }
+
+  Future<List<XFile>> pickImage({
+    ImageSource source = ImageSource.gallery,
+    bool multiple = false,
+  }) async {
+    if (multiple) {
+      return await imagePicker.pickMultiImage();
+    }
+
+    final file = await imagePicker.pickImage(source: source);
+    if (file != null) return [file];
+    return [];
   }
 
-  void _loadSharedPreferences() async {
-    _prefs = await SharedPreferences.getInstance();
-    setState(() {}); // Update the UI after loading SharedPreferences
+  Future<CroppedFile?> cropImage(String filePath) async {
+    return await imageCropper.cropImage(
+      sourcePath: filePath,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Edit Photo',
+            toolbarColor: Colors.black,
+            toolbarWidgetColor: Colors.white,
+            statusBarColor: Colors.black,
+            backgroundColor: Colors.black,
+            activeControlsWidgetColor: const Color.fromRGBO(248, 147, 29, 1),
+            cropFrameColor: Colors.black,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Edit Photo',
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BlocListener<UploadBloc, UploadState>(
+      listener: (context, uploadState) async {
+        if (uploadState is UploadSuccessState) {
+          BlocProvider.of<DiagnosisDetailBloc>(context).add(
+              LoadDiagnosisDetailEvent(diagnosis: uploadState.diagnosis.last));
+          BlocProvider.of<RecentRecordsBloc>(context)
+              .add(LoadRecentRecordsEvent());
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const DiagnosisDetailScreen()));
+        }
+      },
       child: Scaffold(
-        // resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 2.0),
-            child: Card(
-              elevation: 0,
-              shape: const CircleBorder(),
-              color: Colors.black.withOpacity(0.6),
-              margin: const EdgeInsets.all(10),
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Icon(
-                  // Icons.chevron_left_rounded,
-                  Icons.close,
-                  size: 20,
-                  color: Colors.grey.shade200,
-                ),
-              ),
-            ),
-          ),
-          centerTitle: true,
-          title: const Text(
-            'Edit Profile',
-            style: TextStyle(
-              fontFamily: 'Clash Display',
-              fontWeight: FontWeight.w600,
-              fontSize: 26,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        body: Stack(
-          children: [
-            // Background image
-            Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Image.asset(
-                'assets/images/wheat-field-bg2.png',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            ),
-            // Image.asset(
-            //   'assets/images/wheat-field-bg2.png',
-            //   fit: BoxFit.cover,
-            //   width: double.infinity,
-            //   height: double.infinity,
-            // ),
-
-            // White filter
-            Container(
-              color: Colors.white.withOpacity(0.8),
-              width: double.infinity,
-              height: double.infinity,
-            ),
-
-            SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Center(
-                child: Column(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Profile Pic and Avatar
+                const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(height: 60),
-                    // Profile Pciture
-                    Stack(
-                      children: [
-                        const CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                          radius: 65,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: IconButton(
-                            icon: const Icon(Icons.add_a_photo),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Hello Naod',
+                      style: TextStyle(
+                        fontFamily: 'Clash Display',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 26,
+                        color: Colors.black,
+                      ),
                     ),
-
-                    // Profile Edit Card
-                    EditProfileForm(_prefs)
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                      radius: 30,
+                    ),
                   ],
                 ),
-              ),
+
+                // PageView.builder(
+                //   itemCount: assetPaths.length,
+                //   onPageChanged: (int page) {
+                //     setState(() {
+                //       _currentPage = page;
+                //     });
+                //   },
+                //   itemBuilder: (context, index) {
+                //     return wheatwiseCard(assetPaths[index]);
+                //   },
+                // ),
+                const SizedBox(height: 20),
+
+                // Wheatwise card
+                wheatwiseCard(assetPaths[2]),
+
+                const SizedBox(height: 20),
+                // Detect Now Button
+
+                customElevatedButton(
+                  onPressed: () => showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(12))),
+                      context: context,
+                      builder: (context) => detectNowPopup()),
+                  text: "Detect Now",
+                  iconPath: 'assets/icons/scan-icon.svg',
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
 
-class EditProfileForm extends StatefulWidget {
-  final SharedPreferences prefs;
-
-  const EditProfileForm(
-    this.prefs, {
-    super.key,
-  });
-
-  @override
-  State<EditProfileForm> createState() => _EditProfileFormState();
-}
-
-class _EditProfileFormState extends State<EditProfileForm> {
-  final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _userNameController;
-  late final TextEditingController _prefixController;
-  late final TextEditingController _firstNameController;
-  late final TextEditingController _lastNameController;
-  // late final TextEditingController _sexController;
-  late String _regionController;
-  late final TextEditingController _zoneController;
-  late final TextEditingController _woredaController;
-
-  List<String> regionItems = [
-    "Addis Ababa",
-    "Afar",
-    "Amhara",
-    "Benishangul-Gumuz",
-    "Dire Dawa",
-    "Gambela",
-    "Harari",
-    "Oromia",
-    "Sidama",
-    "Somali",
-    "SWEP's, Region",
-    "SNNP's Region",
-    "Tigray"
-  ];
-  List<String> sexItems = ['Male', 'Female'];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _userNameController =
-        TextEditingController(text: widget.prefs.getString('username') ?? '');
-    _prefixController =
-        TextEditingController(text: widget.prefs.getString('prefix') ?? '');
-    _firstNameController =
-        TextEditingController(text: widget.prefs.getString('firstName') ?? '');
-    _lastNameController =
-        TextEditingController(text: widget.prefs.getString('lastName') ?? '');
-    // _sexController =
-    //     TextEditingController(text: widget.prefs.getString('sex') ?? '');
-    _regionController = widget.prefs.getString('region') ?? '';
-    _zoneController =
-        TextEditingController(text: widget.prefs.getString('zone') ?? '');
-    _woredaController =
-        TextEditingController(text: widget.prefs.getString('woreda') ?? '');
-  }
-
-  String? _passwordValidator(String? password) {
-    return null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    return BlocBuilder<CheckAuthBloc, CheckAuthState>(
-      builder: (context, state) {
-        return Form(
-          key: _formKey,
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Card(
-              surfaceTintColor: Colors.white,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: customTextField(
-                              null,
-                              _prefixController,
-                              hintText: 'Prefix',
-                              labelText: 'Prefix',
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            flex: 4,
-                            child: customTextField(
-                              null,
-                              _firstNameController,
-                              hintText: 'First Name',
-                              labelText: 'First Name',
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: customTextField(
-                              null,
-                              _lastNameController,
-                              hintText: 'Last Name',
-                              labelText: 'Last Name',
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: customTextField(
-                              null,
-                              _userNameController,
-                              hintText: 'Username',
-                              labelText: 'Username',
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        child: customDropdownMenu(
-                          regionItems,
-                          'Region',
-                          _regionController,
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: customTextField(
-                              null,
-                              _zoneController,
-                              hintText: 'Zone',
-                              labelText: 'Zone',
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: customTextField(
-                              null,
-                              _woredaController,
-                              hintText: 'Woreda',
-                              labelText: 'Woreda',
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // Buttons
-                      Row(
-                        children: [
-                          Expanded(
-                            child: customElevatedButton(
-                                () {},
-                                MaterialStateProperty.all<Color>(Colors.black),
-                                'Save'),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: customElevatedButton(() {
-                              Navigator.of(context).pop();
-                            },
-                                MaterialStateProperty.all<Color>(
-                                    const Color.fromRGBO(248, 147, 29, 1)),
-                                'Cancel'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+  Widget detectNowPopup() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Detect disease using',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
+              color: Colors.black,
             ),
           ),
-        );
-      },
+          const SizedBox(height: 15),
+
+          //Choose from Gallery Button
+          customElevatedButton(
+            onPressed: () async {
+              // await getImage(context, useCamera: false);
+
+              final files =
+                  await pickImage(source: ImageSource.gallery, multiple: false);
+
+              if (files.isNotEmpty) {
+                final croppedFile = await cropImage(files.first.path);
+                if (croppedFile != null) {
+                  BlocProvider.of<UploadBloc>(context).add(
+                    StartUploadEvent(
+                      fileName: files.first.name,
+                      uploadTime: DateTime.now().microsecondsSinceEpoch,
+                      filePath: croppedFile.path,
+                      isServerDiagnosed: true,
+                    ),
+                  );
+                }
+              }
+
+              Navigator.of(context).pop();
+            },
+            text: "Choose from Gallery",
+            iconPath: 'assets/icons/scan-icon.svg',
+          ),
+          // customElevatedButton(
+          //   onPressed: () async {
+          //     await getImage(context, useCamera: false);
+          //     Navigator.of(context).pop();
+          //   },
+          //   text: "Choose from Gallery",
+          //   iconPath: 'assets/icons/scan-icon.svg',
+          // ),
+
+          const SizedBox(height: 15),
+          const Text(
+            'or',
+            style: TextStyle(
+              fontFamily: 'Clash Display',
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 15),
+
+          //Capture from Camera Button
+          customElevatedButton(
+            onPressed: () async {
+              // await getImage(context, useCamera: true);
+              Navigator.of(context).pop();
+            },
+            text: "Capture from Camera",
+            iconPath: 'assets/icons/scan-icon.svg',
+          ),
+        ],
+      ),
     );
   }
-  //       return Form(
-  //         key: _formKey,
-  //         child: Container(
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: Card(
-  //             surfaceTintColor: Colors.white,
-  //             elevation: 5,
-  //             shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(16.0),
-  //             ),
-  //             child: SingleChildScrollView(
-  //               child: Padding(
-  //                 padding: const EdgeInsets.all(16.0),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.center,
-  //                   children: [
-  //                     SizedBox(height: screenHeight * 0.02),
-  //                     // title text
 
-  //                     Row(
-  //                       children: [
-  //                         Expanded(
-  //                           flex: 2,
-  //                           child: customTextField(
-  //                             null,
-  //                             _prefixController,
-  //                             hintText: 'Prefix',
-  //                             labelText: 'Prefix',
-  //                           ),
-  //                         ),
-  //                         const SizedBox(width: 20),
-  //                         Expanded(
-  //                           flex: 4,
-  //                           child: customTextField(
-  //                             null,
-  //                             _firstNameController,
-  //                             hintText: 'First Name',
-  //                             labelText: 'First Name',
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     const SizedBox(height: 20),
-
-  //                     Row(
-  //                       children: [
-  //                         Expanded(
-  //                           child: customTextField(
-  //                             null,
-  //                             _lastNameController,
-  //                             hintText: 'Last Name',
-  //                             labelText: 'Last Name',
-  //                           ),
-  //                         ),
-  //                         const SizedBox(width: 20),
-  //                         Expanded(
-  //                           child: customTextField(
-  //                             null,
-  //                             _userNameController,
-  //                             hintText: 'Username',
-  //                             labelText: 'Username',
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-
-  //                     const SizedBox(height: 20),
-  //                     Row(
-  //                       children: [
-  //                         Expanded(
-  //                           flex: 2,
-  //                           child: customDropdownMenu(
-  //                             regionItems,
-  //                             'Region',
-  //                             selectedRegion,
-  //                           ),
-  //                           // child: customTextField(
-  //                           //   null,
-  //                           //   _sexController,
-  //                           //   hintText: 'Sex',
-  //                           //   labelText: 'Sex',
-  //                           // ),
-  //                         ),
-  //                         const SizedBox(width: 20),
-  //                         Expanded(
-  //                           flex: 4,
-  //                           child: customTextField(
-  //                             null,
-  //                             _regionController,
-  //                             hintText: 'Region',
-  //                             labelText: 'Region',
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     const SizedBox(height: 20),
-  //                     Row(
-  //                       children: [
-  //                         Expanded(
-  //                           child: customTextField(
-  //                             null,
-  //                             _zoneController,
-  //                             hintText: 'Zone',
-  //                             labelText: 'Zone',
-  //                           ),
-  //                         ),
-  //                         const SizedBox(width: 20),
-  //                         Expanded(
-  //                           child: customTextField(
-  //                             null,
-  //                             _woredaController,
-  //                             hintText: 'Woreda',
-  //                             labelText: 'Woreda',
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     const SizedBox(height: 20),
-
-  //                     // Buttons
-  //                     Row(
-  //                       children: [
-  //                         Expanded(
-  //                             child: customElevatedButton(
-  //                                 () {},
-  //                                 MaterialStateProperty.all<Color>(
-  //                                     Colors.black),
-  //                                 'Save')),
-  //                         const SizedBox(width: 20),
-  //                         Expanded(
-  //                             child: customElevatedButton(() {
-  //                           Navigator.of(context).pop();
-  //                         },
-  //                                 MaterialStateProperty.all<Color>(
-  //                                     const Color.fromRGBO(248, 147, 29, 1)),
-  //                                 'Cancel')),
-  //                         customDropdownMenu(
-  //                           regionItems,
-  //                           'Region',
-  //                           selectedRegion,
-  //                         )
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  Widget customElevatedButton(void Function()? onPressed,
-      MaterialStateProperty<Color?>? buttonColor, String buttonText) {
+  Widget customElevatedButton({
+    onPressed,
+    text,
+    iconPath,
+  }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: buttonColor,
+        backgroundColor: MaterialStateProperty.all<Color>(
+          const Color.fromRGBO(248, 147, 29, 1),
+        ),
         minimumSize: MaterialStateProperty.all(
           const Size(double.infinity, 52),
         ),
@@ -606,108 +476,80 @@ class _EditProfileFormState extends State<EditProfileForm> {
           ),
         ),
       ),
-      child: Text(
-        buttonText,
-        style: const TextStyle(
-          color: Colors.white,
-          fontFamily: 'SF-Pro-Text',
-          fontSize: 17.0,
-          fontWeight: FontWeight.w800,
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            iconPath,
+            color: Colors.white,
+            width: 18,
+            height: 18,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            text,
+            // style: GoogleFonts.montserrat(
+            //   fontSize: 18.0,
+            //   color: Colors.white,
+            //   fontWeight: FontWeight.w800,
+            // ),
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'SF-Pro-Text',
+              fontSize: 17.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  TextFormField customTextField(
-    String? Function(String?)? validator,
-    TextEditingController controller, {
-    String? hintText,
-    String? helperText,
-    String? labelText,
-  }) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: const TextStyle(
-          fontFamily: 'Clash Display',
-          fontWeight: FontWeight.w400,
-          fontSize: 21,
-          color: Colors.black,
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: false,
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Color.fromRGBO(113, 113, 113, 1),
-          fontFamily: 'SF-Pro-Text',
-          fontSize: 14.0,
-          fontWeight: FontWeight.w100,
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color.fromRGBO(176, 176, 176, 1),
+  Widget wheatwiseCard(String assetPaths) {
+    return Card(
+      elevation: 5,
+      child: Stack(
+        children: [
+          // Gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black,
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
-        ),
-        errorBorder:
-            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-        focusedBorder: const OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
-        ),
-      ),
-      validator: validator,
-      controller: controller,
-    );
-  }
 
-  Widget customDropdownMenu(
-    List<String> items,
-    String? labelText,
-    String? selectedItem,
-  ) {
-    return DropdownButtonFormField(
-      value: selectedItem,
-      items: items
-          .map((item) =>
-              DropdownMenuItem<String>(value: item, child: Text(item)))
-          .toList(),
-      onChanged: (item) => setState(() {
-        selectedItem = item;
-      }),
-      icon: const Icon(Icons.arrow_drop_down),
-      decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: const TextStyle(
-          fontFamily: 'Clash Display',
-          fontWeight: FontWeight.w400,
-          fontSize: 21,
-          color: Colors.black,
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: false,
-        hintStyle: const TextStyle(
-          color: Color.fromRGBO(113, 113, 113, 1),
-          fontFamily: 'SF-Pro-Text',
-          fontSize: 14.0,
-          fontWeight: FontWeight.w100,
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color.fromRGBO(176, 176, 176, 1),
+          // Card Image
+          Positioned(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                assetPaths,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
-        ),
-        errorBorder:
-            const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-        focusedBorder: const OutlineInputBorder(
-          borderSide:
-              BorderSide(width: 1.5, color: Color.fromRGBO(239, 188, 8, 1)),
-        ),
+
+          // wheatwise logo
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: Image.asset(
+              'assets/logo/wheatwise-logo-white.png',
+              fit: BoxFit.cover,
+              height: 50,
+            ),
+          ),
+        ],
       ),
     );
   }
