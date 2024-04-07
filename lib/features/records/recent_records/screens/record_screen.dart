@@ -441,7 +441,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
 class DiagnosisCard extends StatefulWidget {
   final Diagnosis diagnosis;
-  const DiagnosisCard(this.diagnosis, {Key? key}) : super(key: key);
+  const DiagnosisCard(this.diagnosis, {super.key});
 
   @override
   _DiagnosisCardState createState() => _DiagnosisCardState();

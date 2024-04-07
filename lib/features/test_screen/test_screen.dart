@@ -398,7 +398,7 @@ class _TestScreenState extends State<TestScreen> {
           customElevatedButton(
             onPressed: () async {
               // await getImage(context, useCamera: false);
-
+              Navigator.of(context).pop();
               final files =
                   await pickImage(source: ImageSource.gallery, multiple: false);
 
@@ -415,8 +415,6 @@ class _TestScreenState extends State<TestScreen> {
                   );
                 }
               }
-
-              Navigator.of(context).pop();
             },
             text: "Choose from Gallery",
             iconPath: 'assets/icons/scan-icon.svg',
@@ -447,6 +445,25 @@ class _TestScreenState extends State<TestScreen> {
             onPressed: () async {
               // await getImage(context, useCamera: true);
               Navigator.of(context).pop();
+
+              final files =
+                  await pickImage(source: ImageSource.camera, multiple: false);
+
+              if (files.isNotEmpty) {
+                final croppedFile = await cropImage(files.first.path);
+                if (croppedFile != null) {
+                  BlocProvider.of<UploadBloc>(context).add(
+                    StartUploadEvent(
+                      fileName: files.first.name,
+                      uploadTime: DateTime.now().microsecondsSinceEpoch,
+                      filePath: croppedFile.path,
+                      isServerDiagnosed: true,
+                    ),
+                  );
+                }
+              }
+
+              // Navigator.of(context).pop();
             },
             text: "Capture from Camera",
             iconPath: 'assets/icons/scan-icon.svg',
