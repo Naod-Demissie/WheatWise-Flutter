@@ -19,14 +19,14 @@ class PageNavigator extends StatefulWidget {
 }
 
 class _PageNavigatorState extends State<PageNavigator> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   final List<Widget> _screens = [
     const HomeScreen(),
     const ArticlesScreen(),
     const RecordScreen(),
     const SettingScreen(),
-    const TestScreen(),
+    TestScreen(),
   ];
 
   void _onTabTapped(int index) {

@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -26,6 +27,7 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   late SharedPreferences prefs;
+  bool _switchValue = false;
 
   String? profilePicPath;
 
@@ -35,16 +37,16 @@ class _SettingScreenState extends State<SettingScreen> {
     _loadSharedPreferences();
   }
 
-  // Future<void> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     setState(() {
-  //       profilePicPath = imageFile.path;
-  //     });
-  //   }
-  // }
+  Future<void> _loadSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    String? imagePath = prefs.getString('profilePicPath');
+    if (imagePath != null) {
+      final File imageFile = File(imagePath);
+      setState(() {
+        profilePicPath = imageFile.path;
+      });
+    }
+  }
 
   // Future<void> _loadSharedPreferences() async {
   //   prefs = await SharedPreferences.getInstance();
@@ -128,36 +130,36 @@ class _SettingScreenState extends State<SettingScreen> {
   //   }
   // }
 
-  Future<XFile?> _loadSharedPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    String? imagePath = prefs.getString('profilePicPath');
-    if (imagePath != null) {
-      final File imageFile = File(imagePath);
-      if (imageFile.existsSync()) {
-        final Directory tempDir = await getTemporaryDirectory();
-        final targetPath = '${tempDir.path}/${imageFile.path.split('/').last}';
+  // Future<XFile?> _loadSharedPreferences() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   String? imagePath = prefs.getString('profilePicPath');
+  //   if (imagePath != null) {
+  //     final File imageFile = File(imagePath);
+  //     if (imageFile.existsSync()) {
+  //       final Directory tempDir = await getTemporaryDirectory();
+  //       final targetPath = '${tempDir.path}/${imageFile.path.split('/').last}';
 
-        final XFile? compressedImageFile =
-            await FlutterImageCompress.compressAndGetFile(
-          imagePath,
-          targetPath,
-          quality: 50,
-          minHeight: 100,
-          minWidth: 100,
-        );
+  //       final XFile? compressedImageFile =
+  //           await FlutterImageCompress.compressAndGetFile(
+  //         imagePath,
+  //         targetPath,
+  //         quality: 50,
+  //         minHeight: 100,
+  //         minWidth: 100,
+  //       );
 
-        if (compressedImageFile != null) {
-          setState(() {
-            profilePicPath = compressedImageFile.path;
-          });
+  //       if (compressedImageFile != null) {
+  //         setState(() {
+  //           profilePicPath = compressedImageFile.path;
+  //         });
 
-          return compressedImageFile;
-        }
-      }
-    }
+  //         return compressedImageFile;
+  //       }
+  //     }
+  //   }
 
-    return null; // Add a default return value
-  }
+  //   return null; // Add a default return value
+  // }
 
   // Future<XFile> _loadSharedPreferences() async {
   //   prefs = await SharedPreferences.getInstance();
@@ -186,106 +188,106 @@ class _SettingScreenState extends State<SettingScreen> {
   //   }
   // }
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _loadSharedPreferences(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  // Background image
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/images/wheat-field-bg2.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  // White filter
-                  Container(
-                    color: Colors.white.withOpacity(0.5),
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: settingMenus(),
-                  ),
-                  Positioned(
-                    top: 80, //! change this to be in media query height
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor:
-                              profilePicPath != null ? null : Colors.purple,
-                          backgroundImage: profilePicPath != null
-                              ? FileImage(File(profilePicPath!))
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
-
   // @override
   // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: SafeArea(
-  //       child: Stack(
-  //         children: [
-  //           // Background image
-  //           Positioned.fill(
-  //             child: Image.asset(
-  //               'assets/images/wheat-field-bg2.png',
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //           // White filter
-  //           Container(
-  //             color: Colors.white.withOpacity(0.5),
-  //             width: double.infinity,
-  //             height: double.infinity,
-  //           ),
-  //           Align(
-  //             alignment: Alignment.bottomCenter,
-  //             child: settingMenus(),
-  //           ),
-  //           Positioned(
-  //             top: 80, //! change this to be in media query height
-  //             left: 0,
-  //             right: 0,
-  //             child: Column(
+  //   return FutureBuilder(
+  //     future: _loadSharedPreferences(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.done) {
+  //         return Scaffold(
+  //           body: SafeArea(
+  //             child: Stack(
   //               children: [
-  //                 CircleAvatar(
-  //                   radius: 60,
-  //                   backgroundColor:
-  //                       profilePicPath != null ? null : Colors.purple,
-  //                   backgroundImage: profilePicPath != null
-  //                       ? FileImage(File(profilePicPath!))
-  //                       : null,
+  //                 // Background image
+  //                 Positioned.fill(
+  //                   child: Image.asset(
+  //                     'assets/images/wheat-field-bg2.png',
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //                 // White filter
+  //                 Container(
+  //                   color: Colors.white.withOpacity(0.5),
+  //                   width: double.infinity,
+  //                   height: double.infinity,
+  //                 ),
+  //                 Align(
+  //                   alignment: Alignment.bottomCenter,
+  //                   child: settingMenus(),
+  //                 ),
+  //                 Positioned(
+  //                   top: 80, //! change this to be in media query height
+  //                   left: 0,
+  //                   right: 0,
+  //                   child: Column(
+  //                     children: [
+  //                       CircleAvatar(
+  //                         radius: 60,
+  //                         backgroundColor:
+  //                             profilePicPath != null ? null : Colors.purple,
+  //                         backgroundImage: profilePicPath != null
+  //                             ? FileImage(File(profilePicPath!))
+  //                             : null,
+  //                       ),
+  //                     ],
+  //                   ),
   //                 ),
   //               ],
   //             ),
   //           ),
-  //         ],
-  //       ),
-  //     ),
+  //         );
+  //       } else {
+  //         return const Center(child: CircularProgressIndicator());
+  //       }
+  //     },
   //   );
   // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Background image
+            Positioned.fill(
+              child: Image.asset(
+                'assets/images/wheat-field-bg2.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+            // White filter
+            Container(
+              color: Colors.white.withOpacity(0.5),
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: settingMenus(),
+            ),
+            Positioned(
+              top: 80, //! change this to be in media query height
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundColor:
+                        profilePicPath != null ? null : Colors.purple,
+                    backgroundImage: profilePicPath != null
+                        ? FileImage(File(profilePicPath!))
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   // @override
   // Widget build(BuildContext context) {
@@ -407,9 +409,49 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               const Divider(height: 0, thickness: 0.2),
               settingMenu(context, "Dark Mode",
-                  'assets/icons/dark-mode-icon.svg', () {}),
+                  'assets/icons/dark-mode-icon.svg', () {},
+                  trailing: Transform.scale(
+                    scale: 0.9,
+                    child: CupertinoSwitch(
+                      value: _switchValue,
+                      // activeColor: Colors.black,
+                      activeColor: kPrimaryColor,
+                      onChanged: (value) {
+                        setState(() {
+                          _switchValue = value;
+                        });
+                      },
+                    ),
+                  )),
               settingMenu(
-                  context, "Language", 'assets/icons/language-icon.svg', () {}),
+                context,
+                "Language",
+                'assets/icons/language-icon.svg',
+                () {},
+                trailing: DropdownButton<String>(
+                  dropdownColor: Colors.white,
+                  elevation: 6,
+                  value: 'English',
+                  onChanged: (String? value) {},
+                  items: ['አማርኛ', 'English']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'SF-Pro-Text',
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300,
+                          )),
+                    );
+                  }).toList(),
+                  underline: Container(
+                    height: 0,
+                    color: Colors.transparent,
+                  ),
+                ),
+              ),
               settingMenu(context, "Notification",
                   'assets/icons/notification-icon2.svg', () {}),
               const SizedBox(height: 20),
@@ -469,7 +511,12 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   Widget settingMenu(
-      BuildContext context, String title, String iconPath, Function()? onTap) {
+    BuildContext context,
+    String title,
+    String iconPath,
+    Function()? onTap, {
+    Widget? trailing,
+  }) {
     return SizedBox(
       height: 40,
       // color: Colors.red,
@@ -494,6 +541,8 @@ class _SettingScreenState extends State<SettingScreen> {
             //     : BlocProvider.of<ThemeBloc>(context).state.blackColor),
           ),
         ),
+
+        trailing: trailing,
       ),
     );
   }

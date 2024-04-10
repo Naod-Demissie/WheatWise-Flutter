@@ -1,226 +1,24 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:flutter/material.dart';
-// import 'package:image_cropper/image_cropper.dart';
-// import 'package:image_picker/image_picker.dart';
-
-// class TestScreen extends StatefulWidget {
-//   const TestScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<TestScreen> createState() => _TestScreenState();
-// }
-
-// final ImagePicker imagePicker = ImagePicker();
-// final ImageCropper imageCropper = ImageCropper();
-
-// File? _image;
-
-// class _TestScreenState extends State<TestScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () async {
-//             final file =
-//                 await imagePicker.pickImage(source: ImageSource.gallery);
-//             if (file != null) {
-//               final croppedFile = await cropImage(file.path);
-//               if (croppedFile != null) {
-//                 setState(() {
-//                   _image = File(croppedFile.path);
-//                 });
-//               }
-//             }
-//           },
-//           child: const Text("Choose from Gallery"),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Future<CroppedFile?> cropImage(String filePath) async {
-//     return await imageCropper.cropImage(
-//       sourcePath: filePath,
-//       aspectRatioPresets: [
-//         CropAspectRatioPreset.square,
-//         CropAspectRatioPreset.ratio3x2,
-//         CropAspectRatioPreset.original,
-//         CropAspectRatioPreset.ratio4x3,
-//         CropAspectRatioPreset.ratio16x9
-//       ],
-//       uiSettings: [
-//         AndroidUiSettings(
-//             toolbarTitle: 'Edit Photo',
-//             toolbarColor: Colors.deepOrange,
-//             toolbarWidgetColor: Colors.white,
-//             initAspectRatio: CropAspectRatioPreset.original,
-//             lockAspectRatio: false),
-//         IOSUiSettings(
-//           title: 'Edit Photo',
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class TestScreen extends StatefulWidget {
-//   const TestScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<TestScreen> createState() => _TestScreenState();
-// }
-
-// final ImagePicker imagePicker = ImagePicker();
-// final ImageCropper imageCropper = ImageCropper();
-
-// File? _image;
-
-// class _TestScreenState extends State<TestScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             _image == null
-//                 ? const Text('No image selected.')
-//                 : Image.file(_image!),
-//             ElevatedButton(
-//               onPressed: () async {
-//                 final file =
-//                     await imagePicker.pickImage(source: ImageSource.gallery);
-//                 if (file != null) {
-//                   final croppedFile = await cropImage(file.path);
-//                   if (croppedFile != null) {
-//                     setState(() {
-//                       _image = File(croppedFile.path);
-//                     });
-//                   }
-//                 }
-//               },
-//               child: const Text("Choose from Gallery"),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Future<CroppedFile?> cropImage(String filePath) async {
-//     return await imageCropper.cropImage(
-//       sourcePath: filePath,
-//       aspectRatioPresets: [
-//         CropAspectRatioPreset.ratio3x2,
-//         CropAspectRatioPreset.square,
-//         CropAspectRatioPreset.original,
-//         CropAspectRatioPreset.ratio4x3,
-//         CropAspectRatioPreset.ratio16x9
-//       ],
-//       uiSettings: [
-//         AndroidUiSettings(
-//             toolbarTitle: 'Edit Photo',
-//             toolbarColor: Colors.black,
-//             toolbarWidgetColor: Colors.white,
-//             statusBarColor: Colors.black,
-//             backgroundColor: Colors.black,
-//             activeControlsWidgetColor: const Color.fromRGBO(248, 147, 29, 1),
-//             cropFrameColor: Colors.black,
-//             initAspectRatio: CropAspectRatioPreset.original,
-//             lockAspectRatio: false),
-//         IOSUiSettings(
-//           title: 'Edit Photo',
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// import 'dart:io';
-
-// import 'package:flutter/material.dart';
-// import 'package:image_cropper/image_cropper.dart';
-// import 'package:image_picker/image_picker.dart';
-
-// class TestScreen extends StatefulWidget {
-//   const TestScreen({super.key});
-
-//   @override
-//   State<TestScreen> createState() => _TestScreenState();
-// }
-
-// final imagePicker = ImagePicker();
-// final imageCropper = ImageCropper();
-
-// File? _image;
-
-// Future<List<XFile>> pickImage({
-//   ImageSource source = ImageSource.gallery,
-//   bool multiple = false,
-// }) async {
-//   if (multiple) {
-//     return await imagePicker.pickMultiImage();
-//   }
-
-//   final file = await imagePicker.pickImage(source: source);
-//   if (file != null) return [file];
-//   return [];
-// }
-
-// Future<CroppedFile?> cropImage({
-//   required XFile file,
-//   CropStyle cropStyle = CropStyle.rectangle,
-// }) async {
-//   return await imageCropper.cropImage(
-//     cropStyle: cropStyle,
-//     sourcePath: file.path,
-//   );
-// }
-
-// class _TestScreenState extends State<TestScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () async {
-//             // await getImage(context, useCamera: false);
-
-//             final files = await pickImage(source: ImageSource.gallery);
-
-//             if (files.isNotEmpty) {
-//               final croppedFile = await cropImage(
-//                   file: files.first, cropStyle: CropStyle.rectangle);
-//               if (croppedFile != null) {
-//                 setState(() => _image = File(croppedFile.path));
-//               }
-//             }
-
-//             // Navigator.of(context).pop();
-//           },
-//           child: const Text("Choose from Gallery"),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:page_view_indicators/circle_page_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tflite_v2/tflite_v2.dart';
+
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
+import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 import 'package:wheatwise/features/records/file_upload/bloc/upload_bloc.dart';
 import 'package:wheatwise/features/records/file_upload/bloc/upload_event.dart';
-import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 import 'package:wheatwise/features/records/file_upload/bloc/upload_state.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
+import 'package:wheatwise/features/test_screen/components/bar_chart.dart';
+import 'package:wheatwise/features/test_screen/components/pie_chart.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -231,6 +29,13 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> {
   // int _currentPage = 0;
+  late SharedPreferences _prefs;
+  String? _profilePicPath;
+  String? _firstName;
+
+  String _label = '';
+  double _confidence = 0.0;
+  File? _filePath;
 
   List<String> assetPaths = [
     'assets/images/wheat-banner.jpg',
@@ -241,22 +46,34 @@ class _TestScreenState extends State<TestScreen> {
   final imagePicker = ImagePicker();
   final imageCropper = ImageCropper();
 
-  // File? _image;
+  final _controller = PageController();
+  final _currentPageNotifier = ValueNotifier<int>(0);
 
-  // Future<void> getImage(BuildContext context, {required bool useCamera}) async {
-  //   final source = useCamera ? ImageSource.camera : ImageSource.gallery;
-  //   final pickedFile = await imagePicker.pickImage(source: source);
-  //   if (pickedFile != null) {
-  //     BlocProvider.of<UploadBloc>(context).add(
-  //       StartUploadEvent(
-  //         fileName: pickedFile.name,
-  //         uploadTime: DateTime.now().microsecondsSinceEpoch,
-  //         filePath: pickedFile.path,
-  //         isServerDiagnosed: true,
-  //       ),
-  //     );
-  //   }
-  // }
+  String capitalize(String s) =>
+      s.isNotEmpty ? s[0].toUpperCase() + s.substring(1) : '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSharedPreferences();
+    _loadModel();
+  }
+
+  void _loadSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    String? profilePicPath = _prefs.getString('profilePicPath');
+    String? firstName = _prefs.getString('firstName');
+    setState(() {
+      _profilePicPath = profilePicPath;
+      _firstName = firstName;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Tflite.close();
+  }
 
   Future<List<XFile>> pickImage({
     ImageSource source = ImageSource.gallery,
@@ -299,6 +116,36 @@ class _TestScreenState extends State<TestScreen> {
     );
   }
 
+  Future<void> _loadModel() async {
+    await Tflite.loadModel(
+        model: "assets/model/MobilenetV3large.tflite",
+        labels: "assets/model/labels.txt",
+        numThreads: 1,
+        isAsset: true,
+        useGpuDelegate: false);
+  }
+
+  Future<void> classifyImage(String filePath) async {
+    var recognitions = await Tflite.runModelOnImage(
+      path: filePath,
+      imageMean: 0.0,
+      imageStd: 255.0,
+      numResults: 5,
+      threshold: 0.2,
+      asynch: true,
+    );
+
+    if (recognitions == null) return;
+
+    print(recognitions);
+
+    setState(() {
+      _filePath = File(filePath);
+      _confidence = (recognitions[0]['confidence'] * 100);
+      _label = recognitions[0]['label'].toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<UploadBloc, UploadState>(
@@ -319,13 +166,15 @@ class _TestScreenState extends State<TestScreen> {
             child: Column(
               children: [
                 // Profile Pic and Avatar
-                const Row(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Hello Naod',
-                      style: TextStyle(
+                      _firstName != null
+                          ? 'Hello ${capitalize(_firstName!)}'
+                          : 'Hello ',
+                      style: const TextStyle(
                         fontFamily: 'Clash Display',
                         fontWeight: FontWeight.w600,
                         fontSize: 26,
@@ -333,10 +182,18 @@ class _TestScreenState extends State<TestScreen> {
                       ),
                     ),
                     CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
                       radius: 30,
+                      backgroundColor:
+                          _profilePicPath != null ? null : Colors.grey,
+                      backgroundImage: _profilePicPath != null
+                          ? FileImage(File(_profilePicPath!))
+                          : null,
                     ),
+                    // const CircleAvatar(
+                    //   backgroundImage: NetworkImage(
+                    //       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                    //   radius: 30,
+                    // ),
                   ],
                 ),
 
@@ -355,10 +212,59 @@ class _TestScreenState extends State<TestScreen> {
 
                 // Wheatwise card
                 wheatwiseCard(assetPaths[2]),
-
                 const SizedBox(height: 20),
-                // Detect Now Button
 
+                // Diagnosis Card
+                // SizedBox(
+                //   height: 250, // Set a fixed height for the PageView
+                //   child: PageView.builder(
+                //     itemCount: 2,
+                //     itemBuilder: (context, index) {
+                //       return Card(
+                //         elevation: 5,
+                //         child:
+                //             index == 0 ? const PieRadius() : const BarChart(),
+                //       );
+                //     },
+                //   ),
+                // ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      child: PageView.builder(
+                        controller: _controller,
+                        itemCount: 2,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 5,
+                            child: index == 0
+                                ? const PieRadius()
+                                : const BarChart(),
+                          );
+                        },
+                        onPageChanged: (int index) {
+                          _currentPageNotifier.value = index;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CirclePageIndicator(
+                        size: 8.0,
+                        selectedSize: 10.0,
+                        itemCount: 2,
+                        currentPageNotifier: _currentPageNotifier,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // const Card(elevation: 5, child: BarChart()),
+                // const Card(elevation: 5, child: PieRadius()),
+                const SizedBox(height: 20),
+
+                // Detect Now Button
                 customElevatedButton(
                   onPressed: () => showModalBottomSheet(
                       shape: const RoundedRectangleBorder(
@@ -369,6 +275,35 @@ class _TestScreenState extends State<TestScreen> {
                   text: "Detect Now",
                   iconPath: 'assets/icons/scan-icon.svg',
                 ),
+
+                // // for testing
+                // Container(
+                //   height: 100,
+                //   width: 100,
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: _filePath == null
+                //       ? const Text('')
+                //       : Image.file(
+                //           _filePath!,
+                //           fit: BoxFit.fill,
+                //         ),
+                // ),
+
+                // Text(
+                //   "The Accuracy is ${_confidence.toStringAsFixed(0)}%",
+                //   style: const TextStyle(
+                //     fontSize: 18,
+                //   ),
+                // ),
+                // Text(
+                //   "The class is $_label",
+                //   style: const TextStyle(
+                //     fontSize: 18,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -405,14 +340,15 @@ class _TestScreenState extends State<TestScreen> {
               if (files.isNotEmpty) {
                 final croppedFile = await cropImage(files.first.path);
                 if (croppedFile != null) {
-                  BlocProvider.of<UploadBloc>(context).add(
-                    StartUploadEvent(
-                      fileName: files.first.name,
-                      uploadTime: DateTime.now().microsecondsSinceEpoch,
-                      filePath: croppedFile.path,
-                      isServerDiagnosed: true,
-                    ),
-                  );
+                  classifyImage(croppedFile.path);
+                  // BlocProvider.of<UploadBloc>(context).add(
+                  //   StartUploadEvent(
+                  //     fileName: files.first.name,
+                  //     uploadTime: DateTime.now().microsecondsSinceEpoch,
+                  //     filePath: croppedFile.path,
+                  //     isServerDiagnosed: true,
+                  //   ),
+                  // );
                 }
               }
             },
@@ -506,11 +442,6 @@ class _TestScreenState extends State<TestScreen> {
           const SizedBox(width: 5),
           Text(
             text,
-            // style: GoogleFonts.montserrat(
-            //   fontSize: 18.0,
-            //   color: Colors.white,
-            //   fontWeight: FontWeight.w800,
-            // ),
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'SF-Pro-Text',

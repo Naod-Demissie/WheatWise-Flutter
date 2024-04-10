@@ -203,8 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const PageNavigator(),
               ),
               (route) => false);
-        }
-        if (loginState is LoginFailureState) {
+        } else if (loginState is LoginFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Login Failed!'),

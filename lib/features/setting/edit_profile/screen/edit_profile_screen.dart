@@ -10,6 +10,7 @@ import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_event.dart';
+import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_state.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -53,6 +54,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<CroppedFile?> cropImage(String filePath) async {
     return await imageCropper.cropImage(
+      maxHeight: 200,
+      maxWidth: 200,
       sourcePath: filePath,
       aspectRatioPresets: [
         CropAspectRatioPreset.ratio3x2,
@@ -137,6 +140,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               margin: const EdgeInsets.all(10),
               child: InkWell(
                 onTap: () => Navigator.of(context).pop(),
+                // onTap: () => Navigator.pop(context, newProfilePicPath),
                 child: Icon(
                   Icons.close,
                   size: 20,
@@ -562,155 +566,179 @@ class _EditProfileFormState extends State<EditProfileForm> {
     return BlocBuilder<CheckAuthBloc, CheckAuthState>(
       builder: (context, checkAuthState) {
         if (checkAuthState is CheckAuthSuccessState) {
-          return Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                surfaceTintColor: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
+          return BlocConsumer<EditProfileBloc, EditProfileState>(
+            listener: (context, editProfileState) {
+              if (editProfileState is EditProfileSuccessState) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Your profile updated successfully!'),
+                  ),
+                );
+              }
+              if (editProfileState is EditProfileFailedState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Profile update Failed!'),
+                  ),
+                );
+              }
+            },
+            builder: (context, editProfileState) {
+              return Form(
+                key: _formKey,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    surfaceTintColor: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: customTextField(
-                                validateMinimumLength,
-                                _prefixController,
-                                hintText: 'Prefix',
-                                labelText: 'Prefix',
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _prefixController,
+                                    hintText: 'Prefix',
+                                    labelText: 'Prefix',
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  flex: 4,
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _firstNameController,
+                                    hintText: 'First Name',
+                                    labelText: 'First Name',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _lastNameController,
+                                    hintText: 'Last Name',
+                                    labelText: 'Last Name',
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _userNameController,
+                                    hintText: 'Username',
+                                    labelText: 'Username',
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CustomDropdownMenu(
+                                items: regionItems,
+                                labelText: 'Region',
+                                selectedItem: _regionController,
+                                onChanged: (item) {
+                                  setState(() {
+                                    _regionController = item!;
+                                  });
+                                },
                               ),
                             ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              flex: 4,
-                              child: customTextField(
-                                validateMinimumLength,
-                                _firstNameController,
-                                hintText: 'First Name',
-                                labelText: 'First Name',
-                              ),
+
+                            // SizedBox(
+                            //   width: double.infinity,
+                            //   child: customDropdownMenu(
+                            //     regionItems,
+                            //     'Region',
+                            //     _regionController,
+                            //   ),
+                            // ),
+
+                            const SizedBox(height: 20),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _zoneController,
+                                    hintText: 'Zone',
+                                    labelText: 'Zone',
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  child: customTextField(
+                                    validateMinimumLength,
+                                    _woredaController,
+                                    hintText: 'Woreda',
+                                    labelText: 'Woreda',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Buttons
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: customElevatedButton(() {
+                                    if (_formKey.currentState!.validate()) {
+                                      BlocProvider.of<EditProfileBloc>(context)
+                                          .add(EditProfileEvent(
+                                        username: _userNameController.text,
+                                        prefix: _prefixController.text,
+                                        firstName: _firstNameController.text,
+                                        lastName: _lastNameController.text,
+                                        region: _regionController,
+                                        zone: _zoneController.text,
+                                        woreda: _woredaController.text,
+                                      ));
+                                    }
+                                  },
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.black),
+                                      'Save'),
+                                ),
+                                const SizedBox(width: 20),
+                                Expanded(
+                                  child: customElevatedButton(() {
+                                    Navigator.of(context).pop();
+                                  },
+                                      MaterialStateProperty.all<Color>(
+                                          const Color.fromRGBO(
+                                              248, 147, 29, 1)),
+                                      'Cancel'),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-
-                        Row(
-                          children: [
-                            Expanded(
-                              child: customTextField(
-                                validateMinimumLength,
-                                _lastNameController,
-                                hintText: 'Last Name',
-                                labelText: 'Last Name',
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: customTextField(
-                                validateMinimumLength,
-                                _userNameController,
-                                hintText: 'Username',
-                                labelText: 'Username',
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: double.infinity,
-                          child: CustomDropdownMenu(
-                            items: regionItems,
-                            labelText: 'Region',
-                            selectedItem: _regionController,
-                            onChanged: (item) {
-                              setState(() {
-                                _regionController = item!;
-                              });
-                            },
-                          ),
-                        ),
-
-                        // SizedBox(
-                        //   width: double.infinity,
-                        //   child: customDropdownMenu(
-                        //     regionItems,
-                        //     'Region',
-                        //     _regionController,
-                        //   ),
-                        // ),
-
-                        const SizedBox(height: 20),
-
-                        Row(
-                          children: [
-                            Expanded(
-                              child: customTextField(
-                                validateMinimumLength,
-                                _zoneController,
-                                hintText: 'Zone',
-                                labelText: 'Zone',
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: customTextField(
-                                validateMinimumLength,
-                                _woredaController,
-                                hintText: 'Woreda',
-                                labelText: 'Woreda',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        // Buttons
-                        Row(
-                          children: [
-                            Expanded(
-                              child: customElevatedButton(() {
-                                if (_formKey.currentState!.validate()) {
-                                  BlocProvider.of<EditProfileBloc>(context)
-                                      .add(EditProfileEvent(
-                                    username: _userNameController.text,
-                                    prefix: _prefixController.text,
-                                    firstName: _firstNameController.text,
-                                    lastName: _lastNameController.text,
-                                    region: _regionController,
-                                    zone: _zoneController.text,
-                                    woreda: _woredaController.text,
-                                  ));
-                                }
-                              }, MaterialStateProperty.all<Color>(Colors.black),
-                                  'Save'),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: customElevatedButton(() {
-                                Navigator.of(context).pop();
-                              },
-                                  MaterialStateProperty.all<Color>(
-                                      const Color.fromRGBO(248, 147, 29, 1)),
-                                  'Cancel'),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         } else if (checkAuthState is CheckAuthInitialState) {
           BlocProvider.of<CheckAuthBloc>(context).add(CheckAuthEvent());
