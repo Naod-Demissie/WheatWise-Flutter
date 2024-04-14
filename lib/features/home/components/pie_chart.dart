@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
-import 'package:wheatwise/features/theme/bloc/theme_state.dart';
 
 class ChartSampleData {
   final String x;

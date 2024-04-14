@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,6 +19,8 @@ import 'package:wheatwise/features/records/mobile_diagnosis/bloc/mobile_diagnosi
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
 import 'package:wheatwise/features/home/components/bar_chart.dart';
 import 'package:wheatwise/features/home/components/pie_chart.dart';
+import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
+import 'package:wheatwise/features/theme/bloc/theme_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -153,93 +153,109 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context) => const DiagnosisDetailScreen()));
         }
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Profile Pic and Avatar
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _firstName != null
-                          ? 'Hello ${capitalize(_firstName!)}'
-                          : 'Hello ',
-                      style: const TextStyle(
-                        fontFamily: 'Clash Display',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 26,
-                        color: Colors.black,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return SafeArea(
+            child: Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Profile Pic and Avatar
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _firstName != null
+                                ? 'Hello ${capitalize(_firstName!)}'
+                                : 'Hello ',
+                            style: TextStyle(
+                              fontFamily: 'Clash Display',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 26,
+                              color: BlocProvider.of<ThemeBloc>(context)
+                                  .state
+                                  .textColor,
+                              // color: Colors.black,
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor:
+                                _profilePicPath != null ? null : Colors.grey,
+                            backgroundImage: _profilePicPath != null
+                                ? FileImage(File(_profilePicPath!))
+                                : null,
+                          ),
+                        ],
                       ),
-                    ),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor:
-                          _profilePicPath != null ? null : Colors.grey,
-                      backgroundImage: _profilePicPath != null
-                          ? FileImage(File(_profilePicPath!))
-                          : null,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                // Wheatwise card
-                wheatwiseCard(assetPaths[2]),
-                const SizedBox(height: 20),
+                      // Wheatwise card
+                      wheatwiseCard(assetPaths[2], themeState),
+                      const SizedBox(height: 20),
 
-                // Diagnosis statistics Card
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 250,
-                      child: PageView.builder(
-                        controller: _controller,
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            elevation: 5,
-                            child: index == 0
-                                ? const PieRadius()
-                                : const BarChart(),
-                          );
-                        },
-                        onPageChanged: (int index) {
-                          _currentPageNotifier.value = index;
-                        },
+                      // Diagnosis statistics Card
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 250,
+                            child: PageView.builder(
+                              controller: _controller,
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  color: BlocProvider.of<ThemeBloc>(context)
+                                      .state
+                                      .cardColor,
+                                  elevation:
+                                      themeState is DarkThemeState ? 0 : 3,
+                                  child: index == 0
+                                      ? const PieRadius()
+                                      : const BarChart(),
+                                );
+                              },
+                              onPageChanged: (int index) {
+                                _currentPageNotifier.value = index;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CirclePageIndicator(
+                              size: 8.0,
+                              selectedSize: 10.0,
+                              itemCount: 2,
+                              currentPageNotifier: _currentPageNotifier,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CirclePageIndicator(
-                        size: 8.0,
-                        selectedSize: 10.0,
-                        itemCount: 2,
-                        currentPageNotifier: _currentPageNotifier,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-                // Detect Now Button
-                customElevatedButton(
-                  onPressed: () => showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(12))),
-                      context: context,
-                      builder: (context) => detectNowPopup()),
-                  text: "Detect Now",
-                  iconPath: 'assets/icons/scan-icon.svg',
+                      // Detect Now Button
+                      customElevatedButton(
+                        onPressed: () => showModalBottomSheet(
+                            backgroundColor: BlocProvider.of<ThemeBloc>(context)
+                                .state
+                                .backgroundColor,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(12))),
+                            context: context,
+                            builder: (context) => detectNowPopup()),
+                        text: "Detect Now",
+                        iconPath: 'assets/icons/scan-icon.svg',
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -250,13 +266,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             'Detect disease using',
             style: TextStyle(
               fontFamily: 'Clash Display',
               fontWeight: FontWeight.w600,
               fontSize: 18,
-              color: Colors.black,
+              color: BlocProvider.of<ThemeBloc>(context).state.textColor,
             ),
           ),
           const SizedBox(height: 15),
@@ -296,13 +312,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 15),
 
-          const Text(
+          Text(
             'or',
             style: TextStyle(
               fontFamily: 'Clash Display',
               fontWeight: FontWeight.w500,
               fontSize: 16,
-              color: Colors.black,
+              color: BlocProvider.of<ThemeBloc>(context).state.textColor,
             ),
           ),
           const SizedBox(height: 15),
@@ -390,9 +406,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget wheatwiseCard(String assetPaths) {
+  Widget wheatwiseCard(String assetPaths, ThemeState themeState) {
     return Card(
-      elevation: 5,
+      elevation: themeState is DarkThemeState ? 0 : 3,
       child: Stack(
         children: [
           // Gradient
