@@ -16,6 +16,8 @@ import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
 import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
 import 'package:wheatwise/features/resources/constants.dart';
 import 'package:wheatwise/features/setting/edit_profile/screen/edit_profile_screen.dart';
+import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
+import 'package:wheatwise/features/theme/bloc/theme_event.dart';
 import 'term_and_conditions_dialog.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -47,201 +49,6 @@ class _SettingScreenState extends State<SettingScreen> {
       });
     }
   }
-
-  // Future<void> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     final XFile? compressedImageFile =
-  //         await FlutterImageCompress.compressAndGetFile(
-  //       imageFile.path,
-  //       imageFile.path,
-  //       quality: 50,
-  //       minHeight: 100,
-  //       minWidth: 100,
-  //     );
-  //     if (compressedImageFile != null) {
-  //       setState(() {
-  //         profilePicPath = compressedImageFile.path;
-  //       });
-  //     }
-  //   }
-  // }
-
-  // Future<void> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     if (imageFile.existsSync()) {
-  //       final XFile? compressedImageFile =
-  //           await FlutterImageCompress.compressAndGetFile(
-  //         imageFile.path,
-  //         imageFile.path,
-  //         quality: 50,
-  //         minHeight: 100,
-  //         minWidth: 100,
-  //       );
-  //       if (compressedImageFile != null) {
-  //         setState(() {
-  //           profilePicPath = compressedImageFile.path;
-  //         });
-  //       } else {
-  //         print('Failed to compress image');
-  //       }
-  //     } else {
-  //       print('Image file does not exist');
-  //     }
-  //   } else {
-  //     print('Image path is null');
-  //   }
-  // }
-
-  // Future<void> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     if (imageFile.existsSync()) {
-  //       final Directory tempDir = await getTemporaryDirectory();
-  //       final String tempPath =
-  //           '${tempDir.path}/${imageFile.path.split('/').last}';
-  //       final XFile? compressedImageFile =
-  //           await FlutterImageCompress.compressAndGetFile(
-  //         imageFile.path,
-  //         tempPath,
-  //         quality: 50,
-  //         minHeight: 100,
-  //         minWidth: 100,
-  //       );
-  //       if (compressedImageFile != null) {
-  //         setState(() {
-  //           profilePicPath = compressedImageFile.path;
-  //         });
-  //       } else {
-  //         print('Failed to compress image');
-  //       }
-  //     } else {
-  //       print('Image file does not exist');
-  //     }
-  //   } else {
-  //     print('Image path is null');
-  //   }
-  // }
-
-  // Future<XFile?> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     if (imageFile.existsSync()) {
-  //       final Directory tempDir = await getTemporaryDirectory();
-  //       final targetPath = '${tempDir.path}/${imageFile.path.split('/').last}';
-
-  //       final XFile? compressedImageFile =
-  //           await FlutterImageCompress.compressAndGetFile(
-  //         imagePath,
-  //         targetPath,
-  //         quality: 50,
-  //         minHeight: 100,
-  //         minWidth: 100,
-  //       );
-
-  //       if (compressedImageFile != null) {
-  //         setState(() {
-  //           profilePicPath = compressedImageFile.path;
-  //         });
-
-  //         return compressedImageFile;
-  //       }
-  //     }
-  //   }
-
-  //   return null; // Add a default return value
-  // }
-
-  // Future<XFile> _loadSharedPreferences() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   String? imagePath = prefs.getString('profilePicPath');
-  //   if (imagePath != null) {
-  //     final File imageFile = File(imagePath);
-  //     if (imageFile.existsSync()) {
-  //       final Directory tempDir = await getTemporaryDirectory();
-  //       final targetPath = '${tempDir.path}/${imageFile.path.split('/').last}';
-
-  //       final XFile? compressedImageFile =
-  //           await FlutterImageCompress.compressAndGetFile(
-  //         imagePath,
-  //         targetPath,
-  //         quality: 50,
-  //         minHeight: 100,
-  //         minWidth: 100,
-  //       );
-
-  //       setState(() {
-  //         profilePicPath = compressedImageFile!.path;
-  //       });
-
-  //       return XFile(compressedImageFile!.path);
-  //     }
-  //   }
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return FutureBuilder(
-  //     future: _loadSharedPreferences(),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         return Scaffold(
-  //           body: SafeArea(
-  //             child: Stack(
-  //               children: [
-  //                 // Background image
-  //                 Positioned.fill(
-  //                   child: Image.asset(
-  //                     'assets/images/wheat-field-bg2.png',
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //                 // White filter
-  //                 Container(
-  //                   color: Colors.white.withOpacity(0.5),
-  //                   width: double.infinity,
-  //                   height: double.infinity,
-  //                 ),
-  //                 Align(
-  //                   alignment: Alignment.bottomCenter,
-  //                   child: settingMenus(),
-  //                 ),
-  //                 Positioned(
-  //                   top: 80, //! change this to be in media query height
-  //                   left: 0,
-  //                   right: 0,
-  //                   child: Column(
-  //                     children: [
-  //                       CircleAvatar(
-  //                         radius: 60,
-  //                         backgroundColor:
-  //                             profilePicPath != null ? null : Colors.purple,
-  //                         backgroundImage: profilePicPath != null
-  //                             ? FileImage(File(profilePicPath!))
-  //                             : null,
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       } else {
-  //         return const Center(child: CircularProgressIndicator());
-  //       }
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -288,61 +95,6 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: SafeArea(
-  //       child: Stack(children: [
-  //         // Background image
-  //         Positioned.fill(
-  //           child: Image.asset(
-  //             'assets/images/wheat-field-bg2.png',
-  //             fit: BoxFit.cover,
-  //           ),
-  //         ),
-
-  //         // White filter
-  //         Container(
-  //           color: Colors.white.withOpacity(0.5),
-  //           width: double.infinity,
-  //           height: double.infinity,
-  //         ),
-
-  //         Align(
-  //           alignment: Alignment.bottomCenter,
-  //           child: settingMenus(),
-  //         ),
-  //         // Positioned(
-
-  //         //   // bottom: 100,
-  //         //   top: 160, //! change this to be in media query height
-  //         //   left: 0,
-  //         //   right: 0,
-  //         //   child: settingMenus(),
-  //         // ),
-  //         Positioned(
-  //           // bottom: 100,
-  //           top: 80, //! change this to be in media query height
-  //           left: 0,
-  //           right: 0,
-  //           child: Column(
-  //             children: [
-  //               CircleAvatar(
-  //                 radius: 60,
-  //                 backgroundColor:
-  //                     profilePicPath != null ? null : Colors.purple,
-  //                 backgroundImage: profilePicPath != null
-  //                     ? FileImage(File(profilePicPath!))
-  //                     : null,
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ]),
-  //     ),
-  //   );
-  // }
 
   Widget settingMenus() {
     return Center(
@@ -408,8 +160,10 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
               const Divider(height: 0, thickness: 0.2),
-              settingMenu(context, "Dark Mode",
-                  'assets/icons/dark-mode-icon.svg', () {},
+              settingMenu(
+                  context, "Dark Mode", 'assets/icons/dark-mode-icon.svg', () {
+                BlocProvider.of<ThemeBloc>(context).add(ChangeThemeEvent());
+              },
                   trailing: Transform.scale(
                     scale: 0.9,
                     child: CupertinoSwitch(
@@ -417,6 +171,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       // activeColor: Colors.black,
                       activeColor: kPrimaryColor,
                       onChanged: (value) {
+                        // BlocProvider.of<ThemeBloc>(context).add(ChangeThemeEvent());
+
                         setState(() {
                           _switchValue = value;
                         });

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 
 class ChartSampleData {
   final String? x;
@@ -58,59 +60,59 @@ class _BarChartState extends State<BarChart> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: SfCartesianChart(
-        plotAreaBorderWidth: 0,
-        title: const ChartTitle(
-          text: 'Diagnosis Statistics',
-          alignment: ChartAlignment.near,
-          textStyle: TextStyle(
-            fontFamily: 'Clash Display',
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-            color: Colors.black,
-          ),
+    return SfCartesianChart(
+      tooltipBehavior: TooltipBehavior(enable: true),
+      plotAreaBorderColor: Colors.transparent,
+      plotAreaBorderWidth: 0,
+      title: ChartTitle(
+        text: 'Diagnosis Statistics',
+        alignment: ChartAlignment.near,
+        textStyle: TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w600,
+          fontSize: 18,
+          color: BlocProvider.of<ThemeBloc>(context).state.textColor,
         ),
-        legend: const Legend(
-          isVisible: true,
-          position: LegendPosition.top,
-          alignment: ChartAlignment.far,
-          textStyle: TextStyle(
-            fontFamily: 'Clash Display',
-            fontWeight: FontWeight.w400,
-            fontSize: 15,
-            color: Colors.black,
-          ),
-        ),
-        primaryXAxis: const CategoryAxis(
-          labelStyle: TextStyle(
-            fontFamily: 'Clash Display',
-            fontWeight: FontWeight.w400,
-            fontSize: 15,
-            color: Colors.black,
-          ),
-        ),
-        primaryYAxis: NumericAxis(
-          isVisible: false,
-          majorGridLines: const MajorGridLines(width: 0),
-          numberFormat: NumberFormat.compact(),
-          rangePadding: ChartRangePadding.auto,
-        ),
-        series: <BarSeries<ChartSampleData, String>>[
-          BarSeries<ChartSampleData, String>(
-              dataSource: chartData!,
-              xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-              yValueMapper: (ChartSampleData sales, _) => sales.y,
-              name: 'Correct'),
-          BarSeries<ChartSampleData, String>(
-              dataSource: chartData!,
-              xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-              yValueMapper: (ChartSampleData sales, _) =>
-                  sales.secondSeriesYValue,
-              name: 'Incorrect'),
-        ],
       ),
+      legend: Legend(
+        isVisible: true,
+        position: LegendPosition.top,
+        alignment: ChartAlignment.far,
+        textStyle: TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w400,
+          fontSize: 15,
+          color: BlocProvider.of<ThemeBloc>(context).state.textColor,
+        ),
+      ),
+      primaryXAxis: CategoryAxis(
+        labelStyle: TextStyle(
+          fontFamily: 'Clash Display',
+          fontWeight: FontWeight.w400,
+          fontSize: 15,
+          color: BlocProvider.of<ThemeBloc>(context).state.textColor,
+        ),
+      ),
+      primaryYAxis: NumericAxis(
+        isVisible: false,
+        majorGridLines: const MajorGridLines(width: 0),
+        numberFormat: NumberFormat.compact(),
+        rangePadding: ChartRangePadding.auto,
+      ),
+      series: <BarSeries<ChartSampleData, String>>[
+        BarSeries<ChartSampleData, String>(
+          dataSource: chartData!,
+          xValueMapper: (ChartSampleData sales, _) => sales.x as String,
+          yValueMapper: (ChartSampleData sales, _) => sales.y,
+          name: 'Correct',
+        ),
+        BarSeries<ChartSampleData, String>(
+            dataSource: chartData!,
+            xValueMapper: (ChartSampleData sales, _) => sales.x as String,
+            yValueMapper: (ChartSampleData sales, _) =>
+                sales.secondSeriesYValue,
+            name: 'Incorrect'),
+      ],
     );
   }
 

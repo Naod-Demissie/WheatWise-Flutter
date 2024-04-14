@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
+import 'package:wheatwise/features/theme/bloc/theme_state.dart';
 
 class ChartSampleData {
   final String x;
@@ -14,27 +17,24 @@ class PieRadius extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: _buildRadiusPieChart(),
-    );
+    return _buildRadiusPieChart(context);
   }
 
-  SfCircularChart _buildRadiusPieChart() {
+  SfCircularChart _buildRadiusPieChart(BuildContext context) {
     return SfCircularChart(
-      title: const ChartTitle(
+      title: ChartTitle(
         text: 'Diagnosis Statistics',
         alignment: ChartAlignment.near,
         textStyle: TextStyle(
           fontFamily: 'Clash Display',
           fontWeight: FontWeight.w600,
           fontSize: 18,
-          color: Colors.black,
+          color: BlocProvider.of<ThemeBloc>(context).state.textColor,
         ),
       ),
       series: _getRadiusPieSeries(),
       tooltipBehavior: TooltipBehavior(enable: true),
-      legend: const Legend(
+      legend: Legend(
         isVisible: true,
         overflowMode: LegendItemOverflowMode.wrap,
         position: LegendPosition.left,
@@ -43,7 +43,7 @@ class PieRadius extends StatelessWidget {
           fontFamily: 'Clash Display',
           fontWeight: FontWeight.w400,
           fontSize: 15,
-          color: Colors.black,
+          color: BlocProvider.of<ThemeBloc>(context).state.textColor,
         ),
       ),
     );

@@ -16,6 +16,9 @@ import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_deta
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:wheatwise/features/splash/screens/splash_screen.dart';
+import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
+import 'package:wheatwise/features/theme/bloc/theme_state.dart';
+import 'package:wheatwise/features/theme/theme.dart';
 import 'features/auth/login/bloc/login_bloc.dart';
 import 'features/records/recent_records/bloc/bloc.dart';
 
@@ -59,20 +62,70 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => EditProfileBloc()),
         BlocProvider(create: (context) => ForgetPasswordBloc()),
         BlocProvider(create: (context) => MobileDiagnosisBloc()),
+        BlocProvider(create: (context) => ThemeBloc()),
       ],
-      child: const MaterialApp(
-        title: 'WheatWise',
-        // theme: ThemeData(
-        //   colorScheme: const ColorScheme.light(),
-        //   useMaterial3: true,
-        // ),
-        home: SplashScreen(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp(
+            title: 'WheatWise',
+            // theme: ThemeData(
+            //   colorScheme: const ColorScheme.light(),
+            //   useMaterial3: true,
+            // ),
+            home: const SplashScreen(),
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode:
+                themeState is DarkThemeState ? ThemeMode.dark : ThemeMode.light,
 
-        debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
     );
   }
 }
+
+// class MyApp extends StatelessWidget {
+//   final SharedPreferences prefs;
+
+//   const MyApp({
+//     super.key,
+//     required this.prefs,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiBlocProvider(
+//       providers: [
+//         BlocProvider(create: (context) => LoginBloc()),
+//         BlocProvider(create: (context) => LogoutBloc()),
+//         BlocProvider(create: (context) => CheckAuthBloc(prefs: prefs)),
+//         BlocProvider(create: (context) => ChangePasswordBloc()),
+//         BlocProvider(create: (context) => UploadBloc()),
+//         BlocProvider(create: (context) => DiagnosisDetailBloc()),
+//         BlocProvider(create: (context) => RecentRecordsBloc()),
+//         BlocProvider(create: (context) => DeleteRecordBloc()),
+//         BlocProvider(create: (context) => BookmarkBloc()),
+//         BlocProvider(create: (context) => ManualDiagnosisBloc()),
+//         BlocProvider(create: (context) => EditProfileBloc()),
+//         BlocProvider(create: (context) => ForgetPasswordBloc()),
+//         BlocProvider(create: (context) => MobileDiagnosisBloc()),
+//         BlocProvider(create: (context) => ThemeBloc()),
+//       ],
+//       child: const MaterialApp(
+//         title: 'WheatWise',
+//         // theme: ThemeData(
+//         //   colorScheme: const ColorScheme.light(),
+//         //   useMaterial3: true,
+//         // ),
+//         home: SplashScreen(),
+
+//         debugShowCheckedModeBanner: false,
+//       ),
+//     );
+//   }
+// }
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();

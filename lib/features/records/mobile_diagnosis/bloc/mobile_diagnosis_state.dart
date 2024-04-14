@@ -1,35 +1,17 @@
-import 'package:equatable/equatable.dart';
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 
-abstract class MobileDiagnosisState extends Equatable {
-  const MobileDiagnosisState();
-}
+abstract class MobileDiagnosisState {}
 
-class InitialMobileDiagnosisState extends MobileDiagnosisState {
-  @override
-  List<Object?> get props => [];
-}
+class InitialMobileDiagnosisState extends MobileDiagnosisState {}
 
-class MobileDiagnosisLoadingState extends MobileDiagnosisState {
-  @override
-  List<Object?> get props => [];
-}
+class MobileDiagnosisLoadingState extends MobileDiagnosisState {}
 
 class MobileDiagnosisSuccessState extends MobileDiagnosisState {
   final List<Diagnosis> diagnosis;
 
-  const MobileDiagnosisSuccessState(this.diagnosis);
-
-  @override
-  List<Object?> get props => [diagnosis];
+  MobileDiagnosisSuccessState(this.diagnosis);
 }
 
-class ImageNotLeafState extends MobileDiagnosisState {
-  @override
-  List<Object?> get props => [];
-}
+class ImageNotLeafState extends MobileDiagnosisState {}
 
-class MobileDiagnosisFailureState extends MobileDiagnosisState {
-  @override
-  List<Object?> get props => [];
-}
+class MobileDiagnosisFailureState extends MobileDiagnosisState {}
