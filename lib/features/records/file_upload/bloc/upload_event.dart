@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-abstract class UploadEvent extends Equatable {
+abstract class UploadEvent {
   const UploadEvent();
 }
 
@@ -16,12 +14,4 @@ class StartUploadEvent extends UploadEvent {
     required this.filePath,
     required this.isServerDiagnosed,
   });
-
-  @override
-  List<Object> get props => [
-        fileName,
-        uploadTime,
-        filePath,
-        isServerDiagnosed,
-      ];
 }

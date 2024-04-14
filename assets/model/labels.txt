@@ -1,5 +1,5 @@
-Septoria
-Healthy
 Brown Rust
-Yellow Rust
+Healthy
 Mildew
+Septoria
+Yellow Rust
