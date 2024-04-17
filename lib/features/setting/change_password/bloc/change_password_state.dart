@@ -1,9 +1,9 @@
-abstract class ChangePasswordStates {}
+abstract class ChangePasswordState {}
 
-class ChangePasswordInitialState extends ChangePasswordStates {}
+class ChangePasswordInitialState extends ChangePasswordState {}
 
-class LoadingChangePasswordState extends ChangePasswordStates {}
+class LoadingChangePasswordState extends ChangePasswordState {}
 
-class ChangePasswordSuccessState extends ChangePasswordStates {}
+class ChangePasswordSuccessState extends ChangePasswordState {}
 
-class ChangePasswordFailedState extends ChangePasswordStates {}
+class ChangePasswordFailedState extends ChangePasswordState {}

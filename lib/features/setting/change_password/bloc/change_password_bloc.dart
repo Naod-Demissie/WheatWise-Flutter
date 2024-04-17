@@ -4,7 +4,7 @@ import 'package:wheatwise/features/setting/change_password/bloc/change_password_
 import 'package:wheatwise/features/setting/change_password/repository/change_password_repository.dart';
 
 class ChangePasswordBloc
-    extends Bloc<ChangePasswordEvents, ChangePasswordStates> {
+    extends Bloc<ChangePasswordEvents, ChangePasswordState> {
   final ChangePasswordRepository changePasswordRepository =
       ChangePasswordRepository();
 

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -123,10 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
   classifyImage(String filePath) async {
     List<dynamic>? recognitions = await Tflite.runModelOnImage(
       path: filePath,
-      imageMean: 0.0,
-      imageStd: 255.0,
+      imageMean: 117.0,
+      imageStd: 1.0,
       numResults: 5,
-      threshold: 0.1,
+      threshold: 0,
       asynch: true,
     );
 

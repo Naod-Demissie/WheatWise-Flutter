@@ -20,7 +20,7 @@ class _PageNavigatorState extends State<PageNavigator> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const ArticlesScreen(),
+    const ArticleScreen(),
     const RecordScreen(),
     const SettingScreen(),
     TestScreen(),
