@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
@@ -11,6 +12,7 @@ void showTermsAndConditionsDialog(BuildContext context) {
       return BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, themeState) {
           return AlertDialog(
+            surfaceTintColor: Colors.grey.shade700,
             backgroundColor:
                 BlocProvider.of<ThemeBloc>(context).state.backgroundColor,
             contentPadding: const EdgeInsets.all(16),
@@ -172,9 +174,28 @@ void showTermsAndConditionsDialog(BuildContext context) {
                     textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Close'),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 3),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        color: Colors.black,
+                      ),
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'SF-Pro-Text',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

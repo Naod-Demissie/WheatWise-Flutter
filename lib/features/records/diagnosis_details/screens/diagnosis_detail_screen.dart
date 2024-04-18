@@ -52,12 +52,13 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
         // Title
         Container(
           margin: const EdgeInsets.only(top: 20, bottom: 10),
-          child: const Text(
+          child: Text(
             'Add Manual Diagnosis',
             style: TextStyle(
               fontFamily: 'Clash Display',
               fontSize: 19,
               fontWeight: FontWeight.w600,
+              color: BlocProvider.of<ThemeBloc>(context).state.textColor,
             ),
           ),
         ),
@@ -75,10 +76,12 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                   groupValue: _selectedIndex,
                   title: Text(
                     diseaseList[index],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Clash Display',
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
+                      color:
+                          BlocProvider.of<ThemeBloc>(context).state.textColor,
                     ),
                   ),
                   onChanged: (int? value) {
@@ -461,10 +464,16 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.58,
+                      height: 50,
+                      // height: MediaQuery.of(context).size.height * 0.8,
                       child: ElevatedButton(
                         onPressed: () {
                           showModalBottomSheet(
+                              backgroundColor:
+                                  BlocProvider.of<ThemeBloc>(context)
+                                      .state
+                                      .backgroundColor,
                               context: context,
                               builder: (context) => StatefulBuilder(
                                     builder: (BuildContext context,
@@ -506,6 +515,7 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.3,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ButtonStyle(

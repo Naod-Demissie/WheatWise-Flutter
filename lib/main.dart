@@ -21,7 +21,6 @@ import 'package:wheatwise/features/theme/bloc/theme_state.dart';
 import 'package:wheatwise/features/theme/theme.dart';
 import 'features/auth/login/bloc/login_bloc.dart';
 import 'features/records/recent_records/bloc/bloc.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();

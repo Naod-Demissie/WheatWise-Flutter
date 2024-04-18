@@ -10,12 +10,15 @@ class DeleteRecordBloc extends Bloc<DeleteRecordEvent, DeleteRecordState> {
       emit(DeleteRecordLoadingState());
       try {
         final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('Diagnosis');
-        List<Diagnosis> diagnoses = diagnosisBox.values.toList();
-        await diagnosisBox
-            .delete(event.diagnosis.mobileId); //! this might cause error
-        diagnoses = diagnosisBox.values.toList().reversed.toList();
-        // await diagnosisBox.close();
 
+        int key = diagnosisBox.keys.firstWhere((key) {
+          var value = diagnosisBox.get(key);
+          return value != null && value.mobileId == event.diagnosis.mobileId;
+        }, orElse: () => null);
+        await diagnosisBox.delete(key);
+
+        List<Diagnosis> diagnoses =
+            diagnosisBox.values.toList().reversed.toList();
         emit(DeleteRecordSuccessState(diagnoses));
       } catch (error) {
         print(error.toString());
@@ -24,4 +27,3 @@ class DeleteRecordBloc extends Bloc<DeleteRecordEvent, DeleteRecordState> {
     });
   }
 }
-
