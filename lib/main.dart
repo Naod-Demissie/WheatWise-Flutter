@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wheatwise/features/auth/forget_password/bloc/forget_password_bloc.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
 import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
 import 'package:wheatwise/features/records/manual_diagnosis/bloc/manual_diagnosis_bloc.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => EditProfileBloc()),
         BlocProvider(create: (context) => ForgetPasswordBloc()),
         BlocProvider(create: (context) => MobileDiagnosisBloc()),
+        BlocProvider(create: (context) => DiagnosisStatisticsBloc()),
         BlocProvider(create: (context) => ThemeBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

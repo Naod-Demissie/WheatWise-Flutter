@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite_v2/tflite_v2.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
 
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
@@ -255,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   elevation:
                                       themeState is DarkThemeState ? 0 : 3,
                                   child: index == 0
-                                      ? const PieRadius()
+                                      ? PieRadius()
                                       : const BarChart(),
                                 );
                               },
@@ -346,6 +348,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       modelDiagnosis: recognitions[0]['label'],
                     ),
                   );
+                  BlocProvider.of<DiagnosisStatisticsBloc>(context)
+                      .add(const LoadDiagnosisStatisticsEvent());
                   // BlocProvider.of<MobileDiagnosisBloc>(context).add(
                   //   StartMobileDiagnosisEvent(
                   //     fileName: files.first.name,
@@ -401,6 +405,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       modelDiagnosis: recognitions[0]['label'],
                     ),
                   );
+                  BlocProvider.of<DiagnosisStatisticsBloc>(context)
+                      .add(const LoadDiagnosisStatisticsEvent());
                   // BlocProvider.of<MobileDiagnosisBloc>(context).add(
                   //   StartMobileDiagnosisEvent(
                   //     fileName: files.first.name,

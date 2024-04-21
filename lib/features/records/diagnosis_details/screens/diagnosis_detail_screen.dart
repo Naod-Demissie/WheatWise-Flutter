@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:readmore/readmore.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
 import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
 import 'package:wheatwise/features/records/bookmark/bloc/bookmark_event.dart';
 import 'package:wheatwise/features/records/bookmark/bloc/bookmark_state.dart';
@@ -114,6 +116,9 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                           ManualDiagnosisSave(
                               mobileId: mobileId,
                               manualDiagnosis: diseaseList[_selectedIndex!]));
+
+                      BlocProvider.of<DiagnosisStatisticsBloc>(context)
+                          .add(const LoadDiagnosisStatisticsEvent());
                       // BlocProvider.of<ManualDiagnosisBloc>(context).add(
                       //     ManualDiagnosisSave(
                       //         serverId: serverId,
@@ -639,6 +644,14 @@ Map<String, Map<String, String>> diseases = {
         'Fungicides containing active ingredients such as azoles and strobilurins can be used to control septoria. It is important to apply fungicides at the right timings.'
   },
   'Mildew': {
+    'description':
+        'Powdery mildew is a fungal disease that affects wheat plants, appearing as white powdery spots on the leaves. It can reduce photosynthesis and lower yield.',
+    'mitigation':
+        'Use resistant wheat varieties, practice good air circulation, and apply fungicides when necessary.',
+    'medication':
+        'Fungicides containing active ingredients such as sulfur or potassium bicarbonate can be used to control powdery mildew. It is important to apply fungicides before the disease becomes severe.'
+  },
+  'Healthy': {
     'description':
         'Powdery mildew is a fungal disease that affects wheat plants, appearing as white powdery spots on the leaves. It can reduce photosynthesis and lower yield.',
     'mitigation':
