@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wheatwise/features/article/screens/article_screen.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
+import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
 import 'package:wheatwise/features/home/screens/home_screen.dart';
 import 'package:wheatwise/features/records/recent_records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
@@ -26,10 +29,17 @@ class _PageNavigatorState extends State<PageNavigator> {
     const TestScreen(),
   ];
 
-  void _onTabTapped(int index) {
+  void _onTabTapped(int index) {  
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    BlocProvider.of<DiagnosisStatisticsBloc>(context)
+        .add(const LoadDiagnosisStatisticsEvent());
+    super.initState();
   }
 
   @override

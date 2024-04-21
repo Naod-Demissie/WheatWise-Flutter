@@ -49,9 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final _currentPageNotifier = ValueNotifier<int>(0);
 
   @override
-  void initState() {  
-    BlocProvider.of<DiagnosisStatisticsBloc>(context)
-        .add(const LoadDiagnosisStatisticsEvent());
+  void initState() {
+    // BlocProvider.of<DiagnosisStatisticsBloc>(context)
+    //     .add(const LoadDiagnosisStatisticsEvent());
     super.initState();
     _loadSharedPreferences();
     _loadModel();
