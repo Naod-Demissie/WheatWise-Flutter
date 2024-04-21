@@ -29,7 +29,7 @@ final lightTheme = ThemeData(
     bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
     primaryColor: kPrimaryColor,
     scaffoldBackgroundColor: Colors.white,
-    shadowColor: Color(0xFF121212),
+    shadowColor: const Color(0xFF121212),
     cardColor: Colors.white,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -73,9 +73,9 @@ final darkTheme = ThemeData(
     cardTheme: const CardTheme(shadowColor: Colors.white, elevation: 15),
     bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xFF121212)),
     primaryColor: kPrimaryColor,
-    scaffoldBackgroundColor: Color.fromRGBO(18, 18, 18, 1),
+    scaffoldBackgroundColor: const Color.fromRGBO(18, 18, 18, 1),
     shadowColor: Colors.white,
-    cardColor: Color(0xFF121212),
+    cardColor: const Color(0xFF121212),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 0,

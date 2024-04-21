@@ -4,35 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
-import 'package:wheatwise/features/records/delete_record/bloc/delete_record_event.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_state.dart';
 
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
 
+import 'package:wheatwise/features/records/recent_records/components/diagnoisis_card.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 import 'package:wheatwise/features/theme/bloc/theme_state.dart';
-
-import 'dart:io';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
-import 'package:wheatwise/features/records/bookmark/bloc/bookmark_event.dart';
-import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
-import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
-import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
 
   @override
-  State<TestScreen> createState() => _TestScreenState();
+  State<TestScreen> createState() => _RecordScreenState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _RecordScreenState extends State<TestScreen> {
   String selectedFilterCategory = 'All';
   bool showFilterCategories = false;
 
@@ -164,68 +152,21 @@ class _TestScreenState extends State<TestScreen> {
                     color: BlocProvider.of<ThemeBloc>(context).state.textColor),
               ),
               actions: [
-                BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
-                    builder: (context, recentRecordsState) {
-                  if (recentRecordsState is RecentRecordsSuccessState &&
-                      recentRecordsState.diagnoses.isNotEmpty) {
-                    return IconButton(
-                      onPressed: () {
-                        setState(() {
-                          showFilterCategories = !showFilterCategories;
-                        });
-                      },
-                      icon: SvgPicture.asset(
-                        'assets/icons/filter-by-icon.svg',
-                        color: showFilterCategories
-                            ? const Color.fromRGBO(248, 147, 29, 1)
-                            : Colors.grey,
-                        width: 20,
-                        height: 20,
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                })
-                // BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
-                //     builder: (context, state) {
-                //   if (state is RecentRecordsSuccessState &&
-                //       state.diagnoses.isNotEmpty) {
-                //     return IconButton(
-                //       onPressed: () {
-                //         setState(() {
-                //           showFilterCategories = !showFilterCategories;
-                //         });
-                //       },
-                //       icon: SvgPicture.asset(
-                //         'assets/icons/filter-by-icon.svg',
-                //         color: showFilterCategories
-                //             ? const Color.fromRGBO(248, 147, 29, 1)
-                //             : Colors.grey,
-                //         width: 20,
-                //         height: 20,
-                //       ),
-                //     );
-                //   } else {
-                //     return Container();
-                //   }
-                // })
-
-                // IconButton(
-                //   onPressed: () {
-                //     setState(() {
-                //       showFilterCategories = !showFilterCategories;
-                //     });
-                //   },
-                //   icon: SvgPicture.asset(
-                //     'assets/icons/filter-by-icon.svg',
-                //     color: showFilterCategories
-                //         ? const Color.fromRGBO(248, 147, 29, 1)
-                //         : Colors.grey,
-                //     width: 20,
-                //     height: 20,
-                //   ),
-                // )
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showFilterCategories = !showFilterCategories;
+                    });
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/icons/filter-by-icon.svg',
+                    color: showFilterCategories
+                        ? const Color.fromRGBO(248, 147, 29, 1)
+                        : Colors.grey,
+                    width: 20,
+                    height: 20,
+                  ),
+                )
               ],
             ),
             body: BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
@@ -295,9 +236,7 @@ class _TestScreenState extends State<TestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (showFilterCategories &&
-                              recentRecordsState.diagnoses.isNotEmpty)
-                            recordFilterHeader(),
+                          if (showFilterCategories) recordFilterHeader(),
                           recentRecordsState.diagnoses.isNotEmpty
                               ? BlocConsumer<DeleteRecordBloc,
                                   DeleteRecordState>(
@@ -321,119 +260,14 @@ class _TestScreenState extends State<TestScreen> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 5),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                12)),
-                                                    child: Dismissible(
-                                                        key: UniqueKey(),
-                                                        background: Container(
-                                                            color: Colors
-                                                                .redAccent),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(12),
-                                                          child: DiagnosisCard(
-                                                              recentRecords[
-                                                                  index],
-                                                              key: Key(
-                                                                  recentRecords[
-                                                                          index]
-                                                                      .mobileId
-                                                                      .toString())),
-                                                        ),
-                                                        onDismissed:
-                                                            (direction) {
-                                                          BlocProvider.of<
-                                                                      DeleteRecordBloc>(
-                                                                  context)
-                                                              .add(StartDeleteRecordEvent(
-                                                                  diagnosis:
-                                                                      recentRecords[
-                                                                          index]));
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                                  const SnackBar(
-                                                                      content: Text(
-                                                                          'Record deleted')));
-
-                                                          recentRecords
-                                                              .removeAt(index);
-                                                          setState(() {
-                                                            recentRecords
-                                                                .removeAt(
-                                                                    index);
-                                                          });
-                                                        }),
-                                                  ),
+                                                return DiagnosisCard(
+                                                  recentRecords[index],
+                                                  key: Key(recentRecords[index]
+                                                      .mobileId
+                                                      .toString()),
                                                 );
                                               },
                                             )
-                                          // ListView.builder(
-                                          //     itemCount: recentRecords.length,
-                                          //     itemBuilder:
-                                          //         (BuildContext context,
-                                          //             int index) {
-                                          //       return Container(
-                                          //         margin: const EdgeInsets.only(
-                                          //             top: 5),
-                                          //         child: ClipRRect(
-                                          //           borderRadius:
-                                          //               const BorderRadius.all(
-                                          //                   Radius.circular(
-                                          //                       12)),
-                                          //           child: Dismissible(
-                                          //               key: Key(
-                                          //                   recentRecords[index]
-                                          //                       .mobileId
-                                          //                       .toString()),
-                                          //               background: Container(
-                                          //                   color: Colors
-                                          //                       .redAccent),
-                                          //               child: ClipRRect(
-                                          //                 borderRadius:
-                                          //                     BorderRadius
-                                          //                         .circular(12),
-                                          //                 child: DiagnosisCard(
-                                          //                     recentRecords[
-                                          //                         index],
-                                          //                     key: Key(
-                                          //                         recentRecords[
-                                          //                                 index]
-                                          //                             .mobileId
-                                          //                             .toString())),
-                                          //               ),
-                                          //               onDismissed:
-                                          //                   (direction) {
-                                          //                 BlocProvider.of<
-                                          //                             DeleteRecordBloc>(
-                                          //                         context)
-                                          //                     .add(StartDeleteRecordEvent(
-                                          //                         diagnosis:
-                                          //                             recentRecords[
-                                          //                                 index]));
-                                          //                 ScaffoldMessenger.of(
-                                          //                         context)
-                                          //                     .showSnackBar(
-                                          //                         const SnackBar(
-                                          //                             content: Text(
-                                          //                                 'Record deleted')));
-                                          //                 setState(() {
-                                          //                   recentRecords
-                                          //                       .removeAt(
-                                          //                           index);
-                                          //                 });
-                                          //               }),
-                                          //         ),
-                                          //       );
-                                          //     },
-                                          //   )
                                           : noRecordFound(),
                                     );
                                   },
@@ -461,6 +295,36 @@ class _TestScreenState extends State<TestScreen> {
     );
   }
 }
+
+
+
+
+// import 'package:flutter/material.dart';
+
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
+// import 'package:wheatwise/features/records/delete_record/bloc/delete_record_event.dart';
+// import 'package:wheatwise/features/records/delete_record/bloc/delete_record_state.dart';
+
+// import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
+// import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
+
+// import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
+// import 'package:wheatwise/features/theme/bloc/theme_state.dart';
+
+// import 'dart:io';
+
+// import 'package:flutter_image_compress/flutter_image_compress.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:intl/intl.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
+// import 'package:wheatwise/features/records/bookmark/bloc/bookmark_event.dart';
+// import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
+// import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
+// import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
 
 // class TestScreen extends StatefulWidget {
 //   const TestScreen({super.key});
@@ -601,21 +465,29 @@ class _TestScreenState extends State<TestScreen> {
 //                     color: BlocProvider.of<ThemeBloc>(context).state.textColor),
 //               ),
 //               actions: [
-//                 IconButton(
-//                   onPressed: () {
-//                     setState(() {
-//                       showFilterCategories = !showFilterCategories;
-//                     });
-//                   },
-//                   icon: SvgPicture.asset(
-//                     'assets/icons/filter-by-icon.svg',
-//                     color: showFilterCategories
-//                         ? const Color.fromRGBO(248, 147, 29, 1)
-//                         : Colors.grey,
-//                     width: 20,
-//                     height: 20,
-//                   ),
-//                 )
+//                 BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
+//                     builder: (context, recentRecordsState) {
+//                   if (recentRecordsState is RecentRecordsSuccessState &&
+//                       recentRecordsState.diagnoses.isNotEmpty) {
+//                     return IconButton(
+//                       onPressed: () {
+//                         setState(() {
+//                           showFilterCategories = !showFilterCategories;
+//                         });
+//                       },
+//                       icon: SvgPicture.asset(
+//                         'assets/icons/filter-by-icon.svg',
+//                         color: showFilterCategories
+//                             ? const Color.fromRGBO(248, 147, 29, 1)
+//                             : Colors.grey,
+//                         width: 20,
+//                         height: 20,
+//                       ),
+//                     );
+//                   } else {
+//                     return const SizedBox.shrink();
+//                   }
+//                 })
 //               ],
 //             ),
 //             body: BlocBuilder<RecentRecordsBloc, RecentRecordsState>(
@@ -685,13 +557,16 @@ class _TestScreenState extends State<TestScreen> {
 //                         crossAxisAlignment: CrossAxisAlignment.start,
 //                         mainAxisAlignment: MainAxisAlignment.center,
 //                         children: [
-//                           if (showFilterCategories) recordFilterHeader(),
+//                           if (showFilterCategories &&
+//                               recentRecordsState.diagnoses.isNotEmpty)
+//                             recordFilterHeader(),
 //                           recentRecordsState.diagnoses.isNotEmpty
 //                               ? BlocConsumer<DeleteRecordBloc,
 //                                   DeleteRecordState>(
 //                                   listener: (context, deleteState) {
 //                                     if (deleteState
 //                                         is DeleteRecordSuccessState) {
+//                                       //! adjusted this part
 //                                       BlocProvider.of<RecentRecordsBloc>(
 //                                               context)
 //                                           .add(LoadRecentRecordsEvent());
@@ -715,13 +590,10 @@ class _TestScreenState extends State<TestScreen> {
 //                                                   child: ClipRRect(
 //                                                     borderRadius:
 //                                                         const BorderRadius.all(
-//                                                       Radius.circular(12)
-//                                                     ),
+//                                                             Radius.circular(
+//                                                                 12)),
 //                                                     child: Dismissible(
-//                                                         key: Key(
-//                                                             recentRecords[index]
-//                                                                 .mobileId
-//                                                                 .toString()),
+//                                                         key: UniqueKey(),
 //                                                         background: Container(
 //                                                             color: Colors
 //                                                                 .redAccent),
@@ -753,6 +625,9 @@ class _TestScreenState extends State<TestScreen> {
 //                                                                   const SnackBar(
 //                                                                       content: Text(
 //                                                                           'Record deleted')));
+
+//                                                           // recentRecords
+//                                                           //     .removeAt(index);
 //                                                           setState(() {
 //                                                             recentRecords
 //                                                                 .removeAt(
@@ -763,82 +638,8 @@ class _TestScreenState extends State<TestScreen> {
 //                                                 );
 //                                               },
 //                                             )
-
-//                                           // ListView.builder(
-//                                           //     itemCount: recentRecords.length,
-//                                           //     itemBuilder:
-//                                           //         (BuildContext context,
-//                                           //             int index) {
-//                                           //       final Diagnosis item =
-//                                           //           recentRecords[index];
-//                                           //       final Key itemKey = Key(
-//                                           //           item.mobileId.toString());
-
-//                                           //       if (dismissedItemKeys
-//                                           //           .contains(item.mobileId)) {
-//                                           //         return SizedBox.shrink();
-//                                           //       }
-
-//                                           //       return Container(
-//                                           //         margin: const EdgeInsets.only(
-//                                           //             top: 5),
-//                                           //         child: ClipRRect(
-//                                           //           borderRadius:
-//                                           //               BorderRadius.circular(
-//                                           //                   12),
-//                                           //           child: Dismissible(
-//                                           //             key: itemKey,
-//                                           //             background: Container(
-//                                           //                 color:
-//                                           //                     Colors.redAccent),
-//                                           //             child: DiagnosisCard(
-//                                           //               item,
-//                                           //               key: itemKey,
-//                                           //             ),
-//                                           //             onDismissed: (direction) {
-//                                           //               BlocProvider.of<
-//                                           //                           DeleteRecordBloc>(
-//                                           //                       context)
-//                                           //                   .add(StartDeleteRecordEvent(
-//                                           //                       diagnosis:
-//                                           //                           recentRecords[
-//                                           //                               index]));
-//                                           //               ScaffoldMessenger.of(
-//                                           //                       context)
-//                                           //                   .showSnackBar(
-//                                           //                       const SnackBar(
-//                                           //                           content: Text(
-//                                           //                               'Record deleted')));
-
-//                                           //               dismissedItemKeys
-//                                           //                   .add(index);
-
-//                                           //               setState(() {});
-//                                           //             },
-//                                           //           ),
-//                                           //         ),
-//                                           //       );
-//                                           //     },
-//                                           //   )
 //                                           : noRecordFound(),
 //                                     );
-//                                     // return Expanded(
-//                                     //   child: recentRecords.isNotEmpty
-//                                     //       ? ListView.builder(
-//                                     //           itemCount: recentRecords.length,
-//                                     //           itemBuilder:
-//                                     //               (BuildContext context,
-//                                     //                   int index) {
-//                                     //             return DiagnosisCard(
-//                                     //               recentRecords[index],
-//                                     //               key: Key(recentRecords[index]
-//                                     //                   .mobileId
-//                                     //                   .toString()),
-//                                     //             );
-//                                     //           },
-//                                     //         )
-//                                     //       : noRecordFound(),
-//                                     // );
 //                                   },
 //                                 )
 //                               : noRecordFound(),
@@ -865,203 +666,203 @@ class _TestScreenState extends State<TestScreen> {
 //   }
 // }
 
-class DiagnosisCard extends StatefulWidget {
-  final Diagnosis diagnosis;
-  const DiagnosisCard(this.diagnosis, {super.key});
+// class DiagnosisCard extends StatefulWidget {
+//   final Diagnosis diagnosis;
+//   const DiagnosisCard(this.diagnosis, {super.key});
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _DiagnosisCardState createState() => _DiagnosisCardState();
-}
+//   @override
+//   // ignore: library_private_types_in_public_api
+//   _DiagnosisCardState createState() => _DiagnosisCardState();
+// }
 
-class _DiagnosisCardState extends State<DiagnosisCard> {
-  late Future<XFile> _compressedImageFuture;
+// class _DiagnosisCardState extends State<DiagnosisCard> {
+//   late Future<XFile> _compressedImageFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _compressedImageFuture = compressImage();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _compressedImageFuture = compressImage();
+//   }
 
-  Future<XFile> compressImage() async {
-    File file = File(widget.diagnosis.filePath);
-    final tempDir = await getTemporaryDirectory();
-    final targetPath =
-        '${tempDir.absolute.path}/optimized_image_${widget.diagnosis.fileName}';
-    var result = await FlutterImageCompress.compressAndGetFile(
-      file.path,
-      targetPath,
-      quality: 50,
-      minWidth: 100,
-      minHeight: 100,
-    );
-    return XFile(result!.path);
-  }
+//   Future<XFile> compressImage() async {
+//     File file = File(widget.diagnosis.filePath);
+//     final tempDir = await getTemporaryDirectory();
+//     final targetPath =
+//         '${tempDir.absolute.path}/optimized_image_${widget.diagnosis.fileName}';
+//     var result = await FlutterImageCompress.compressAndGetFile(
+//       file.path,
+//       targetPath,
+//       quality: 50,
+//       minWidth: 100,
+//       minHeight: 100,
+//     );
+//     return XFile(result!.path);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<XFile>(
-      future: _compressedImageFuture,
-      builder: (context, snapshot) {
-        return BlocBuilder<ThemeBloc, ThemeState>(
-          builder: (context, themeState) {
-            return SizedBox(
-              height: 105,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: BlocProvider.of<ThemeBloc>(context).state.cardColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  border: themeState is DarkThemeState
-                      ? Border.all(
-                          width: 0.7,
-                          color: Colors.grey.shade800,
-                        )
-                      : Border.all(
-                          width: 0.7,
-                          color: Colors.grey.shade400,
-                        ),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<DiagnosisDetailBloc>(context).add(
-                        LoadDiagnosisDetailEvent(diagnosis: widget.diagnosis));
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<XFile>(
+//       future: _compressedImageFuture,
+//       builder: (context, snapshot) {
+//         return BlocBuilder<ThemeBloc, ThemeState>(
+//           builder: (context, themeState) {
+//             return SizedBox(
+//               height: 105,
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                   color: BlocProvider.of<ThemeBloc>(context).state.cardColor,
+//                   borderRadius: const BorderRadius.all(Radius.circular(12)),
+//                   border: themeState is DarkThemeState
+//                       ? Border.all(
+//                           width: 0.7,
+//                           color: Colors.grey.shade800,
+//                         )
+//                       : Border.all(
+//                           width: 0.7,
+//                           color: Colors.grey.shade400,
+//                         ),
+//                 ),
+//                 child: InkWell(
+//                   onTap: () {
+//                     BlocProvider.of<DiagnosisDetailBloc>(context).add(
+//                         LoadDiagnosisDetailEvent(diagnosis: widget.diagnosis));
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: ((context) => const DiagnosisDetailScreen())));
-                  },
-                  child: Row(
-                    children: [
-                      // card image
-                      Expanded(
-                        flex: 2,
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.zero,
-                            bottomLeft: Radius.circular(12),
-                            bottomRight: Radius.zero,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    FileImage(File(snapshot.data?.path ?? '')),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+//                     Navigator.of(context).push(MaterialPageRoute(
+//                         builder: ((context) => const DiagnosisDetailScreen())));
+//                   },
+//                   child: Row(
+//                     children: [
+//                       // card image
+//                       Expanded(
+//                         flex: 2,
+//                         child: ClipRRect(
+//                           borderRadius: const BorderRadius.only(
+//                             topLeft: Radius.circular(12),
+//                             topRight: Radius.zero,
+//                             bottomLeft: Radius.circular(12),
+//                             bottomRight: Radius.zero,
+//                           ),
+//                           child: Container(
+//                             decoration: BoxDecoration(
+//                               image: DecorationImage(
+//                                 image:
+//                                     FileImage(File(snapshot.data?.path ?? '')),
+//                                 fit: BoxFit.cover,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
 
-                      Expanded(
-                        flex: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${widget.diagnosis.fileName.substring(0, 16)}...',
-                                    style: TextStyle(
-                                      fontFamily: 'Clash Display',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: BlocProvider.of<ThemeBloc>(context)
-                                          .state
-                                          .textColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    DateFormat('yyyy-MM-dd HH:mm').format(
-                                      DateTime.fromMicrosecondsSinceEpoch(
-                                          widget.diagnosis.uploadTime),
-                                    ),
-                                    style: GoogleFonts.manrope(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: BlocProvider.of<ThemeBloc>(context)
-                                          .state
-                                          .textColor
-                                          .withOpacity(0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    widget.diagnosis.modelDiagnosis,
-                                    style: TextStyle(
-                                      fontFamily: 'Clash Display',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: BlocProvider.of<ThemeBloc>(context)
-                                          .state
-                                          .textColor,
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          BlocProvider.of<BookmarkBloc>(context)
-                                              .add(AddBookmarkEvent(
-                                                  diagnosis: widget.diagnosis));
-                                          BlocProvider.of<RecentRecordsBloc>(
-                                                  context)
-                                              .add(LoadRecentRecordsEvent());
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 10.0),
-                                          child: Icon(
-                                            widget.diagnosis.isBookmarked!
-                                                ? Icons.bookmark_outline
-                                                : Icons.bookmark_outline,
-                                            color:
-                                                widget.diagnosis.isBookmarked!
-                                                    ? const Color.fromRGBO(
-                                                        248, 147, 29, 1)
-                                                    : Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {},
-                                        child: Icon(
-                                          widget.diagnosis.isServerDiagnosed!
-                                              ? Icons.upload_rounded
-                                              : Icons.upload_rounded,
-                                          color: widget
-                                                  .diagnosis.isServerDiagnosed!
-                                              ? Colors.green
-                                              : Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-}
+//                       Expanded(
+//                         flex: 5,
+//                         child: Padding(
+//                           padding: const EdgeInsets.all(12.0),
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.start,
+//                             children: [
+//                               Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   Text(
+//                                     '${widget.diagnosis.fileName.substring(0, 16)}...',
+//                                     style: TextStyle(
+//                                       fontFamily: 'Clash Display',
+//                                       fontSize: 16,
+//                                       fontWeight: FontWeight.w400,
+//                                       color: BlocProvider.of<ThemeBloc>(context)
+//                                           .state
+//                                           .textColor,
+//                                     ),
+//                                   ),
+//                                   Text(
+//                                     DateFormat('yyyy-MM-dd HH:mm').format(
+//                                       DateTime.fromMicrosecondsSinceEpoch(
+//                                           widget.diagnosis.uploadTime),
+//                                     ),
+//                                     style: GoogleFonts.manrope(
+//                                       fontWeight: FontWeight.w500,
+//                                       fontSize: 12,
+//                                       color: BlocProvider.of<ThemeBloc>(context)
+//                                           .state
+//                                           .textColor
+//                                           .withOpacity(0.5),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                               const SizedBox(height: 10),
+//                               Row(
+//                                 crossAxisAlignment: CrossAxisAlignment.center,
+//                                 mainAxisAlignment:
+//                                     MainAxisAlignment.spaceBetween,
+//                                 children: [
+//                                   Text(
+//                                     widget.diagnosis.modelDiagnosis,
+//                                     style: TextStyle(
+//                                       fontFamily: 'Clash Display',
+//                                       fontSize: 15,
+//                                       fontWeight: FontWeight.w500,
+//                                       color: BlocProvider.of<ThemeBloc>(context)
+//                                           .state
+//                                           .textColor,
+//                                     ),
+//                                   ),
+//                                   Row(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     children: [
+//                                       InkWell(
+//                                         onTap: () {
+//                                           BlocProvider.of<BookmarkBloc>(context)
+//                                               .add(AddBookmarkEvent(
+//                                                   diagnosis: widget.diagnosis));
+//                                           BlocProvider.of<RecentRecordsBloc>(
+//                                                   context)
+//                                               .add(LoadRecentRecordsEvent());
+//                                         },
+//                                         child: Padding(
+//                                           padding: const EdgeInsets.only(
+//                                               right: 10.0),
+//                                           child: Icon(
+//                                             widget.diagnosis.isBookmarked!
+//                                                 ? Icons.bookmark_outline
+//                                                 : Icons.bookmark_outline,
+//                                             color:
+//                                                 widget.diagnosis.isBookmarked!
+//                                                     ? const Color.fromRGBO(
+//                                                         248, 147, 29, 1)
+//                                                     : Colors.grey,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       InkWell(
+//                                         onTap: () {},
+//                                         child: Icon(
+//                                           widget.diagnosis.isServerDiagnosed!
+//                                               ? Icons.upload_rounded
+//                                               : Icons.upload_rounded,
+//                                           color: widget
+//                                                   .diagnosis.isServerDiagnosed!
+//                                               ? Colors.green
+//                                               : Colors.grey,
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ],
+//                               )
+//                             ],
+//                           ),
+//                         ),
+//                       )
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             );
+//           },
+//         );
+//       },
+//     );
+//   }
+// }

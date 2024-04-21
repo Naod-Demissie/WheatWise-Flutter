@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,7 +42,8 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
   Widget manualDiagnosisPopup(
     BuildContext context,
     StateSetter setState,
-    String serverId,
+    String mobileId,
+    // String serverId,
     // String manualDiagnosis,
   ) {
     return Column(
@@ -112,8 +112,16 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                     if (_selectedIndex != null) {
                       BlocProvider.of<ManualDiagnosisBloc>(context).add(
                           ManualDiagnosisSave(
-                              serverId: serverId,
+                              mobileId: mobileId,
                               manualDiagnosis: diseaseList[_selectedIndex!]));
+                      // BlocProvider.of<ManualDiagnosisBloc>(context).add(
+                      //     ManualDiagnosisSave(
+                      //         serverId: serverId,
+                      //         manualDiagnosis: diseaseList[_selectedIndex!]));
+
+                      BlocProvider.of<RecentRecordsBloc>(context)
+                          .add(LoadRecentRecordsEvent());
+
                       Navigator.of(context).pop();
                     }
                   },
@@ -181,6 +189,9 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
     return BlocBuilder<DiagnosisDetailBloc, DiagnosisDetailState>(
       builder: (context, diagnosisState) {
         if (diagnosisState is DiagnosisDetailSuccessState) {
+          _selectedIndex =
+              diseaseList.indexOf(diagnosisState.diagnosis.manualDiagnosis!);
+
           return SafeArea(
             child: Scaffold(
               extendBodyBehindAppBar: true,
@@ -263,7 +274,6 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                     // wheat image
                     GestureDetector(
                       onTap: () {
-                        print(3);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -481,7 +491,8 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                                       return manualDiagnosisPopup(
                                           context,
                                           setState,
-                                          diagnosisState.diagnosis.serverId!);
+                                          diagnosisState.diagnosis.mobileId);
+                                      // diagnosisState.diagnosis.serverId!);
                                       // diseaseList[_selectedIndex!]);
                                     },
                                   ));

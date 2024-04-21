@@ -23,7 +23,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     const ArticleScreen(),
     const RecordScreen(),
     const SettingScreen(),
-    TestScreen(),
+    const TestScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -39,8 +39,7 @@ class _PageNavigatorState extends State<PageNavigator> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           border: Border(
-            top: BorderSide(
-                width: 1.0, color: Colors.grey), // Add a border on top
+            top: BorderSide(width: 1.0, color: Colors.grey),
           ),
         ),
         child: BottomNavigationBar(
@@ -59,20 +58,10 @@ class _PageNavigatorState extends State<PageNavigator> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Iconsax.book),
-
-              // icon: Icon(
-              //   FontAwesomeIcons.bookOpen,
-              // ),
-
-              // icon: Icon(Iconsax.book1),
               label: 'Articles',
             ),
             BottomNavigationBarItem(
-              // icon: FaIcon(
-              //   FontAwesomeIcons.upload,
-              //   size: 24, // Adjust the size as needed
-              // ),
-              icon: Icon(Iconsax.book),
+              icon: Icon(Iconsax.folder_open),
               label: 'Records',
             ),
             BottomNavigationBarItem(

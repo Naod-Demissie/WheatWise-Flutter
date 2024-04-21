@@ -56,8 +56,6 @@ class EditProfileDataProvider {
       await prefs.setString("zone", zone);
       await prefs.setString("woreda", woreda);
 
-      print(region);
-
       return true;
     } catch (e) {
       rethrow;

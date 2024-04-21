@@ -80,7 +80,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 //       await prefs.setBool('theme', !theme);
 //       theme = !theme;
 
-//       print(theme);
 
 //       if (theme) emit(LightThemeState());
 //       if (!theme) emit(DarkThemeState());

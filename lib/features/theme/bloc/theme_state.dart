@@ -41,7 +41,7 @@ class DarkThemeState extends ThemeState {
   @override
   final textColor = Colors.white;
   @override
-  final cardColor = Color.fromRGBO(36, 36, 36, 1);
+  final cardColor = const Color.fromRGBO(36, 36, 36, 1);
   // final cardColor = const Color(0xFF2C2C2C);
 
   final double defaultPadding = 16.0;

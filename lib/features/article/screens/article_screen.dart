@@ -358,9 +358,9 @@ class ArticleDetailScreen extends StatefulWidget {
   final String diseaseName;
 
   const ArticleDetailScreen({
-    Key? key,
+    super.key,
     required this.diseaseName,
-  }) : super(key: key);
+  });
 
   @override
   _ArticleDetailScreenState createState() => _ArticleDetailScreenState();

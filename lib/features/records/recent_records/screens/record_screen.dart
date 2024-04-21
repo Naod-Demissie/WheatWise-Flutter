@@ -140,7 +140,7 @@ class _RecordScreenState extends State<RecordScreen> {
           child: Scaffold(
             backgroundColor: themeState is DarkThemeState
                 ? BlocProvider.of<ThemeBloc>(context).state.backgroundColor
-                : Color.fromARGB(255, 243, 243, 243),
+                : const Color.fromARGB(255, 243, 243, 243),
             appBar: AppBar(
               elevation: 0,
               title: Text(

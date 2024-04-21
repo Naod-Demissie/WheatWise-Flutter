@@ -85,6 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<CroppedFile?> cropImage(String filePath) async {
     return await imageCropper.cropImage(
       sourcePath: filePath,
+      maxHeight: 224,
+      maxWidth: 224,
+      compressQuality: 100,
       aspectRatioPresets: [
         CropAspectRatioPreset.ratio3x2,
         CropAspectRatioPreset.square,
@@ -109,6 +112,33 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+  // Future<CroppedFile?> cropImage(String filePath) async {
+  //   return await imageCropper.cropImage(
+  //     sourcePath: filePath,
+  //     aspectRatioPresets: [
+  //       CropAspectRatioPreset.ratio3x2,
+  //       CropAspectRatioPreset.square,
+  //       CropAspectRatioPreset.original,
+  //       CropAspectRatioPreset.ratio4x3,
+  //       CropAspectRatioPreset.ratio16x9
+  //     ],
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //           toolbarTitle: 'Edit Photo',
+  //           toolbarColor: Colors.black,
+  //           toolbarWidgetColor: Colors.white,
+  //           statusBarColor: Colors.black,
+  //           backgroundColor: Colors.black,
+  //           activeControlsWidgetColor: const Color.fromRGBO(248, 147, 29, 1),
+  //           cropFrameColor: Colors.black,
+  //           initAspectRatio: CropAspectRatioPreset.original,
+  //           lockAspectRatio: false),
+  //       IOSUiSettings(
+  //         title: 'Edit Photo',
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Future<void> _loadModel() async {
     await Tflite.loadModel(
@@ -123,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
   classifyImage(String filePath) async {
     List<dynamic>? recognitions = await Tflite.runModelOnImage(
       path: filePath,
-      imageMean: 117.0,
+      imageMean: 0.0,
       imageStd: 1.0,
       numResults: 5,
       threshold: 0,
@@ -131,9 +161,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     if (recognitions == null) return [];
-    print(recognitions);
     return recognitions;
   }
+  // classifyImage(String filePath) async {
+  //   List<dynamic>? recognitions = await Tflite.runModelOnImage(
+  //     path: filePath,
+  //     imageMean: 117.0,
+  //     imageStd: 1.0,
+  //     numResults: 5,
+  //     threshold: 0,
+  //     asynch: true,
+  //   );
+
+  //   if (recognitions == null) return [];
+  //   return recognitions;
+  // }
 
   String capitalize(String s) =>
       s.isNotEmpty ? s[0].toUpperCase() + s.substring(1) : '';
@@ -299,11 +341,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     StartMobileDiagnosisEvent(
                       fileName: files.first.name,
                       uploadTime: DateTime.now().microsecondsSinceEpoch,
-                      filePath: croppedFile.path,
+                      filePath: files.first.path,
                       confidenceScore: confidenceScore,
                       modelDiagnosis: recognitions[0]['label'],
                     ),
                   );
+                  // BlocProvider.of<MobileDiagnosisBloc>(context).add(
+                  //   StartMobileDiagnosisEvent(
+                  //     fileName: files.first.name,
+                  //     uploadTime: DateTime.now().microsecondsSinceEpoch,
+                  //     filePath: croppedFile.path,
+                  //     confidenceScore: confidenceScore,
+                  //     modelDiagnosis: recognitions[0]['label'],
+                  //   ),
+                  // );
                 }
               }
             },
@@ -345,11 +396,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     StartMobileDiagnosisEvent(
                       fileName: files.first.name,
                       uploadTime: DateTime.now().microsecondsSinceEpoch,
-                      filePath: croppedFile.path,
+                      filePath: files.first.path,
                       confidenceScore: confidenceScore,
                       modelDiagnosis: recognitions[0]['label'],
                     ),
                   );
+                  // BlocProvider.of<MobileDiagnosisBloc>(context).add(
+                  //   StartMobileDiagnosisEvent(
+                  //     fileName: files.first.name,
+                  //     uploadTime: DateTime.now().microsecondsSinceEpoch,
+                  //     filePath: croppedFile.path,
+                  //     confidenceScore: confidenceScore,
+                  //     modelDiagnosis: recognitions[0]['label'],
+                  //   ),
+                  // );
                 }
               }
             },
