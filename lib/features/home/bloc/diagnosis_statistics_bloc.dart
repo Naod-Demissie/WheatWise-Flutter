@@ -89,7 +89,6 @@ class DiagnosisStatisticsBloc
         //   diagnosisStatistics['Correct']![disease] = correctCount;
         //   diagnosisStatistics['Incorrect']![disease] = incorrectCount;
         // }
-        // print(diagnosisStatistics);
 
         final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>("Diagnosis");
         final List<String> diseaseList = [
@@ -139,8 +138,6 @@ class DiagnosisStatisticsBloc
           diagnosisStatistics['Incorrect']![disease] = incorrectCount;
           diagnosisStatistics['Undiagnosed']![disease] = undiagnosedCount;
         }
-
-        print(diagnosisStatistics);
 
         emit(DiagnosisStatisticsSuccessState(diagnosisStatistics));
       } catch (error) {

@@ -49,7 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final _currentPageNotifier = ValueNotifier<int>(0);
 
   @override
-  void initState() {
+  void initState() {  
+    BlocProvider.of<DiagnosisStatisticsBloc>(context)
+        .add(const LoadDiagnosisStatisticsEvent());
     super.initState();
     _loadSharedPreferences();
     _loadModel();
@@ -250,6 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               controller: _controller,
                               itemCount: 2,
                               itemBuilder: (context, index) {
+                                // BlocProvider.of<DiagnosisStatisticsBloc>(
+                                //         context)
+                                //     .add(const LoadDiagnosisStatisticsEvent());
                                 return Card(
                                   color: BlocProvider.of<ThemeBloc>(context)
                                       .state
@@ -257,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   elevation:
                                       themeState is DarkThemeState ? 0 : 3,
                                   child: index == 0
-                                      ? PieRadius()
+                                      ? const PieRadius()
                                       : const BarChart(),
                                 );
                               },

@@ -113,10 +113,8 @@ class ManualDiagnosisBloc
 //       }, orElse: () => null);
 
 //       Diagnosis? diagnosis = diagnosisBox.get(key);
-//       print(diagnosis);
 //       if (diagnosis != null) {
 //         diagnosis.manualDiagnosis = event.manualDiagnosis;
-//         print(event.manualDiagnosis);
 //         diagnosisBox.putAt(key, diagnosis);
 
 //         emit(ManualDiagnosisSaved());
