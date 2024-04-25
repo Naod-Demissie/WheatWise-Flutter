@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wheatwise/features/setting/about/screens/about_screen.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
@@ -262,27 +264,27 @@ class _SettingScreenState extends State<SettingScreen> {
                 "Share the app",
                 'assets/icons/share-icon3.svg',
                 () async {
-                  // ShareResult result = await Share.shareWithResult(
-                  //   'Check out this awesome app! Download it now: https://your-app-url.com',
-                  // );
-                  // if (result.raw.isNotEmpty) {
-                  //   showThankYouDialog(context);
-                  // }
+                  await Share.shareWithResult(
+                    'Check out this awesome app! Download it now: https://products.aii.et/agriculture',
+                  );
                 },
               ),
-              settingMenu(
-                context,
-                "Rate App",
-                'assets/icons/rate-icon3.svg',
-                () {
-                  // _openAppStore();
-                },
-              ),
+              // settingMenu(
+              //   context,
+              //   "Rate the App",
+              //   'assets/icons/rate-icon3.svg',
+              //   () {
+              //     // _openAppStore();
+              //   },
+              // ),
               settingMenu(context, "About Us", 'assets/icons/info-icon3.svg',
-                  () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                // builder: (context) => About(),
-                // ));
+                  () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutScreen(),
+                  ),
+                );
               }),
             ],
           ),

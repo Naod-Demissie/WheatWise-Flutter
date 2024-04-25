@@ -50,8 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // BlocProvider.of<DiagnosisStatisticsBloc>(context)
-    //     .add(const LoadDiagnosisStatisticsEvent());
     super.initState();
     _loadSharedPreferences();
     _loadModel();

@@ -407,6 +407,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   )
                 : Text(
                     value,
+                    textAlign: TextAlign.justify,
                     style: TextStyle(
                         fontFamily: 'Clash Display',
                         fontSize: 15,

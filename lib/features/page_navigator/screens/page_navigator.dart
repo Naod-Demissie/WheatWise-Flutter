@@ -29,7 +29,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     const TestScreen(),
   ];
 
-  void _onTabTapped(int index) {  
+  void _onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
