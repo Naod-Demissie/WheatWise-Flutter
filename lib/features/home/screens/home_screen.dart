@@ -402,10 +402,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   BlocProvider.of<MobileDiagnosisBloc>(context).add(
                     StartMobileDiagnosisEvent(
                       fileName: files.first.name,
-                      uploadTime: DateTime.now().microsecondsSinceEpoch,
                       filePath: files.first.path,
                       confidenceScore: confidenceScore,
-                      modelDiagnosis: recognitions[0]['label'],
+                      mobileDiagnosis: recognitions[0]['label'],
                     ),
                   );
                   BlocProvider.of<DiagnosisStatisticsBloc>(context)
