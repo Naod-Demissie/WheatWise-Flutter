@@ -7,7 +7,7 @@ class InitialSyncDiagnosisState extends SyncDiagnosisState {}
 class SyncDiagnosisLoadingState extends SyncDiagnosisState {}
 
 class SyncDiagnosisSuccessState extends SyncDiagnosisState {
-  final List<Diagnosis> diagnosis;
+  final Diagnosis diagnosis;
 
   SyncDiagnosisSuccessState(this.diagnosis);
 }

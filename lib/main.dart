@@ -9,6 +9,7 @@ import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
 import 'package:wheatwise/features/records/manual_diagnosis/bloc/manual_diagnosis_bloc.dart';
 import 'package:wheatwise/features/records/mobile_diagnosis/bloc/mobile_diagnosis_bloc.dart';
+import 'package:wheatwise/features/records/sync_data/bloc/sync_diagnosis_bloc.dart';
 import 'package:wheatwise/features/setting/change_password/bloc/change_password_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ForgetPasswordBloc()),
         BlocProvider(create: (context) => MobileDiagnosisBloc()),
         BlocProvider(create: (context) => DiagnosisStatisticsBloc()),
+        BlocProvider(create: (context) => SyncDiagnosisBloc()),
         BlocProvider(create: (context) => ThemeBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

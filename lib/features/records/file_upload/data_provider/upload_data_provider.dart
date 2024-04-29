@@ -57,7 +57,7 @@ class UploadDataProvider {
         fileName: fileName,
         filePath: originalLeafImage,
         uploadTime: uploadTime,
-        modelDiagnosis: response.data['server_diagnosis'],
+        mobileDiagnosis: response.data['server_diagnosis'],
         manualDiagnosis: '',
         isBookmarked: false,
         isServerDiagnosed: isServerDiagnosed,

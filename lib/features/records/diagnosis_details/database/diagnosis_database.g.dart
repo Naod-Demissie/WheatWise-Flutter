@@ -18,22 +18,24 @@ class DiagnosisAdapter extends TypeAdapter<Diagnosis> {
     };
     return Diagnosis(
       mobileId: fields[0] as String,
-      serverId: fields[1] as String,
+      serverId: fields[1] as String?,
       fileName: fields[2] as String,
       filePath: fields[3] as String,
       uploadTime: fields[4] as int,
-      modelDiagnosis: fields[5] as String,
-      manualDiagnosis: fields[6] as String?,
-      isBookmarked: fields[7] as bool?,
-      isServerDiagnosed: fields[8] as bool?,
-      confidenceScore: (fields[9] as List).cast<double>(),
+      mobileDiagnosis: fields[5] as String,
+      serverDiagnosis: fields[6] as String?,
+      manualDiagnosis: fields[7] as String?,
+      isBookmarked: fields[8] as bool?,
+      isUploaded: fields[9] as bool?,
+      isServerDiagnosed: fields[10] as bool?,
+      confidenceScore: (fields[11] as List).cast<double>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Diagnosis obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.mobileId)
       ..writeByte(1)
@@ -45,14 +47,18 @@ class DiagnosisAdapter extends TypeAdapter<Diagnosis> {
       ..writeByte(4)
       ..write(obj.uploadTime)
       ..writeByte(5)
-      ..write(obj.modelDiagnosis)
+      ..write(obj.mobileDiagnosis)
       ..writeByte(6)
-      ..write(obj.manualDiagnosis)
+      ..write(obj.serverDiagnosis)
       ..writeByte(7)
-      ..write(obj.isBookmarked)
+      ..write(obj.manualDiagnosis)
       ..writeByte(8)
-      ..write(obj.isServerDiagnosed)
+      ..write(obj.isBookmarked)
       ..writeByte(9)
+      ..write(obj.isUploaded)
+      ..writeByte(10)
+      ..write(obj.isServerDiagnosed)
+      ..writeByte(11)
       ..write(obj.confidenceScore);
   }
 

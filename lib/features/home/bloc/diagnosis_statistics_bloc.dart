@@ -28,7 +28,7 @@ class DiagnosisStatisticsBloc
 
         // for (String disease in diseaseList) {
         //   int count = diagnosisBox.values
-        //       .where((diagnosis) => diagnosis.modelDiagnosis == disease)
+        //       .where((diagnosis) => diagnosis.mobileDiagnosis == disease)
         //       .length;
         //   diagnosisStatistics['total']![disease] = count;
 
@@ -38,7 +38,7 @@ class DiagnosisStatisticsBloc
         //   for (int i = 0; i < diagnosisBox.length; i++) {
         //     Diagnosis diagnosis = diagnosisBox.getAt(i)!;
 
-        //     if (diagnosis.modelDiagnosis == disease) {
+        //     if (diagnosis.mobileDiagnosis == disease) {
         //       if (diagnosis.manualDiagnosis != null &&
         //           diagnosis.manualDiagnosis == disease) {
         //         correctCount++;
@@ -74,7 +74,7 @@ class DiagnosisStatisticsBloc
 
         //   // Group diagnoses by model and manual diagnoses
         //   Map<String, List<Diagnosis>> groupedDiagnoses = groupBy(
-        //       diagnosisBox.values, (diagnosis) => diagnosis.modelDiagnosis);
+        //       diagnosisBox.values, (diagnosis) => diagnosis.mobileDiagnosis);
 
         //   // Calculate counts
         //   if (groupedDiagnoses.containsKey(disease)) {
@@ -114,7 +114,7 @@ class DiagnosisStatisticsBloc
 
           // Group diagnoses by model and manual diagnoses
           Map<String, List<Diagnosis>> groupedDiagnoses = groupBy(
-              diagnosisBox.values, (diagnosis) => diagnosis.modelDiagnosis);
+              diagnosisBox.values, (diagnosis) => diagnosis.mobileDiagnosis);
 
           // Calculate counts
           if (groupedDiagnoses.containsKey(disease)) {

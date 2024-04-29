@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
-
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_bloc.dart';
 import 'package:wheatwise/features/records/diagnosis_details/bloc/diagnosis_detail_event.dart';
 import 'package:wheatwise/features/records/diagnosis_details/screens/diagnosis_detail_screen.dart';
@@ -37,10 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _firstName;
 
   List<String> assetPaths = [
-    'assets/images/wheat-banner.jpg',
+    'assets/images/wheat-banner1.jpg',
     'assets/images/wheat-banner2.jpg',
-    'assets/images/wheat-banner3.jpg',
-    'assets/images/wheat-banner4.jpg',
   ];
   final imagePicker = ImagePicker();
   final imageCropper = ImageCropper();
@@ -238,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 20),
 
                       // Wheatwise card
-                      wheatwiseCard(assetPaths[2], themeState),
+                      wheatwiseCard(assetPaths[1], themeState),
                       const SizedBox(height: 20),
 
                       // Diagnosis statistics Card
@@ -280,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      // const SizedBox(height: 20),
 
                       // Detect Now Button
                       customElevatedButton(
@@ -348,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       uploadTime: DateTime.now().microsecondsSinceEpoch,
                       filePath: files.first.path,
                       confidenceScore: confidenceScore,
-                      modelDiagnosis: recognitions[0]['label'],
+                      mobileDiagnosis: recognitions[0]['label'],
                     ),
                   );
                   BlocProvider.of<DiagnosisStatisticsBloc>(context)
@@ -359,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     uploadTime: DateTime.now().microsecondsSinceEpoch,
                   //     filePath: croppedFile.path,
                   //     confidenceScore: confidenceScore,
-                  //     modelDiagnosis: recognitions[0]['label'],
+                  //     mobileDiagnosis: recognitions[0]['label'],
                   //   ),
                   // );
                 }
@@ -402,6 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   BlocProvider.of<MobileDiagnosisBloc>(context).add(
                     StartMobileDiagnosisEvent(
                       fileName: files.first.name,
+                      uploadTime: DateTime.now().microsecondsSinceEpoch,
                       filePath: files.first.path,
                       confidenceScore: confidenceScore,
                       mobileDiagnosis: recognitions[0]['label'],
@@ -415,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     uploadTime: DateTime.now().microsecondsSinceEpoch,
                   //     filePath: croppedFile.path,
                   //     confidenceScore: confidenceScore,
-                  //     modelDiagnosis: recognitions[0]['label'],
+                  //     mobileDiagnosis: recognitions[0]['label'],
                   //   ),
                   // );
                 }

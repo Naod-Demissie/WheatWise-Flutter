@@ -151,7 +151,7 @@ class _DiagnosisCardState extends State<DiagnosisCard> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    widget.diagnosis.modelDiagnosis,
+                                    widget.diagnosis.mobileDiagnosis,
                                     style: TextStyle(
                                       fontFamily: 'Clash Display',
                                       fontSize: 15,
@@ -414,7 +414,7 @@ class _DiagnosisCardState extends State<DiagnosisCard> {
 //                                     MainAxisAlignment.spaceBetween,
 //                                 children: [
 //                                   Text(
-//                                     widget.diagnosis.modelDiagnosis,
+//                                     widget.diagnosis.mobileDiagnosis,
 //                                     style: TextStyle(
 //                                       fontFamily: 'Clash Display',
 //                                       fontSize: 15,

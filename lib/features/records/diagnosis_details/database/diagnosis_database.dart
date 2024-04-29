@@ -23,18 +23,24 @@ class Diagnosis extends HiveObject {
   late int uploadTime;
 
   @HiveField(5)
-  late String modelDiagnosis;
+  late String mobileDiagnosis;
 
   @HiveField(6)
-  late String? manualDiagnosis;
+  late String? serverDiagnosis;
 
   @HiveField(7)
-  late bool? isBookmarked;
+  late String? manualDiagnosis;
 
   @HiveField(8)
-  late bool? isServerDiagnosed;
+  late bool? isBookmarked;
 
   @HiveField(9)
+  late bool? isUploaded;
+
+  @HiveField(10)
+  late bool? isServerDiagnosed;
+
+  @HiveField(11)
   late List<double> confidenceScore;
 
   Diagnosis({
@@ -43,9 +49,11 @@ class Diagnosis extends HiveObject {
     required this.fileName,
     required this.filePath,
     required this.uploadTime,
-    required this.modelDiagnosis,
+    required this.mobileDiagnosis,
+    this.serverDiagnosis,
     this.manualDiagnosis,
     this.isBookmarked,
+    this.isUploaded,
     this.isServerDiagnosed,
     required this.confidenceScore,
   });
@@ -57,9 +65,11 @@ class Diagnosis extends HiveObject {
       fileName: json['fileName'] ?? '',
       filePath: json['filePath'] ?? '',
       uploadTime: json['uploadTime'] ?? 0,
-      modelDiagnosis: json['modelDiagnosis'] ?? '',
+      mobileDiagnosis: json['mobileDiagnosis'] ?? '',
+      serverDiagnosis: json['serverDiagnosis'] ?? '',
       manualDiagnosis: json['manualDiagnosis'] ?? '',
       isBookmarked: json['isBookmarked'] ?? false,
+      isUploaded: json['isUploaded'] ?? false,
       isServerDiagnosed: json['isServerDiagnosed'] ?? false,
       confidenceScore: List<double>.from(json['confidenceScore'] ?? []),
     );
@@ -72,9 +82,11 @@ class Diagnosis extends HiveObject {
     json['fileName'] = fileName;
     json['filePath'] = filePath;
     json['uploadTime'] = uploadTime;
-    json['modelDiagnosis'] = modelDiagnosis;
+    json['mobileDiagnosis'] = mobileDiagnosis;
+    json['serverDiagnosis'] = serverDiagnosis;
     json['manualDiagnosis'] = manualDiagnosis;
     json['isBookmarked'] = isBookmarked;
+    json['isUploaded'] = isUploaded;
     json['isServerDiagnosed'] = isServerDiagnosed;
     json['confidenceScore'] = confidenceScore;
     return json;
@@ -82,7 +94,7 @@ class Diagnosis extends HiveObject {
 
   @override
   String toString() {
-    return "[fileName $fileName, filePath $filePath, manualDiagnosis $manualDiagnosis, modelDiagnosis $modelDiagnosis,  isBookmarked: $isBookmarked, isServerDiagnosed: $isServerDiagnosed, mobileId: $mobileId, serverId: $serverId]";
+    return "[mobileId: $mobileId, serverId: $serverId, fileName: $fileName, filePath: $filePath, uploadTime: $uploadTime, mobileDiagnosis: $mobileDiagnosis, serverDiagnosis: $serverDiagnosis, manualDiagnosis: $manualDiagnosis, isBookmarked,: $isBookmarked, isUploaded,: $isUploaded, isServerDiagnosed: $isServerDiagnosed, confidenceScore: $confidenceScore]";
   }
 }
 // import 'package:hive/hive.dart';
@@ -110,7 +122,7 @@ class Diagnosis extends HiveObject {
 //   late int uploadTime;
 
 //   @HiveField(5)
-//   late String modelDiagnosis;
+//   late String mobileDiagnosis;
 
 //   @HiveField(6)
 //   late String? manualDiagnosis;
@@ -130,7 +142,7 @@ class Diagnosis extends HiveObject {
 //     required this.fileName,
 //     required this.filePath,
 //     required this.uploadTime,
-//     required this.modelDiagnosis,
+//     required this.mobileDiagnosis,
 //     this.manualDiagnosis,
 //     this.isBookmarked,
 //     this.isServerDiagnosed,
@@ -144,7 +156,7 @@ class Diagnosis extends HiveObject {
 //       fileName: json['fileName'] ?? '',
 //       filePath: json['filePath'] ?? '',
 //       uploadTime: json['uploadTime'] ?? 0,
-//       modelDiagnosis: json['modelDiagnosis'] ?? '',
+//       mobileDiagnosis: json['mobileDiagnosis'] ?? '',
 //       manualDiagnosis: json['manualDiagnosis'] ?? '',
 //       isBookmarked: json['isBookmarked'] ?? false,
 //       isServerDiagnosed: json['isServerDiagnosed'] ?? false,
@@ -159,7 +171,7 @@ class Diagnosis extends HiveObject {
 //     json['fileName'] = fileName;
 //     json['filePath'] = filePath;
 //     json['uploadTime'] = uploadTime;
-//     json['modelDiagnosis'] = modelDiagnosis;
+//     json['mobileDiagnosis'] = mobileDiagnosis;
 //     json['manualDiagnosis'] = manualDiagnosis;
 //     json['isBookmarked'] = isBookmarked;
 //     json['isServerDiagnosed'] = isServerDiagnosed;
@@ -169,6 +181,6 @@ class Diagnosis extends HiveObject {
 
 //   @override
 //   String toString() {
-//     return "fileName $fileName, modelDiagnosis ${modelDiagnosis} isBookmarked: $isBookmarked, isServerDiagnosed: $isServerDiagnosed, mobileId: $mobileId";
+//     return "fileName $fileName, mobileDiagnosis ${mobileDiagnosis} isBookmarked: $isBookmarked, isServerDiagnosed: $isServerDiagnosed, mobileId: $mobileId";
 //   }
 // }

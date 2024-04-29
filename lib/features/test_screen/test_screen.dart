@@ -348,7 +348,7 @@ class _TestScreenState extends State<TestScreen> {
                       uploadTime: DateTime.now().microsecondsSinceEpoch,
                       filePath: files.first.path,
                       confidenceScore: confidenceScore,
-                      modelDiagnosis: recognitions[0]['label'],
+                      mobileDiagnosis: recognitions[0]['label'],
                     ),
                   );
                   BlocProvider.of<DiagnosisStatisticsBloc>(context)
@@ -359,7 +359,7 @@ class _TestScreenState extends State<TestScreen> {
                   //     uploadTime: DateTime.now().microsecondsSinceEpoch,
                   //     filePath: croppedFile.path,
                   //     confidenceScore: confidenceScore,
-                  //     modelDiagnosis: recognitions[0]['label'],
+                  //     mobileDiagnosis: recognitions[0]['label'],
                   //   ),
                   // );
                 }
@@ -405,7 +405,7 @@ class _TestScreenState extends State<TestScreen> {
                       uploadTime: DateTime.now().microsecondsSinceEpoch,
                       filePath: files.first.path,
                       confidenceScore: confidenceScore,
-                      modelDiagnosis: recognitions[0]['label'],
+                      mobileDiagnosis: recognitions[0]['label'],
                     ),
                   );
                   BlocProvider.of<DiagnosisStatisticsBloc>(context)
@@ -416,7 +416,7 @@ class _TestScreenState extends State<TestScreen> {
                   //     uploadTime: DateTime.now().microsecondsSinceEpoch,
                   //     filePath: croppedFile.path,
                   //     confidenceScore: confidenceScore,
-                  //     modelDiagnosis: recognitions[0]['label'],
+                  //     mobileDiagnosis: recognitions[0]['label'],
                   //   ),
                   // );
                 }
@@ -1027,7 +1027,7 @@ class _TestScreenState extends State<TestScreen> {
 //                                     MainAxisAlignment.spaceBetween,
 //                                 children: [
 //                                   Text(
-//                                     widget.diagnosis.modelDiagnosis,
+//                                     widget.diagnosis.mobileDiagnosis,
 //                                     style: TextStyle(
 //                                       fontFamily: 'Clash Display',
 //                                       fontSize: 15,
