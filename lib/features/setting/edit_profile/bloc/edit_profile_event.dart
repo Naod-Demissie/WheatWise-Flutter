@@ -8,6 +8,7 @@ class EditProfileEvent extends EditProfileEvents {
   String region;
   String zone;
   String woreda;
+  String profilePicPath;
 
   EditProfileEvent({
     required this.username,
@@ -17,6 +18,7 @@ class EditProfileEvent extends EditProfileEvents {
     required this.region,
     required this.zone,
     required this.woreda,
+    required this.profilePicPath,
   });
 }
 

@@ -59,6 +59,7 @@ class EditProfileBloc extends Bloc<EditProfileEvents, EditProfileState> {
         region: event.region,
         zone: event.zone,
         woreda: event.woreda,
+        profilePicPath: event.profilePicPath
       );
 
       emit(EditProfileSuccessState());

@@ -13,9 +13,11 @@ import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 
 class EditProfileForm extends StatefulWidget {
   final SharedPreferences prefs;
+  final String? profilePicPath;
 
   const EditProfileForm(
-    this.prefs, {
+    this.prefs,
+    this.profilePicPath, {
     super.key,
   });
 
@@ -248,6 +250,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                         region: _regionController,
                                         zone: _zoneController.text,
                                         woreda: _woredaController.text,
+                                        profilePicPath: widget.profilePicPath!
                                       ));
                                     }
                                   },

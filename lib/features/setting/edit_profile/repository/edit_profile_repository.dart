@@ -11,6 +11,7 @@ class EditProfileRepository {
     required String region,
     required String zone,
     required String woreda,
+    required String profilePicPath,
   }) async {
     try {
       bool changed = await editProfileDataProvider.editProfile(
@@ -21,6 +22,7 @@ class EditProfileRepository {
         region: region,
         zone: zone,
         woreda: woreda,
+        profilePicPath: profilePicPath
       );
 
       if (!changed) {

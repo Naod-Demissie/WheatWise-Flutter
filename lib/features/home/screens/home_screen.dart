@@ -196,6 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, themeState) {
+          print('_profilePicPath: $_profilePicPath');
+
           return SafeArea(
             child: Scaffold(
               body: Padding(

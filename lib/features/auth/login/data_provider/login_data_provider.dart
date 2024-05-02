@@ -1,7 +1,10 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class LoginDataProvider {
   final String _baseUrl = dotenv.env["API_URL"]!;
@@ -24,6 +27,7 @@ class LoginDataProvider {
     required String organization,
     // required String firstTimeLogin,
     required String createdAt,
+    required String profilePicPath,
     required String password,
   }) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,6 +46,7 @@ class LoginDataProvider {
     await prefs.setString('organization', organization);
     // await prefs.setString('firstTimeLogin', firstTimeLogin.toString());
     await prefs.setString('createdAt', createdAt);
+    await prefs.getString('profilePicPath');
     await prefs.setString(
         'password', BCrypt.hashpw(password, BCrypt.gensalt()));
   }
@@ -69,9 +74,24 @@ class LoginDataProvider {
 
       final getUser = await dio.get('$_baseUrl/users/get-user');
 
+      print('getUser: $getUser');
+
       if (getUser.statusCode != 200) {
         throw Exception('Failed to fetch user data');
       }
+
+      List<int> imageBytes = base64.decode(getUser.data['profile_pic_base64']);
+
+      String fileName = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
+      // String dir = (await getApplicationDocumentsDirectory()).path;
+      String profilePicPath =
+          '/data/user/0/com.example.wheatwise/cache/$fileName';
+      // String profilePicPath = '$dir/$fileName';
+
+      // Write the bytes to a file
+      // File file = File(profilePicPath);
+      File file = File(profilePicPath);
+      await file.writeAsBytes(imageBytes);
 
       await saveDataLocally(
         token: token,
@@ -88,6 +108,7 @@ class LoginDataProvider {
         organization: getUser.data['organization'],
         // firstTimeLogin: getUser.data['first_time_login'],
         createdAt: getUser.data['created_at'],
+        profilePicPath: profilePicPath, //!!!!!!!!!!!!!!!!
         password: password,
       );
       return token;
