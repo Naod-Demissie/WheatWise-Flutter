@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_bloc.dart';
 import 'package:wheatwise/features/records/delete_record/bloc/delete_record_state.dart';
-
 import 'package:wheatwise/features/records/diagnosis_details/database/diagnosis_database.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/bloc.dart';
-
 import 'package:wheatwise/features/records/recent_records/components/diagnoisis_card.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 import 'package:wheatwise/features/theme/bloc/theme_state.dart';
@@ -90,11 +87,13 @@ class _RecordScreenState extends State<RecordScreen> {
             .toList();
       case 'Uploads':
         return records
-            .where((element) => element.isServerDiagnosed == true)
+            .where((element) => element.isUploaded == true)
+            // .where((element) => element.isServerDiagnosed == true)
             .toList();
       case 'Local':
         return records
-            .where((element) => element.isServerDiagnosed == false)
+            .where((element) => element.isUploaded == false)
+            // .where((element) => element.isServerDiagnosed == false)
             .toList();
       case 'Reviewed':
         return records

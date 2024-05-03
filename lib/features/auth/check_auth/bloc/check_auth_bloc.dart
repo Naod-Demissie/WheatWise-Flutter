@@ -37,33 +37,3 @@ class CheckAuthBloc extends Bloc<CheckAuthEvent, CheckAuthState> {
     }
   }
 }
-
-
-// class CheckAuthBloc extends Bloc<CheckAuthEvents, CheckAuthStates> {
-//   SharedPreferences prefs;
-
-//   CheckAuthBloc({required this.prefs}) : super(CheckAuthInitialState()) {
-//     on<CheckAuthEvent>(onCheckAuth);
-//   }
-
-//   onCheckAuth(CheckAuthEvents event, Emitter emit) async {
-//     emit(LoadingCheckAuthState());
-//     try {
-//       String? token = prefs.getString("token");
-//       String? firstName = prefs.getString("firstName");
-//       String? email = prefs.getString("email");
-//       String? password = prefs.getString("password");
-
-//       if (token != null && firstName != null && email != null && password != null) {
-//         emit(CheckAuthSuccessState(
-//             token: token, firstName: firstName, email: email, password: password));
-//       } else {
-//         throw Exception("");
-//       }
-//     } on Exception {
-      
-      
-//       emit(CheckAuthFailedState());
-//     }
-//   }
-// }

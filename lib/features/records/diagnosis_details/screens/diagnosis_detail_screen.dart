@@ -540,6 +540,8 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
                               .add(StartSyncDiagnosisEvent(
                             diagnosis: diagnosisState.diagnosis,
                           ));
+                          BlocProvider.of<RecentRecordsBloc>(context)
+                              .add(LoadRecentRecordsEvent());
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(

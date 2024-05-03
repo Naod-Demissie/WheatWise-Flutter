@@ -40,6 +40,8 @@ class ManualDiagnosisBloc
       //     event.serverId, event.manualDiagnosis);
 
       final Box<Diagnosis> diagnosisBox = Hive.box<Diagnosis>('Diagnosis');
+      print('diagnosisBox');
+      print(diagnosisBox.values);
 
       int key = diagnosisBox.keys.firstWhere((key) {
         var value = diagnosisBox.get(key);
@@ -51,9 +53,12 @@ class ManualDiagnosisBloc
       // }, orElse: () => null);
 
       Diagnosis? diagnosis = diagnosisBox.get(key);
+
       if (diagnosis != null) {
         diagnosis.manualDiagnosis = event.manualDiagnosis;
         diagnosisBox.putAt(key, diagnosis);
+        print('manual diagnosis');
+        print(diagnosis);
 
         emit(ManualDiagnosisSaved());
       } else {

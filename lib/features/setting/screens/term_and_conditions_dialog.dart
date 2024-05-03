@@ -177,7 +177,7 @@ void showTermsAndConditionsDialog(BuildContext context) {
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 3),
+                          horizontal: 16, vertical: 2.5),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                         color: Colors.black,
