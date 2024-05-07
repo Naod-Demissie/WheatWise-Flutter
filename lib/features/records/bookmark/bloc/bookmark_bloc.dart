@@ -16,7 +16,8 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
             .reversed
             .toList();
         emit(BookmarkSuccessState(diagnosis));
-      } catch (e) {
+      } catch (error) {
+        print(error.toString());
         emit(BookmarkFailureState());
       }
     });

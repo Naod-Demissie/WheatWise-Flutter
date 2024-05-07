@@ -20,7 +20,8 @@ class UploadRepository {
         isServerDiagnosed,
       );
       return detectedLeaf;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

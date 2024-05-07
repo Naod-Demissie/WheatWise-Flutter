@@ -9,9 +9,9 @@ class DiagnosisDetailBloc
       emit(DiagnosisDetailLoadingState());
       try {
         emit(DiagnosisDetailSuccessState(event.diagnosis));
-      } catch (e) {
-        print(e.toString());
-        emit(DiagnosisDetailFailureState(error: e.toString()));
+    } catch (error) {
+      print(error.toString());
+        emit(DiagnosisDetailFailureState(error: error.toString()));
       }
     });
   }

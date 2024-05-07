@@ -7,33 +7,31 @@ class CheckAuthBloc extends Bloc<CheckAuthEvent, CheckAuthState> {
   final SharedPreferences prefs;
 
   CheckAuthBloc({required this.prefs}) : super(CheckAuthInitialState()) {
-    on<CheckAuthEvent>(onCheckAuth);
-  }
+    on<CheckAuthEvent>((event, emit) async {
+      emit(LoadingCheckAuthState());
+      try {
+        String? token = prefs.getString("token");
+        String? firstName = prefs.getString("firstName");
+        String? email = prefs.getString("email");
+        String? password = prefs.getString("password");
 
-  void onCheckAuth(CheckAuthEvent event, Emitter<CheckAuthState> emit) async {
-    emit(LoadingCheckAuthState());
-    try {
-      String? token = prefs.getString("token");
-      String? firstName = prefs.getString("firstName");
-      String? email = prefs.getString("email");
-      String? password = prefs.getString("password");
-
-      if (token != null &&
-          firstName != null &&
-          email != null &&
-          password != null) {
-        emit(CheckAuthSuccessState(
-          token: token,
-          firstName: firstName,
-          email: email,
-          password: password,
-        ));
-      } else {
-        throw Exception("Missing credentials in SharedPreferences");
+        if (token != null &&
+            firstName != null &&
+            email != null &&
+            password != null) {
+          emit(CheckAuthSuccessState(
+            token: token,
+            firstName: firstName,
+            email: email,
+            password: password,
+          ));
+        } else {
+          throw Exception("Missing credentials in SharedPreferences");
+        }
+      } catch (error) {
+        print(error.toString());
+        emit(CheckAuthFailedState());
       }
-    } catch (e) {
-      print(e.toString());
-      emit(CheckAuthFailedState());
-    }
+    });
   }
 }

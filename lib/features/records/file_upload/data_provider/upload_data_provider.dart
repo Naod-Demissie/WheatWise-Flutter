@@ -72,7 +72,8 @@ class UploadDataProvider {
       } else {
         rethrow;
       }
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

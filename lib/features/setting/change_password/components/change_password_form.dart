@@ -2,10 +2,10 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wheatwise/constants.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
-import 'package:wheatwise/features/resources/constants.dart';
 import 'package:wheatwise/features/setting/change_password/bloc/change_password_bloc.dart';
 import 'package:wheatwise/features/setting/change_password/bloc/change_password_event.dart';
 import 'package:wheatwise/features/setting/change_password/bloc/change_password_state.dart';
@@ -67,9 +67,9 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
       if (checkAuthState is CheckAuthSuccessState) {
         return BlocConsumer<ChangePasswordBloc, ChangePasswordState>(
           listener: (context, changePasswordState) {
-            if (changePasswordState is LoadingChangePasswordState) {
+            if (changePasswordState is ChangePasswordSuccessState) {
               Navigator.of(context).pop();
-
+              Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Your password updated successfully!'),

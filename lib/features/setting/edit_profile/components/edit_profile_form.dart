@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wheatwise/constants.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_bloc.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_event.dart';
 import 'package:wheatwise/features/auth/check_auth/bloc/check_auth_state.dart';
-import 'package:wheatwise/features/resources/constants.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_event.dart';
 import 'package:wheatwise/features/setting/edit_profile/bloc/edit_profile_state.dart';
@@ -243,15 +243,18 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                     if (_formKey.currentState!.validate()) {
                                       BlocProvider.of<EditProfileBloc>(context)
                                           .add(EditProfileEvent(
-                                        username: _userNameController.text,
-                                        prefix: _prefixController.text,
-                                        firstName: _firstNameController.text,
-                                        lastName: _lastNameController.text,
-                                        region: _regionController,
-                                        zone: _zoneController.text,
-                                        woreda: _woredaController.text,
-                                        profilePicPath: widget.profilePicPath!
-                                      ));
+                                              username:
+                                                  _userNameController.text,
+                                              prefix: _prefixController.text,
+                                              firstName:
+                                                  _firstNameController.text,
+                                              lastName:
+                                                  _lastNameController.text,
+                                              region: _regionController,
+                                              zone: _zoneController.text,
+                                              woreda: _woredaController.text,
+                                              profilePicPath:
+                                                  widget.profilePicPath!));
                                     }
                                   },
                                       MaterialStateProperty.all<Color>(

@@ -7,8 +7,8 @@ class LoginRepository {
     try {
       String token = await loginDataProvider.login(username, password);
       return token;
-    } catch (e) {
-      print('Error logging in: $e');
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

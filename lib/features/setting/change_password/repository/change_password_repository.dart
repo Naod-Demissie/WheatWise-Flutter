@@ -15,7 +15,8 @@ class ChangePasswordRepository {
         throw Exception();
       }
       return token;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

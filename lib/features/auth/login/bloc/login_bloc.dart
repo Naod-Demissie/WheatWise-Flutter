@@ -7,20 +7,19 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
   final LoginRepository loginRepository = LoginRepository();
 
   LoginBloc() : super(LoginInitialState()) {
-    on<LoginButtonPressed>(onLogin);
+    on<LoginButtonPressed>((event, emit) async {
+      emit(LoginLoadingState());
+      try {
+        await loginRepository.login(event.username, event.password);
+        emit(LoginSuccessState());
+      } catch (error) {
+        print(error.toString());
+        emit(LoginFailureState(error: error.toString()));
+      }
+    });
+
     on<InitialEvent>((event, emit) {
       emit(LoginInitialState());
     });
-  }
-
-  void onLogin(LoginButtonPressed event, Emitter<LoginState> emit) async {
-    emit(LoginLoadingState());
-    try {
-      await loginRepository.login(event.username, event.password);
-      emit(LoginSuccessState());
-    } catch (e) {
-      print(e);
-      emit(LoginFailureState(error: e.toString()));
-    }
   }
 }

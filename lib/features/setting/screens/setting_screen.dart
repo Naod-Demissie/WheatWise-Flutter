@@ -1,17 +1,18 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wheatwise/features/setting/about/screens/about_screen.dart';
-// import 'package:share_plus/share_plus.dart';
-import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
+
+import 'package:wheatwise/constants.dart';
+import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_bloc.dart';
 import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
-import 'package:wheatwise/features/auth/login/screens/login_screen.dart';
-import 'package:wheatwise/features/resources/constants.dart';
+import 'package:wheatwise/features/setting/about/screens/about_screen.dart';
+import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/setting/edit_profile/screen/edit_profile_screen.dart';
 import 'package:wheatwise/features/setting/screens/term_and_conditions_dialog.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';

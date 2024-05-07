@@ -15,21 +15,21 @@ class EditProfileRepository {
   }) async {
     try {
       bool changed = await editProfileDataProvider.editProfile(
-        username: username,
-        prefix: prefix,
-        firstName: firstName,
-        lastName: lastName,
-        region: region,
-        zone: zone,
-        woreda: woreda,
-        profilePicPath: profilePicPath
-      );
+          username: username,
+          prefix: prefix,
+          firstName: firstName,
+          lastName: lastName,
+          region: region,
+          zone: zone,
+          woreda: woreda,
+          profilePicPath: profilePicPath);
 
       if (!changed) {
         throw Exception();
       }
       return changed;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

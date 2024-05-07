@@ -37,7 +37,8 @@ class ChangePasswordDataProvider {
           'password', BCrypt.hashpw(newPassword, BCrypt.gensalt()));
 
       return changed;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

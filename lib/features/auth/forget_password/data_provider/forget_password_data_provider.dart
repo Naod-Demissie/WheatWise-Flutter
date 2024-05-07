@@ -17,7 +17,8 @@ class ForgetPasswordDataProvider {
       }
 
       return true;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

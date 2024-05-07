@@ -11,7 +11,8 @@ class ManualDiagnosisRepo {
       final result = manualDiagnosisProvider.updateManualDiagnosis(
           serverId, manualDiagnosis);
       return result;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

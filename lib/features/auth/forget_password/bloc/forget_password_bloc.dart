@@ -9,26 +9,21 @@ class ForgetPasswordBloc
       ForgetPasswordRepository();
 
   ForgetPasswordBloc() : super(ForgetPasswordInitialState()) {
-    on<ForgetPasswordEvent>(onForgetPasswordEvent);
-    on<LoadForgetPasswordEvent>(onLoadForgetPassword);
-  }
+    on<ForgetPasswordEvent>((event, emit) async {
+      emit(LoadingForgetPasswordState());
 
-  onForgetPasswordEvent(
-      ForgetPasswordEvent event, Emitter<ForgetPasswordState> emit) async {
-    emit(LoadingForgetPasswordState());
-
-    try {
-      await forgetPasswordRepository.forgetPassword(
-        event.email,
-      );
-      emit(ForgetPasswordSuccessState());
-    } on Exception {
-      emit(ForgetPasswordFailedState());
-    }
-  }
-
-  onLoadForgetPassword(
-      LoadForgetPasswordEvent event, Emitter<ForgetPasswordState> emit) async {
-    emit(ForgetPasswordInitialState());
+      try {
+        await forgetPasswordRepository.forgetPassword(
+          event.email,
+        );
+        emit(ForgetPasswordSuccessState());
+      } on Exception {
+        emit(ForgetPasswordFailedState());
+      }
+    });
+    
+    on<LoadForgetPasswordEvent>((event, emit) async {
+      emit(ForgetPasswordInitialState());
+    });
   }
 }

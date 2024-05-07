@@ -4,6 +4,3 @@ class ChangeThemeEvent extends ThemeEvent {
   ChangeThemeEvent();
 }
 
-class LoadThemeEvent extends ThemeEvent {
-  LoadThemeEvent();
-}

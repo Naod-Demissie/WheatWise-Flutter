@@ -9,25 +9,22 @@ class ChangePasswordBloc
       ChangePasswordRepository();
 
   ChangePasswordBloc() : super(ChangePasswordInitialState()) {
-    on<ChangePasswordEvent>(onChangePasswordEvent);
-    on<LoadChangePasswordEvent>(onLoadChangePassword);
-  }
+    on<ChangePasswordEvent>((event, emit) async {
+      emit(LoadingChangePasswordState());
+      try {
+        await changePasswordRepository.changePassword(
+          event.currentPassword,
+          event.newPassword,
+          event.newPassword2,
+        );
+        emit(ChangePasswordSuccessState());
+      } on Exception {
+        emit(ChangePasswordFailedState());
+      }
+    });
 
-  onChangePasswordEvent(ChangePasswordEvent event, Emitter emit) async {
-    emit(LoadingChangePasswordState());
-    try {
-      await changePasswordRepository.changePassword(
-        event.currentPassword,
-        event.newPassword,
-        event.newPassword2,
-      );
-      emit(ChangePasswordSuccessState());
-    } on Exception {
-      emit(ChangePasswordFailedState());
-    }
-  }
-
-  onLoadChangePassword(LoadChangePasswordEvent event, Emitter emit) async {
-    emit(ChangePasswordInitialState());
+    on<LoadChangePasswordEvent>((event, emit) async {
+      emit(ChangePasswordInitialState());
+    });
   }
 }

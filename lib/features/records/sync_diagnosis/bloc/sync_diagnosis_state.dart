@@ -12,8 +12,6 @@ class SyncDiagnosisSuccessState extends SyncDiagnosisState {
   SyncDiagnosisSuccessState(this.diagnosis);
 }
 
-class SyncDiagnosisImageNotLeafState extends SyncDiagnosisState {}
-
 class NoInternetSyncDiagnosisState extends SyncDiagnosisState {}
 
 class SyncDiagnosisFailureState extends SyncDiagnosisState {}

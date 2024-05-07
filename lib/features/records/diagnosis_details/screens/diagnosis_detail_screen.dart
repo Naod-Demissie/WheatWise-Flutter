@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:readmore/readmore.dart';
+import 'package:wheatwise/constants.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
 import 'package:wheatwise/features/records/bookmark/bloc/bookmark_bloc.dart';
@@ -15,8 +17,9 @@ import 'package:wheatwise/features/records/manual_diagnosis/bloc/manual_diagnosi
 import 'package:wheatwise/features/records/manual_diagnosis/bloc/manual_diagnosis_event.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/recent_records_bloc.dart';
 import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
-import 'package:wheatwise/features/records/sync_data/bloc/sync_diagnosis_bloc.dart';
-import 'package:wheatwise/features/records/sync_data/bloc/sync_diagnosis_event.dart';
+import 'package:wheatwise/features/records/sync_diagnosis/bloc/sync_diagnosis_bloc.dart';
+import 'package:wheatwise/features/records/sync_diagnosis/bloc/sync_diagnosis_event.dart';
+import 'package:wheatwise/features/records/sync_diagnosis/bloc/sync_diagnosis_state.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 
 class DiagnosisDetailScreen extends StatefulWidget {
@@ -199,379 +202,438 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
           _selectedIndex =
               diseaseList.indexOf(diagnosisState.diagnosis.manualDiagnosis!);
 
-          return SafeArea(
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              appBar: AppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                actions: [
-                  BlocBuilder<BookmarkBloc, BookmarkState>(
-                      builder: (context, bookmarkState) {
-                    return Card(
-                      elevation: 0,
-                      shape: const CircleBorder(),
-                      color: Colors.black.withOpacity(0.6),
-                      margin: const EdgeInsets.all(10),
-                      child: IconButton(
-                        icon: diagnosisState.diagnosis.isBookmarked!
-                            ? const Icon(Icons.bookmark_outline_outlined,
-                                color: Color.fromRGBO(248, 147, 29, 1))
-                            : const Icon(Icons.bookmark_outline_outlined,
-                                color: Colors.grey),
-                        onPressed: () {
-                          BlocProvider.of<BookmarkBloc>(context).add(
-                              AddBookmarkEvent(
-                                  diagnosis: diagnosisState.diagnosis));
-                          // BlocProvider.of<DiagnosisDetailBloc>(context).add(
-                          //     LoadDiagnosisDetailEvent(
-                          //         diagnosis: diagnosisState.diagnosis));
+          return BlocConsumer<SyncDiagnosisBloc, SyncDiagnosisState>(
+            listener: (context, syncDiagnosisState) {
+              if (syncDiagnosisState is SyncDiagnosisSuccessState) {
+                print('SyncDiagnosisSuccessState');
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Diagnosis synced successfully!'),
+                  ),
+                );
+              } else if (syncDiagnosisState is NoInternetSyncDiagnosisState) {
+                Navigator.of(context).pop();
+                print('NoInternetSyncDiagnosisState');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('NoInternetSyncDiagnosisState'),
+                  ),
+                );
+              } else if (syncDiagnosisState is SyncDiagnosisFailureState) {
+                print('SyncDiagnosisFailureState');
 
-                          BlocProvider.of<RecentRecordsBloc>(context)
-                              .add(LoadRecentRecordsEvent());
-                        },
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('SyncDiagnosisFailureState'),
+                  ),
+                );
+              } else if (syncDiagnosisState is SyncDiagnosisLoadingState) {
+                showDialog(
+                  context: context,
+                  builder: (context) => Center(
+                    child: Container(
+                      width: 120.0,
+                      height: 120.0,
+                      decoration: BoxDecoration(
+                        color:
+                            BlocProvider.of<ThemeBloc>(context).state.cardColor,
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
-                    );
-                    // return Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    //     child: IconButton(
-                    //       icon: diagnosisState.diagnosis.isBookmarked!
-                    //           ? const Icon(Icons.bookmark_outline_outlined,
-                    //               color: Color.fromRGBO(248, 147, 29, 1))
-                    //           : const Icon(Icons.bookmark_outline_outlined,
-                    //               color: Colors.grey),
-                    //       onPressed: () {
-                    //         BlocProvider.of<BookmarkBloc>(context).add(
-                    //             AddBookmarkEvent(
-                    //                 bookmark: diagnosisState.diagnosis));
-                    //         BlocProvider.of<DiagnosisDetailBloc>(context).add(
-                    //             LoadDiagnosisDetailEvent(
-                    //                 diagnosis: diagnosisState.diagnosis));
-                    //       },
-                    //     ),
-                    //   ),
-                    // );
-                  }),
-                ],
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 2.0),
-                  child: Card(
-                    elevation: 0,
-                    shape: const CircleBorder(),
-                    color: Colors.black.withOpacity(0.6),
-                    margin: const EdgeInsets.all(10),
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Icon(
-                        // Icons.chevron_left_rounded,
-                        Icons.close,
-                        size: 20,
-                        color: Colors.grey.shade200,
+                      child: const Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: CupertinoActivityIndicator(
+                          color: kPrimaryColor,
+                          radius: 16,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // wheat image
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FullScreenImage(
-                                imageFile:
-                                    File(diagnosisState.diagnosis.filePath)),
+                );
+              }
+            },
+            builder: (context, syncDiagnosisState) {
+              return SafeArea(
+                child: Scaffold(
+                  extendBodyBehindAppBar: true,
+                  appBar: AppBar(
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    actions: [
+                      BlocBuilder<BookmarkBloc, BookmarkState>(
+                          builder: (context, bookmarkState) {
+                        return Card(
+                          elevation: 0,
+                          shape: const CircleBorder(),
+                          color: Colors.black.withOpacity(0.6),
+                          margin: const EdgeInsets.all(10),
+                          child: IconButton(
+                            icon: diagnosisState.diagnosis.isBookmarked!
+                                ? const Icon(Icons.bookmark_outline_outlined,
+                                    color: Color.fromRGBO(248, 147, 29, 1))
+                                : const Icon(Icons.bookmark_outline_outlined,
+                                    color: Colors.grey),
+                            onPressed: () {
+                              BlocProvider.of<BookmarkBloc>(context).add(
+                                  AddBookmarkEvent(
+                                      diagnosis: diagnosisState.diagnosis));
+                              // BlocProvider.of<DiagnosisDetailBloc>(context).add(
+                              //     LoadDiagnosisDetailEvent(
+                              //         diagnosis: diagnosisState.diagnosis));
+
+                              BlocProvider.of<RecentRecordsBloc>(context)
+                                  .add(LoadRecentRecordsEvent());
+                            },
                           ),
                         );
-                      },
-                      child: SizedBox(
-                        height: screenHeight * 0.35,
-                        width: double.infinity,
-                        child: Image.file(
-                          File(diagnosisState.diagnosis.filePath),
-                          fit: BoxFit.cover,
+                        // return Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                        //     child: IconButton(
+                        //       icon: diagnosisState.diagnosis.isBookmarked!
+                        //           ? const Icon(Icons.bookmark_outline_outlined,
+                        //               color: Color.fromRGBO(248, 147, 29, 1))
+                        //           : const Icon(Icons.bookmark_outline_outlined,
+                        //               color: Colors.grey),
+                        //       onPressed: () {
+                        //         BlocProvider.of<BookmarkBloc>(context).add(
+                        //             AddBookmarkEvent(
+                        //                 bookmark: diagnosisState.diagnosis));
+                        //         BlocProvider.of<DiagnosisDetailBloc>(context).add(
+                        //             LoadDiagnosisDetailEvent(
+                        //                 diagnosis: diagnosisState.diagnosis));
+                        //       },
+                        //     ),
+                        //   ),
+                        // );
+                      }),
+                    ],
+                    leading: Padding(
+                      padding: const EdgeInsets.only(left: 2.0),
+                      child: Card(
+                        elevation: 0,
+                        shape: const CircleBorder(),
+                        color: Colors.black.withOpacity(0.6),
+                        margin: const EdgeInsets.all(10),
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Icon(
+                            // Icons.chevron_left_rounded,
+                            Icons.close,
+                            size: 20,
+                            color: Colors.grey.shade200,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-
-                    // Disease Title
-                    Text(
-                      diagnosisState.diagnosis.mobileDiagnosis,
-                      style: TextStyle(
-                          fontFamily: 'Clash Display',
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          color: BlocProvider.of<ThemeBloc>(context)
-                              .state
-                              .textColor),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Description',
-                            style: TextStyle(
-                                fontFamily: 'Clash Display',
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600,
-                                color: BlocProvider.of<ThemeBloc>(context)
-                                    .state
-                                    .textColor),
+                  ),
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // wheat image
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FullScreenImage(
+                                    imageFile: File(
+                                        diagnosisState.diagnosis.filePath)),
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            height: screenHeight * 0.35,
+                            width: double.infinity,
+                            child: Image.file(
+                              File(diagnosisState.diagnosis.filePath),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          const SizedBox(height: 5),
-                          // Text(
-                          //   diseases[diagnosisState
-                          //       .diagnosis.mobileDiagnosis]!['description']!,
-                          //   style: const TextStyle(
-                          //     fontFamily: 'Clash Display',
-                          //     fontSize: 17,
-                          //     fontWeight: FontWeight.w300,
-                          //   ),
-                          // ),
-                          ReadMoreText(
-                            diseases[diagnosisState.diagnosis.mobileDiagnosis]![
-                                'description']!,
-                            trimMode: TrimMode.Line,
-                            trimLines: 3,
-                            // colorClickableText: Colors.pink,
-                            trimCollapsedText: 'Show more',
-                            trimExpandedText: 'Show less',
-                            style: TextStyle(
+                        ),
+                        const SizedBox(height: 10),
+
+                        // Disease Title
+                        Text(
+                          diagnosisState.diagnosis.mobileDiagnosis,
+                          style: TextStyle(
                               fontFamily: 'Clash Display',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
                               color: BlocProvider.of<ThemeBloc>(context)
                                   .state
-                                  .textColor,
-                            ),
-                            moreStyle: const TextStyle(
-                              fontFamily: 'Clash Display',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Divider(height: 35, thickness: 0.4),
+                                  .textColor),
+                        ),
 
-                          Row(
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: Colors.blue.shade100,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12))),
-                                child: SvgPicture.asset(
-                                  'assets/icons/shield-icon2.svg',
-                                  color: Colors.blue.shade500,
-                                  width: 30,
-                                  height: 30,
-                                ),
+                              Text(
+                                'Description',
+                                style: TextStyle(
+                                    fontFamily: 'Clash Display',
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    color: BlocProvider.of<ThemeBloc>(context)
+                                        .state
+                                        .textColor),
                               ),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Mitigation',
-                                      style: TextStyle(
-                                        fontFamily: 'Clash Display',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600,
-                                        color:
-                                            BlocProvider.of<ThemeBloc>(context)
-                                                .state
-                                                .textColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      diseases[diagnosisState.diagnosis
-                                          .mobileDiagnosis]!['mitigation']!,
-                                      style: TextStyle(
-                                        fontFamily: 'Clash Display',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                        color:
-                                            BlocProvider.of<ThemeBloc>(context)
-                                                .state
-                                                .textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          // const SizedBox(height: 10),
-                          const Divider(height: 35, thickness: 0.4),
-
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    color: Colors.green.shade100,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12))),
-                                child: SvgPicture.asset(
-                                  'assets/icons/medicine-icon2.svg',
-                                  color: Colors.green.shade500,
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Medication',
-                                      style: TextStyle(
-                                        fontFamily: 'Clash Display',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w600,
-                                        color:
-                                            BlocProvider.of<ThemeBloc>(context)
-                                                .state
-                                                .textColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      diseases[diagnosisState.diagnosis
-                                          .mobileDiagnosis]!['medication']!,
-                                      style: TextStyle(
-                                        fontFamily: 'Clash Display',
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                        color:
-                                            BlocProvider.of<ThemeBloc>(context)
-                                                .state
-                                                .textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.58,
-                      height: 50,
-                      // height: MediaQuery.of(context).size.height * 0.8,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                              backgroundColor:
-                                  BlocProvider.of<ThemeBloc>(context)
+                              const SizedBox(height: 5),
+                              // Text(
+                              //   diseases[diagnosisState
+                              //       .diagnosis.mobileDiagnosis]!['description']!,
+                              //   style: const TextStyle(
+                              //     fontFamily: 'Clash Display',
+                              //     fontSize: 17,
+                              //     fontWeight: FontWeight.w300,
+                              //   ),
+                              // ),
+                              ReadMoreText(
+                                diseases[diagnosisState.diagnosis
+                                    .mobileDiagnosis]!['description']!,
+                                trimMode: TrimMode.Line,
+                                trimLines: 3,
+                                // colorClickableText: Colors.pink,
+                                trimCollapsedText: 'Show more',
+                                trimExpandedText: 'Show less',
+                                style: TextStyle(
+                                  fontFamily: 'Clash Display',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: BlocProvider.of<ThemeBloc>(context)
                                       .state
-                                      .backgroundColor,
-                              context: context,
-                              builder: (context) => StatefulBuilder(
-                                    builder: (BuildContext context,
-                                        StateSetter setState) {
-                                      return manualDiagnosisPopup(
-                                          context,
-                                          setState,
-                                          diagnosisState.diagnosis.mobileId);
-                                      // diagnosisState.diagnosis.serverId!);
-                                      // diseaseList[_selectedIndex!]);
-                                    },
-                                  ));
-                        },
-                        // onPressed: () {
-                        //   showModalBottomSheet(
-                        //     context: context,
-                        //     builder: (context) => manualDiagnosisPopup(context),
-                        //   );
-                        // },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromARGB(255, 0, 0, 0)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                                      .textColor,
+                                ),
+                                moreStyle: const TextStyle(
+                                  fontFamily: 'Clash Display',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const Divider(height: 35, thickness: 0.4),
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue.shade100,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12))),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/shield-icon2.svg',
+                                      color: Colors.blue.shade500,
+                                      width: 30,
+                                      height: 30,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Mitigation',
+                                          style: TextStyle(
+                                            fontFamily: 'Clash Display',
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: BlocProvider.of<ThemeBloc>(
+                                                    context)
+                                                .state
+                                                .textColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          diseases[diagnosisState.diagnosis
+                                              .mobileDiagnosis]!['mitigation']!,
+                                          style: TextStyle(
+                                            fontFamily: 'Clash Display',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            color: BlocProvider.of<ThemeBloc>(
+                                                    context)
+                                                .state
+                                                .textColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              // const SizedBox(height: 10),
+                              const Divider(height: 35, thickness: 0.4),
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                        color: Colors.green.shade100,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(12))),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/medicine-icon2.svg',
+                                      color: Colors.green.shade500,
+                                      width: 30,
+                                      height: 30,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Medication',
+                                          style: TextStyle(
+                                            fontFamily: 'Clash Display',
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: BlocProvider.of<ThemeBloc>(
+                                                    context)
+                                                .state
+                                                .textColor,
+                                          ),
+                                        ),
+                                        Text(
+                                          diseases[diagnosisState.diagnosis
+                                              .mobileDiagnosis]!['medication']!,
+                                          style: TextStyle(
+                                            fontFamily: 'Clash Display',
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            color: BlocProvider.of<ThemeBloc>(
+                                                    context)
+                                                .state
+                                                .textColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        child: const Text(
-                          'Add Manual Diagnosis',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'SF-Pro-Text',
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<SyncDiagnosisBloc>(context)
-                              .add(StartSyncDiagnosisEvent(
-                            diagnosis: diagnosisState.diagnosis,
-                          ));
-                          BlocProvider.of<RecentRecordsBloc>(context)
-                              .add(LoadRecentRecordsEvent());
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(248, 147, 29, 1),
-                          ),
-                          // minimumSize: MaterialStateProperty.all(
-                          //   const Size(double.infinity, 52),
-                          // ),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                  ),
+                  bottomNavigationBar: BottomAppBar(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.58,
+                          height: 50,
+                          // height: MediaQuery.of(context).size.height * 0.8,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  backgroundColor:
+                                      BlocProvider.of<ThemeBloc>(context)
+                                          .state
+                                          .backgroundColor,
+                                  context: context,
+                                  builder: (context) => StatefulBuilder(
+                                        builder: (BuildContext context,
+                                            StateSetter setState) {
+                                          return manualDiagnosisPopup(
+                                              context,
+                                              setState,
+                                              diagnosisState
+                                                  .diagnosis.mobileId);
+                                          // diagnosisState.diagnosis.serverId!);
+                                          // diseaseList[_selectedIndex!]);
+                                        },
+                                      ));
+                            },
+                            // onPressed: () {
+                            //   showModalBottomSheet(
+                            //     context: context,
+                            //     builder: (context) => manualDiagnosisPopup(context),
+                            //   );
+                            // },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 0, 0, 0)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'Add Manual Diagnosis',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'SF-Pro-Text',
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),
-                        child: const Text(
-                          'Sync',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'SF-Pro-Text',
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w800,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<SyncDiagnosisBloc>(context)
+                                  .add(StartSyncDiagnosisEvent(
+                                diagnosis: diagnosisState.diagnosis,
+                              ));
+                              BlocProvider.of<RecentRecordsBloc>(context)
+                                  .add(LoadRecentRecordsEvent());
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(248, 147, 29, 1),
+                              ),
+                              // minimumSize: MaterialStateProperty.all(
+                              //   const Size(double.infinity, 52),
+                              // ),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'Sync',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'SF-Pro-Text',
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         } else if (diagnosisState is DiagnosisDetailLoadingState) {
           return const Scaffold(
@@ -669,7 +731,6 @@ Map<String, Map<String, String>> diseases = {
         'Fungicides containing active ingredients such as sulfur or potassium bicarbonate can be used to control powdery mildew. It is important to apply fungicides before the disease becomes severe.'
   },
 };
-
 // import 'dart:io';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -687,6 +748,8 @@ Map<String, Map<String, String>> diseases = {
 // import 'package:wheatwise/features/records/manual_diagnosis/bloc/manual_diagnosis_event.dart';
 // import 'package:wheatwise/features/records/recent_records/bloc/recent_records_bloc.dart';
 // import 'package:wheatwise/features/records/recent_records/bloc/recent_records_event.dart';
+// import 'package:wheatwise/features/records/sync_diagnosis/bloc/sync_diagnosis_bloc.dart';
+// import 'package:wheatwise/features/records/sync_diagnosis/bloc/sync_diagnosis_event.dart';
 // import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 
 // class DiagnosisDetailScreen extends StatefulWidget {
@@ -1205,7 +1268,14 @@ Map<String, Map<String, String>> diseases = {
 //                       width: MediaQuery.of(context).size.width * 0.3,
 //                       height: 50,
 //                       child: ElevatedButton(
-//                         onPressed: () {},
+//                         onPressed: () {
+//                           BlocProvider.of<SyncDiagnosisBloc>(context)
+//                               .add(StartSyncDiagnosisEvent(
+//                             diagnosis: diagnosisState.diagnosis,
+//                           ));
+//                           BlocProvider.of<RecentRecordsBloc>(context)
+//                               .add(LoadRecentRecordsEvent());
+//                         },
 //                         style: ButtonStyle(
 //                           backgroundColor: MaterialStateProperty.all<Color>(
 //                             const Color.fromRGBO(248, 147, 29, 1),
@@ -1332,4 +1402,3 @@ Map<String, Map<String, String>> diseases = {
 //         'Fungicides containing active ingredients such as sulfur or potassium bicarbonate can be used to control powdery mildew. It is important to apply fungicides before the disease becomes severe.'
 //   },
 // };
-

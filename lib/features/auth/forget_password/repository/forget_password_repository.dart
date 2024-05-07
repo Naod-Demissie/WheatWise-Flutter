@@ -12,7 +12,8 @@ class ForgetPasswordRepository {
         throw Exception();
       }
       return result;
-    } catch (e) {
+    } catch (error) {
+      print(error.toString());
       rethrow;
     }
   }

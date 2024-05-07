@@ -5,19 +5,17 @@ import 'package:wheatwise/features/auth/logout/bloc/logout_state.dart';
 
 class LogoutBloc extends Bloc<LogoutEvent, LogoutStates> {
   LogoutBloc() : super(LogoutInitialState()) {
-    on<LogoutButtonPressed>(onLogout);
-  }
-
-  onLogout(LogoutEvent event, Emitter emit) async {
-    emit(LogoutLoadingState());
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool cleared = await prefs.clear();
-      if (!cleared) throw Exception();
-      emit(LogoutSuccessState());
-    } catch (e) {
-      print(e);
-      emit(LogoutFailureState(error: e.toString()));
-    }
+    on<LogoutButtonPressed>((event, emit) async {
+      emit(LogoutLoadingState());
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool cleared = await prefs.clear();
+        if (!cleared) throw Exception();
+        emit(LogoutSuccessState());
+      } catch (error) {
+        print(error.toString());
+        emit(LogoutFailureState(error: error.toString()));
+      }
+    });
   }
 }
