@@ -39,7 +39,6 @@ class ManualDiagnosisBloc
           return value != null && value.mobileId == event.mobileId;
         }, orElse: () => null);
 
-        print('key: $key');
         // int key = diagnosisBox.keys.firstWhere((key) {
         //   var value = diagnosisBox.get(key);
         //   return value != null && value.serverId == event.serverId;
@@ -50,9 +49,6 @@ class ManualDiagnosisBloc
         if (diagnosis != null) {
           diagnosis.manualDiagnosis = event.manualDiagnosis;
           diagnosisBox.putAt(key, diagnosis);
-          print('manual diagnosis');
-          print(diagnosis);
-
           emit(ManualDiagnosisSaved());
         } else {
           emit(ManualDiagnosisFailed(errMsg: 'Diagnosis not found'));

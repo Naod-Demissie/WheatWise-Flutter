@@ -24,9 +24,14 @@ class MobileDiagnosisBloc
           mobileDiagnosis: event.mobileDiagnosis,
           manualDiagnosis: '',
           isBookmarked: false,
+          isUploaded: false,
           isServerDiagnosed: false,
           confidenceScore: event.confidenceScore,
         );
+
+        print('mobile_diagnosis');
+        print(diagnosis);
+
         int key = await diagnosisBox.add(diagnosis);
         diagnosisBox.put(key, diagnosis);
 

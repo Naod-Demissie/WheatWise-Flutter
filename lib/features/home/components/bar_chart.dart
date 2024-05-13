@@ -115,13 +115,13 @@ class _BarChartState extends State<BarChart> {
       series: <BarSeries<ChartSampleData, String>>[
         BarSeries<ChartSampleData, String>(
           dataSource: chartData,
-          xValueMapper: (ChartSampleData data, _) => data.x as String,
+          xValueMapper: (ChartSampleData data, _) => data.x,
           yValueMapper: (ChartSampleData data, _) => data.y,
           name: 'Correct',
         ),
         BarSeries<ChartSampleData, String>(
             dataSource: chartData,
-            xValueMapper: (ChartSampleData data, _) => data.x as String,
+            xValueMapper: (ChartSampleData data, _) => data.x,
             yValueMapper: (ChartSampleData data, _) => data.secondSeriesYValue,
             name: 'Incorrect'),
       ],

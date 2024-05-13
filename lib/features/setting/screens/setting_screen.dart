@@ -14,7 +14,8 @@ import 'package:wheatwise/features/auth/logout/bloc/logout_event.dart';
 import 'package:wheatwise/features/setting/about/screens/about_screen.dart';
 import 'package:wheatwise/features/setting/change_password/screen/change_password_screen.dart';
 import 'package:wheatwise/features/setting/edit_profile/screen/edit_profile_screen.dart';
-import 'package:wheatwise/features/setting/screens/term_and_conditions_dialog.dart';
+import 'package:wheatwise/features/setting/screens/components/sync_progress_dialog.dart';
+import 'package:wheatwise/features/setting/screens/components/term_and_conditions_dialog.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 import 'package:wheatwise/features/theme/bloc/theme_event.dart';
 import 'package:wheatwise/features/theme/bloc/theme_state.dart';
@@ -160,8 +161,11 @@ class _SettingScreenState extends State<SettingScreen> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ChangePasswordScreen()));
               }),
-              settingMenu(context, "Sync Data",
-                  'assets/icons/sync-data-icon3.svg', () {}),
+              // settingMenu(
+              //     context, "Sync Data", 'assets/icons/sync-data-icon3.svg', () {
+              //   showSyncDiagnosisDialog(context);
+              // }),
+              const SyncDiagnosisDialogBox(),
               settingMenu(context, "Logout", 'assets/icons/logout-icon.svg',
                   () {
                 BlocProvider.of<LogoutBloc>(context).add(LogoutButtonPressed());
@@ -326,3 +330,4 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 }
+

@@ -40,12 +40,7 @@ class SyncDiagnosisDataProvider {
         mobileDiagnosisInput['manual_diagnosis'] = diagnosis.manualDiagnosis;
       }
 
-      print(1111111111);
-      print(mobileDiagnosisInput);
-
-      if (diagnosis.isUploaded == null) {
-        print(22222222);
-
+      if (diagnosis.isUploaded == false) {
         FormData formData = FormData.fromMap({
           'file': await MultipartFile.fromFile(
             diagnosis.filePath,
@@ -63,26 +58,15 @@ class SyncDiagnosisDataProvider {
         diagnosis.serverId = response.data['server_id'];
         // diagnosis.uploadTime = DateTime.now().microsecondsSinceEpoch;
         diagnosis.isUploaded = true;
-        print('response');
-        print(response);
-        print('diagnosis');
-        print(diagnosis);
         return diagnosis;
       } else {
-        print(555555555555);
-
         dio.options.headers['Authorization'] = 'Bearer $token';
-        final response = await dio.put(
+        await dio.put(
           '$_baseUrl/diagnosis/update-mobile-diagnosis',
           // data: formData,
           data: mobileDiagnosisInput,
           onSendProgress: (count, total) {},
         );
-        print('response');
-        print(response);
-        print('diagnosis');
-        print(diagnosis);
-
         return diagnosis;
       }
     } on DioException catch (e) {

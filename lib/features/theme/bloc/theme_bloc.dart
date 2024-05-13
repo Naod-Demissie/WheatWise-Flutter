@@ -24,7 +24,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         systemNavigationBarDividerColor: null,
         systemNavigationBarColor: state.backgroundColor,
         statusBarColor:
-            state.backgroundColor, // Replace with your desired color
+            state.backgroundColor,
         statusBarIconBrightness: theme ? Brightness.dark : Brightness.light,
         systemNavigationBarIconBrightness:
             theme ? Brightness.dark : Brightness.light,

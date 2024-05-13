@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
-import 'package:wheatwise/features/home/bloc/diagnosis_statistics_event.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_state.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 

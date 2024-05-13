@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadModel() async {
     await Tflite.loadModel(
         model:
-            "assets/model/MobilenetV3large__lr_0.0003__batch_32__dense512.tflite",
+            "assets/model/MobilenetV3large__lr_0.0003__batch_32__color_zoom_augmented__minimalistic.tflite",
         labels: "assets/model/labels.txt",
         numThreads: 1,
         isAsset: true,
