@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -189,15 +188,6 @@ class _DiagnosisCardState extends State<DiagnosisCard> {
                                       ),
                                       InkWell(
                                         onTap: () {},
-                                        // child: SvgPicture.asset(
-                                        //   'assets/icons/upload-check-icon.svg',
-                                        //   color: widget
-                                        //           .diagnosis.isServerDiagnosed!
-                                        //       ? Colors.green
-                                        //       : Colors.grey,
-                                        //   width: 21,
-                                        //   height: 21,
-                                        // ),
                                         child: Icon(
                                           Icons.cloud_upload_outlined,
                                           color: widget.diagnosis.isUploaded!

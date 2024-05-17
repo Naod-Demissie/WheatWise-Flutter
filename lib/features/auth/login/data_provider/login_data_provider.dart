@@ -80,14 +80,10 @@ class LoginDataProvider {
       List<int> imageBytes = base64.decode(getUser.data['profile_pic_base64']);
 
       String fileName = '${getUser.data['user_id']}.jpg';
-      // String fileName = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
-      // String dir = (await getApplicationDocumentsDirectory()).path;
       String profilePicPath =
           '/data/user/0/com.example.wheatwise/cache/$fileName';
-      // String profilePicPath = '$dir/$fileName';
 
       // Write the bytes to a file
-      // File file = File(profilePicPath);
       File file = File(profilePicPath);
       await file.writeAsBytes(imageBytes);
 

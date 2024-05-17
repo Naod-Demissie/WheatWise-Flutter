@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wheatwise/features/article/screens/article_screen.dart';
 import 'package:wheatwise/features/home/bloc/diagnosis_statistics_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:wheatwise/features/home/screens/home_screen.dart';
 import 'package:wheatwise/features/records/recent_records/screens/record_screen.dart';
 import 'package:wheatwise/features/setting/screens/setting_screen.dart';
 import 'package:wheatwise/features/test_screen/test_screen.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({super.key});
@@ -26,7 +24,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     const ArticleScreen(),
     const RecordScreen(),
     const SettingScreen(),
-    const TestScreen(),
+    // const TestScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -78,10 +76,10 @@ class _PageNavigatorState extends State<PageNavigator> {
               icon: Icon(Iconsax.setting),
               label: 'Settings',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Iconsax.setting),
-              label: 'Test',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Iconsax.setting),
+            //   label: 'Test',
+            // ),
           ],
         ),
       ),

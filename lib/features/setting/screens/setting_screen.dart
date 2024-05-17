@@ -161,10 +161,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ChangePasswordScreen()));
               }),
-              // settingMenu(
-              //     context, "Sync Data", 'assets/icons/sync-data-icon3.svg', () {
-              //   showSyncDiagnosisDialog(context);
-              // }),
               const SyncDiagnosisDialogBox(),
               settingMenu(context, "Logout", 'assets/icons/logout-icon.svg',
                   () {
@@ -274,14 +270,6 @@ class _SettingScreenState extends State<SettingScreen> {
                   );
                 },
               ),
-              // settingMenu(
-              //   context,
-              //   "Rate the App",
-              //   'assets/icons/rate-icon3.svg',
-              //   () {
-              //     // _openAppStore();
-              //   },
-              // ),
               settingMenu(context, "About Us", 'assets/icons/info-icon3.svg',
                   () async {
                 await Navigator.push(
