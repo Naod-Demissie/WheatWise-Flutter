@@ -22,7 +22,6 @@ import 'package:wheatwise/features/splash/screens/splash_screen.dart';
 import 'package:wheatwise/features/theme/bloc/theme_bloc.dart';
 import 'package:wheatwise/features/theme/bloc/theme_state.dart';
 import 'package:wheatwise/features/theme/theme.dart';
-
 import 'features/auth/login/bloc/login_bloc.dart';
 import 'features/records/recent_records/bloc/bloc.dart';
 

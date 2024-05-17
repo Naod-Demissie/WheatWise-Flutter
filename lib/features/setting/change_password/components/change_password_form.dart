@@ -70,15 +70,57 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             if (changePasswordState is ChangePasswordSuccessState) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Your password updated successfully!'),
+                  content: Row(children: [
+                    Icon(
+                      Icons.check_circle_outline_outlined,
+                    ),
+                    SizedBox(width: 10),
+                    Text('Your password updated successfully!',
+                        style: TextStyle(
+                            fontFamily: 'Clash Display',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black)),
+                  ]),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                  ),
+                  showCloseIcon: true,
+                  // duration: const Duration(milliseconds: 400),
+                  elevation: 0,
+                  backgroundColor: Colors.amber,
+                  closeIconColor: Colors.black,
                 ),
               );
             } else if (changePasswordState is ChangePasswordFailedState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Your password update Failed!'),
+                SnackBar(
+                  content: const Row(children: [
+                    Icon(Icons.error_outline_rounded),
+                    SizedBox(width: 10),
+                    Text(
+                      'Your password update Failed!',
+                      style: TextStyle(
+                          fontFamily: 'Clash Display',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                  ]),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                  ),
+                  showCloseIcon: true,
+                  // duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.redAccent.shade200,
+                  closeIconColor: Colors.black,
                 ),
               );
             } else if (changePasswordState is LoadingChangePasswordState) {

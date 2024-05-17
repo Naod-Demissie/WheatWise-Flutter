@@ -205,28 +205,85 @@ class _DiagnosisDetailScreenState extends State<DiagnosisDetailScreen> {
           return BlocConsumer<SyncDiagnosisBloc, SyncDiagnosisState>(
             listener: (context, syncDiagnosisState) {
               if (syncDiagnosisState is SyncDiagnosisSuccessState) {
-                print('SyncDiagnosisSuccessState');
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Diagnosis synced successfully!'),
+                    content: Row(children: [
+                      Icon(
+                        Icons.check_circle_outline_outlined,
+                      ),
+                      SizedBox(width: 10),
+                      Text('Diagnosis synced successfully!',
+                          style: TextStyle(
+                              fontFamily: 'Clash Display',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black)),
+                    ]),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                    ),
+                    showCloseIcon: true,
+                    // duration: const Duration(milliseconds: 400),
+                    elevation: 0,
+                    backgroundColor: Colors.amber,
+                    closeIconColor: Colors.black,
                   ),
                 );
               } else if (syncDiagnosisState is NoInternetSyncDiagnosisState) {
                 Navigator.of(context).pop();
-                print('NoInternetSyncDiagnosisState');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('NoInternetSyncDiagnosisState'),
+                  SnackBar(
+                    content: const Row(children: [
+                      Icon(Icons.error_outline_rounded),
+                      SizedBox(width: 10),
+                      Text(
+                        'NoInternetSyncDiagnosisState',
+                        style: TextStyle(
+                            fontFamily: 'Clash Display',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ]),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                    ),
+                    showCloseIcon: true,
+                    // duration: const Duration(seconds: 2),
+                    backgroundColor: Colors.redAccent.shade200,
+                    closeIconColor: Colors.black,
                   ),
                 );
               } else if (syncDiagnosisState is SyncDiagnosisFailureState) {
-                print('SyncDiagnosisFailureState');
-
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('SyncDiagnosisFailureState'),
+                  SnackBar(
+                    content: const Row(children: [
+                      Icon(Icons.error_outline_rounded),
+                      SizedBox(width: 10),
+                      Text(
+                        'SyncDiagnosisFailureState',
+                        style: TextStyle(
+                            fontFamily: 'Clash Display',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ]),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8)),
+                    ),
+                    showCloseIcon: true,
+                    // duration: const Duration(seconds: 2),
+                    backgroundColor: Colors.redAccent.shade200,
+                    closeIconColor: Colors.black,
                   ),
                 );
               } else if (syncDiagnosisState is SyncDiagnosisLoadingState) {

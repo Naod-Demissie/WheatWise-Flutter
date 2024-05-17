@@ -12,6 +12,12 @@ class MobileDiagnosisSuccessState extends MobileDiagnosisState {
   MobileDiagnosisSuccessState(this.diagnosis);
 }
 
+class MultipleMobileDiagnosisSuccessState extends MobileDiagnosisState {
+  final List<Diagnosis> diagnosis;
+
+  MultipleMobileDiagnosisSuccessState(this.diagnosis);
+}
+
 class ImageNotLeafState extends MobileDiagnosisState {}
 
 class MobileDiagnosisFailureState extends MobileDiagnosisState {}

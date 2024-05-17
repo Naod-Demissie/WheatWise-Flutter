@@ -205,8 +205,27 @@ class _LoginScreenState extends State<LoginScreen> {
               (route) => false);
         } else if (loginState is LoginFailureState) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login Failed!'),
+            SnackBar(
+              content: const Row(children: [
+                Icon(Icons.error_outline_rounded),
+                SizedBox(width: 10),
+                Text(
+                  'Login failed!',
+                  style: TextStyle(
+                      fontFamily: 'Clash Display',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ]),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+              ),
+              showCloseIcon: true,
+              // duration: const Duration(seconds: 2),
+              backgroundColor: Colors.redAccent.shade200,
+              closeIconColor: Colors.black,
             ),
           );
         } else if (loginState is LoginInitialState) {
@@ -225,7 +244,28 @@ class _LoginScreenState extends State<LoginScreen> {
             if (forgetPasswordState is ForgetPasswordSuccessState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Password reset is successful!'),
+                  content: Row(children: [
+                    Icon(
+                      Icons.check_circle_outline_outlined,
+                    ),
+                    SizedBox(width: 10),
+                    Text('Password reset successfully!',
+                        style: TextStyle(
+                            fontFamily: 'Clash Display',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black)),
+                  ]),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                  ),
+                  showCloseIcon: true,
+                  // duration: const Duration(milliseconds: 400),
+                  elevation: 0,
+                  backgroundColor: Colors.amber,
+                  closeIconColor: Colors.black,
                 ),
               );
               _formKey.currentState?.reset();
@@ -237,8 +277,28 @@ class _LoginScreenState extends State<LoginScreen> {
               });
             } else if (forgetPasswordState is ForgetPasswordFailedState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Password reset is Failed!'),
+                SnackBar(
+                  content: const Row(children: [
+                    Icon(Icons.error_outline_rounded),
+                    SizedBox(width: 10),
+                    Text(
+                      'Password reset failed!',
+                      style: TextStyle(
+                          fontFamily: 'Clash Display',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                  ]),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                  ),
+                  showCloseIcon: true,
+                  // duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.redAccent.shade200,
+                  closeIconColor: Colors.black,
                 ),
               );
             } else if (forgetPasswordState is ForgetPasswordInitialState) {
