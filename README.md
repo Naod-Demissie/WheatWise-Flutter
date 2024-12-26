@@ -17,6 +17,6 @@ WheatWise is a Flutter-based mobile app designed to help farmers and agricultura
 Take a peek at WheatWise in action! 👀  
 
 <div style="display: flex; justify-content: center; gap: 10%; align-items: center;">
-  <video src="assets/screenshots/wheatwise screen record light model.mp4" controls loop autoplay muted width="25%"></video>
-  <video src="assets/screenshots/wheatwise dark mode.mp4" controls loop autoplay muted width="25%"></video>
+  <video src="assets/screenshots/wheatwise-screen-record-light-model.mp4" controls loop autoplay muted width="25%"></video>
+  <video src="assets/screenshots/wheatwise-dark-mode.mp4" controls loop autoplay muted width="25%"></video>
 </div>
