@@ -1,9 +1,11 @@
 # 🌾 WheatWise  
 
 WheatWise is a Flutter-based mobile app designed to help farmers and agricultural enthusiasts detect wheat diseases with ease! 🚜✨ Whether it's **Yellow Rust**, **Brown Rust**, **Septoria**, **Mildew**, or just healthy wheat 🌱, WheatWise has you covered. 
-<div style="display: flex; justify-content: center; margin-top: 20px;">
-  <img src="assets/screenshots/wheatwise-leaflet.png" alt="WheatWise Logo" width="50%">
-</div> 
+
+
+<div style="display: flex; justify-content: center; margin-top: 20px; align-items: center;">
+  <img src="assets/screenshots/wheatwise-leaflet.png">
+</div>
 
 ---
 
